@@ -71,8 +71,6 @@ export const AuthProvider = ({ children }) => {
                 console.error('Error de Supabase:', error);
                 throw error;
             }
-    
-            console.log('Datos actualizados:', data);
             setUser(data);
         } catch (error) {
             setErrors([error.message || 'Error al actualizar el usuario.']);
@@ -113,9 +111,6 @@ export const AuthProvider = ({ children }) => {
             if (error) {
                 throw new Error(error.message);
             }
-
-            console.log('Usuario encontrado:', data);
-
             return { data };
         } catch (error) {
             console.error('Error al obtener el Usuario:', error);

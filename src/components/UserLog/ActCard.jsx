@@ -25,7 +25,6 @@ function ActCard({ act }) {
             async function loadAct() {
                 const act = await getAct(selectedId);
                 if (act) { 
-                    console.log('Actividad cargada:', act);
                     setValue('nombre', act.nombre);
                     setValue('direccion', act.direccion);
                     setValue('descripcion', act.descripcion);
@@ -62,8 +61,6 @@ function ActCard({ act }) {
 
     const onSubmit = handleSubmit(async (data) => {
         try {
-            console.log("Datos del formulario:", data);
-
             if (selectedId !== null) {
                 if (file) {
                     const formData = new FormData();

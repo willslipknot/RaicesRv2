@@ -21,7 +21,6 @@ function VehCard({ veh }) {
         if (selectedId !== null) {
             async function loadVeh() {
                 const veh = await getVehiculo(selectedId);
-                console.log(veh);
                 setValue('placa', veh.placa);
                 setValue('marca', veh.marca);
                 setValue('linea', veh.linea);

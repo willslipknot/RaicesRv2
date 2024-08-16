@@ -1,4 +1,4 @@
-import { createContext, useContext, useState,  useEffect } from "react"
+import { createContext, useContext, useState, useEffect } from "react"
 import supabase from '../db1.js';
 
 const reservaContext = createContext();
@@ -87,14 +87,10 @@ export function ReservaProvider({ children }) {
             if (error) {
                 throw new Error(error.message);
             }
-
             const fechaActual = new Date().toISOString().split('T')[0];
             const reservasDelDia = data.filter((reserva) => reserva.fecha_reserva === fechaActual);
-
             const numReservas = reservasDelDia.length;
-            console.log(`Número de reservas para el día actual: ${numReservas}`);
             setReservas(numReservas);
-
             return numReservas;
         } catch (error) {
             console.error(error);
@@ -123,8 +119,8 @@ export function ReservaProvider({ children }) {
             console.error("Error al obtener las reservas:", error);
             throw error;
         }
-      };
-      
+    };
+
 
 
     return (

@@ -10,7 +10,6 @@ const Contacto = () => {
 
         emailjs.sendForm('service_g5h1fxe', 'template_5sknu6j', e.target, 'OcFucUjKKDEFNAAHk')
             .then((result) => {
-                console.log('Email sent successfully:', result.text);
                 alert('Mensaje enviado con éxito!');
             }, (error) => {
                 console.error('Error sending email:', error.text);

@@ -32,7 +32,6 @@ function DashboardAdmin() {
         try {
             const resultado = await getContReserva(); 
             setNumReservas(resultado);
-            console.log('asd', resultado );
         } catch (error) {
             console.error('Error al obtener el conteo de reservas:', error);
             setNumReservas('Error');
@@ -69,9 +68,6 @@ function DashboardAdmin() {
                 .slice(0, 5);
 
             setDatosGrafico(data);
-
-            console.log('Contador de actividades:', contadorActividades);
-            console.log('Datos para el gráfico:', data);
         } catch (error) {
             console.error(error);
         }
@@ -111,9 +107,6 @@ function DashboardAdmin() {
                 .slice(0, 5);
     
             setDatosGrafico1(data);
-    
-            console.log('Contador de conductores:', contadorConductores);
-            console.log('Datos para el gráfico:', data);
         } catch (error) {
             console.error(error);
         }
@@ -143,12 +136,6 @@ function DashboardAdmin() {
         contarActividades();
         contarConductores();
     }, []);
-
-    // Verificar tipo de datos
-    console.log('acts:', acts, 'type:', typeof acts);
-    console.log('conds:', conds, 'type:', typeof conds);
-    console.log('vehiculos:', vehiculos, 'type:', typeof vehiculos);
-    console.log('reservas:', numReservas, 'type:', typeof numReservas);
 
     return (
         <div>

@@ -5,7 +5,7 @@
 
 
 .actividad-container {
-    display:flex;
+    display: flex;
     justify-content: center;
     align-items: center;
     background-color: #f0f0f0;
@@ -65,12 +65,13 @@
 
 .form-columns1 {
     display: flex;
-    justify-content: center; 
+    justify-content: center;
     gap: 20px;
     width: 100%;
 }
 
-.col11, .col22 {
+.col11,
+.col22 {
     flex: 2;
     max-width: 100%;
 }
@@ -177,11 +178,11 @@
     top: 170px;
     grid-template-columns: repeat(3, 2fr);
     gap: 10px;
-    max-width: 1200px; 
+    max-width: 1200px;
     width: 100%;
     padding: 20px;
     box-sizing: border-box;
-  }
+}
 
 .modal {
     position: fixed;
@@ -209,9 +210,9 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-  }
+}
 
-  .actividad-buttons2 {
+.actividad-buttons2 {
     position: absolute;
     top: 100px;
     left: 62px;
@@ -224,9 +225,9 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-  }
+}
 
-  .rutas-buttons {
+.rutas-buttons {
     position: absolute;
     top: 100px;
     left: 226px;
@@ -239,17 +240,58 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-  }
+}
 
-  
-  .actividad-content {
+
+.actividad-content {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 50px;
-  }
+}
 
-  .form-group button[type="button"] {
+.form-group button[type="button"] {
     background-color: #ff0000;
     color: white;
 }
+
+.divRutas {
+    display: grid;
+    position: absolute;
+    top: 170px;
+    gap: 10px;
+    max-width: 1200px;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-family: 'Brothers-Bold.otf';
+  }
+
+  th {
+    background-color: 	#1E90FF;
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+
+  td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+
+  tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+  }
+  
+ 
+  tbody tr:hover {
+    background-color: lightgrey;
+  }
+  

@@ -30,16 +30,15 @@ function CondCard({ cond }) {
             async function loadCond() {
                 const act = await getCond(selectedId);
                 if (act) {
-                    console.log('Conductor cargado:', act);
-                    setValue('first_name', cond.first_name);
-                    setValue('second_name', cond.second_name);
-                    setValue('first_last_name', cond.first_last_name);
-                    setValue('second_last_name', cond.second_last_name);
-                    setValue('correo', cond.correo);
-                    setValue('phone_number', cond.phone_number);
-                    setValue('cedula', cond.cedula);
-                    setValue('uid_vehiculo', cond.uid_vehiculo);
-                    setValue('tipo_licencia', cond.tipo_licencia);
+                    setValue('first_name', act.first_name);
+                    setValue('second_name', act.second_name);
+                    setValue('first_last_name', act.first_last_name);
+                    setValue('second_last_name', act.second_last_name);
+                    setValue('correo', act.correo);
+                    setValue('phone_number', act.phone_number);
+                    setValue('cedula', act.cedula);
+                    setValue('uid_vehiculo', act.uid_vehiculo);
+                    setValue('tipo_licencia', act.tipo_licencia);
                     setValue('photo_perfil', file);
 
                 } else {
@@ -65,8 +64,6 @@ function CondCard({ cond }) {
 
     const onSubmit = handleSubmit(async (data) => {
         try {
-            console.log("Datos del formulario:", data);
-
             if (selectedId !== null) {
                 if (file) {
                     const formData = new FormData();
@@ -172,7 +169,6 @@ function CondCard({ cond }) {
 
     const handleVehiculoChange = (e) => {
         setVehiculoSel(e.target.value);
-        console.log(e.target.value);
     };
 
     return (

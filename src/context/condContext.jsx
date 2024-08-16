@@ -27,7 +27,6 @@ export function CondProvider({ children }) {
             if (error) {
                 throw new Error(error.message);
             }
-            console.log(data)
             setConds(data)
         } catch (error) {
             console.error(error);
@@ -44,30 +43,22 @@ export function CondProvider({ children }) {
             if (error) {
                 throw new Error(error.message);
             }
-
             const numConds = conductores.length;
-            console.log(`Número de conductores existentes: ${numConds}`);
             setConds(numConds);
-
         } catch (error) {
             console.error('Error al obtener el número de conductores:', error);
         }
     };
-    
+
 
     const createConds = async (formData) => {
-        console.log('Datos del FormData:', formData);
-        // Asegúrate de que `file` esté en `formData`
         const file = formData.get('photo_perfil');
         if (!file) {
             console.error('No file found in formData');
             return;
         }
-        // Subir imagen y obtener URL
-        const url = await uploadImageAndGetURL(file);
-        console.log(url);
 
-        // Obtener otros campos de `formData`
+        const url = await uploadImageAndGetURL(file);
         const first_name = formData.get('first_name');
         const second_name = formData.get('second_name');
         const first_last_name = formData.get('first_last_name');
@@ -99,8 +90,6 @@ export function CondProvider({ children }) {
             if (error) {
                 throw new Error(error.message);
             }
-
-            console.log('Conductor creado correctamente', newConductor);
             setConds(newConductor);
         } catch (error) {
             console.error('Error:', error.message);
@@ -108,7 +97,6 @@ export function CondProvider({ children }) {
     }
 
     const deleteCond = async (uid_conductor) => {
-        console.log(uid_conductor);
         try {
             const { data, error } = await supabase
                 .from('inf_conductor_t')
@@ -137,8 +125,6 @@ export function CondProvider({ children }) {
             if (error) {
                 throw new Error(error.message);
             }
-
-            console.log('Conductor encontrado:', data);
 
             return { data };
         } catch (error) {
@@ -199,8 +185,6 @@ export function CondProvider({ children }) {
                     return prevcond;
                 });
             });
-
-            console.log('Conductor actualizado correctamente', data);
         } catch (error) {
             console.error('Error al actualizar Conductor:', error);
         }

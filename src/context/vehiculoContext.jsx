@@ -23,11 +23,10 @@ export function VehiculoProvider({ children }) {
             const { data, error } = await supabase
                 .from('inf_vehi_t')
                 .select('*');
-    
+
             if (error) {
                 throw new Error(error.message);
             }
-            console.log(data)
             setVehiculos(data)
         } catch (error) {
             console.error(error);
@@ -47,7 +46,6 @@ export function VehiculoProvider({ children }) {
             }
 
             if (data.length === 0) {
-                console.log("No existen vehículos para la clase proporcionada.");
                 return [];
             }
 
@@ -70,7 +68,6 @@ export function VehiculoProvider({ children }) {
             }
 
             const numVehs = vehiculos.length;
-            console.log(`Número de vehiculos existentes: ${numVehs}`);
             setVehiculos(numVehs);
 
         } catch (error) {
@@ -79,18 +76,12 @@ export function VehiculoProvider({ children }) {
     }
 
     const createVehiculos = async (formData) => {
-        console.log('Datos del FormData:', formData);
-        // Asegúrate de que `file` esté en `formData`
         const file = formData.get('photo_perfil');
         if (!file) {
             console.error('No file found in formData');
             return;
         }
-        // Subir imagen y obtener URL
         const url = await uploadImageAndGetURL(file);
-        console.log(url);
-    
-        // Obtener otros campos de `formData`
         const placa = formData.get('placa');
         const marca = formData.get('marca');
         const linea = formData.get('linea');
@@ -120,20 +111,17 @@ export function VehiculoProvider({ children }) {
                         disponible: "1"
                     },
                 ]);
-    
+
             if (error) {
                 throw new Error(error.message);
             }
-    
-            console.log('Conductor creado correctamente', newVehiculo);
             setVehiculos(newVehiculo);
         } catch (error) {
             console.error('Error:', error.message);
-        }    
+        }
     }
 
     const deleteVehiculo = async (uid_vehiculo) => {
-        console.log(uid_vehiculo);
         try {
             const { data, error } = await supabase
                 .from('inf_vehi_t')
@@ -162,16 +150,13 @@ export function VehiculoProvider({ children }) {
             if (error) {
                 throw new Error(error.message);
             }
-
-            console.log('Vehiculo encontrado:', data);
-
             return { data };
         } catch (error) {
             console.error('Error al obtener el Vehiculo:', error);
             return null;
         }
     }
-    
+
 
     return (
         <VehiculoContext.Provider value={{

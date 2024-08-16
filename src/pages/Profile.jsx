@@ -35,7 +35,6 @@ function Profile() {
 
     const onSubmit = async (data) => {
         try {
-            console.log('Datos a enviar:', data);
             if (user && user.uid) {
                 await updateUser(user.uid, data);
                 setIsEditing(false);

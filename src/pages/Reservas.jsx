@@ -3,6 +3,8 @@ import { useReserva } from '../context/reservaContext';
 import { useCond } from '../context/condContext';
 import { useAuth } from '../context/authContext';
 import { useVehiculo } from '../context/vehiculoContext';
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 import '../assets/css/Reservas.css';
 
 function Reservas() {
@@ -33,7 +35,7 @@ function Reservas() {
                     const conductorData = await getCond(reserv.uid_conductor);
                     const vehiculoData = await getVehiculo(reserv.uid_vehiculo);
                     const clienteData = await getCliente(reserv.uid_cliente);
-    
+
                     return {
                         ...reserv,
                         conductor: `${conductorData?.data?.first_name || 'Nombre no disponible'} ${conductorData?.data?.first_last_name || ''}`,
@@ -42,7 +44,6 @@ function Reservas() {
                         telefono: clienteData?.data?.phone_number || 'Teléfono no disponible'
                     };
                 }));
-                console.log('reservasConDetalles:', reservasConDetalles);
                 setReservas(reservasConDetalles);
             } catch (error) {
                 console.error('Error al obtener reservas:', error);
@@ -76,6 +77,20 @@ function Reservas() {
         obtenerReservasFechaDesdeBD();
     }, [getReservas, getFechaReservas, getCond, getVehiculo, getCliente]);
 
+    const exportToExcel = (data, filename) => {
+        const ws = XLSX.utils.json_to_sheet(data);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Reservas");
+        const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+        saveAs(new Blob([wbout], { type: "application/octet-stream" }), filename);
+    };
+
+    const handleDownloadReport = () => {
+        const data = mostrarReservas ? reservas : reservasFecha;
+        const filename = mostrarReservas ? "reservas_historico.xlsx" : "reservas_dia.xlsx";
+        exportToExcel(data, filename);
+    };
+
     return (
         <div className='tablaRes'>
             <div className="buttons3">
@@ -83,6 +98,9 @@ function Reservas() {
             </div>
             <div className="buttons2">
                 <button onClick={handleMostrarDia}>Reservas del día</button>
+            </div>
+            <div className="buttons4">
+                <button onClick={handleDownloadReport}>Descargar Reporte</button>
             </div>
             <br /><br />
             {mostrarReservas && (

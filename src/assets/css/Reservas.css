@@ -70,3 +70,19 @@
     cursor: pointer;
     font-family: 'Brothers-Bold.otf';
   }
+
+  .buttons4 {
+    position: absolute;
+    top: 100px;
+    left: 420px;
+    width: 9%;
+    background-color: gray;
+    text-align: center;
+    padding: 10px 0;
+    margin: 0 4px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Brothers-Bold.otf';
+  }

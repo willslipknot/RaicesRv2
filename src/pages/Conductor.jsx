@@ -79,7 +79,6 @@ function Conductor() {
 
     const handleVehiculoChange = (e) => {
         setVehiculoSel(e.target.value);
-        console.log(e.target.value);
     };
 
     const handleImagenChange = (e) => {
@@ -103,8 +102,6 @@ function Conductor() {
         formData.append('uid_vehiculo', data.uid_vehiculo);
         formData.append('tipo_licencia', data.tipo_licencia);
         formData.append('photo_perfil', file);
-
-        console.log("Datos del formulario:", data);
 
         createConds(formData);
 
@@ -134,8 +131,6 @@ function Conductor() {
         formData.append('carroceria', data.carroceria);
         formData.append('combustible', data.combustible);
         formData.append('photo_perfil', file);
-
-        console.log("Datos del formulario:", data);
 
         createVehiculos(formData);
 

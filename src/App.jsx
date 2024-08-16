@@ -12,6 +12,7 @@ import { ActProvider } from './context/actContext.jsx';
 import { CondProvider } from './context/condContext.jsx';
 import { VehiculoProvider } from './context/vehiculoContext.jsx';
 import { ReservaProvider } from './context/reservaContext.jsx';
+import { RutaProvider } from './context/rutasContext.jsx';
 import HomeUser from './pages/HomeUser.jsx';
 import HomeAdmin from './pages/HomeAdmin.jsx';
 import NavBar from './components/Home/NavBar.jsx';
@@ -23,26 +24,28 @@ function App() {
     <Router>
       <AuthProvider>
         <ActProvider>
-        <CondProvider>
-          <VehiculoProvider>
-            <ReservaProvider>
-          <NavBar></NavBar>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/Contacto" element={<Contacto />} />
-            <Route element={<ProtectedRoute />}>
-              <Route path='/HomeAdmin' element={<HomeAdmin />} />
-              <Route path='/HomeUser' element={<HomeUser />} />
-              <Route path="/Profile" element={<Profile />} />
-              <Route path="/Actividades" element={<Actividades />} />
-              <Route path="/Conductores" element={<Conductor />} />
-              <Route path='/DashboardAdmin' element={<DashboardAdmin/>}/>
-              <Route path='/Reservas' element={<Reservas/>}/>
-            </Route>
-          </Routes>
-          <Footer></Footer>
-          </ReservaProvider>
-          </VehiculoProvider>
+          <CondProvider>
+            <VehiculoProvider>
+              <ReservaProvider>
+                <RutaProvider>
+                  <NavBar></NavBar>
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/Contacto" element={<Contacto />} />
+                    <Route element={<ProtectedRoute />}>
+                      <Route path='/HomeAdmin' element={<HomeAdmin />} />
+                      <Route path='/HomeUser' element={<HomeUser />} />
+                      <Route path="/Profile" element={<Profile />} />
+                      <Route path="/Actividades" element={<Actividades />} />
+                      <Route path="/Conductores" element={<Conductor />} />
+                      <Route path='/DashboardAdmin' element={<DashboardAdmin />} />
+                      <Route path='/Reservas' element={<Reservas />} />
+                    </Route>
+                  </Routes>
+                  <Footer></Footer>
+                </RutaProvider>
+              </ReservaProvider>
+            </VehiculoProvider>
           </CondProvider>
         </ActProvider>
       </AuthProvider>

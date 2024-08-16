@@ -17,7 +17,6 @@ export const useActs = () => {
 export function ActProvider({ children }) {
 
     const [acts, setActs] = useState([]);
-    const [acti, setActi] = useState([]);
 
     const getActs = async () => {
         try {
@@ -28,7 +27,6 @@ export function ActProvider({ children }) {
             if (error) {
                 throw new Error(error.message);
             }
-            console.log(data)
             setActs(data)
         } catch (error) {
             console.error(error);
@@ -44,11 +42,8 @@ export function ActProvider({ children }) {
             if (error) {
                 throw new Error(error.message);
             }
-
             const numActs = actividades.length;
-            console.log(`Número de actividades existentes: ${numActs}`);
             setActs(numActs);
-
         } catch (error) {
             console.error('Error al obtener el número de actividades:', error);
         }
@@ -56,20 +51,12 @@ export function ActProvider({ children }) {
 
 
     const createActs = async (formData) => {
-        console.log('Datos del FormData:', formData);
-
-        // Asegúrate de que `file` esté en `formData`
         const file = formData.get('photo');
         if (!file) {
             console.error('No file found in formData');
             return;
         }
-
-        // Subir imagen y obtener URL
         const url = await uploadImageAndGetURL(file);
-        console.log(url);
-
-        // Obtener otros campos de `formData`
         const nombre = formData.get('nombre');
         const descripcion = formData.get('descripcion');
         const tipo = formData.get('tipo');
@@ -94,12 +81,9 @@ export function ActProvider({ children }) {
                         municipio: 'San_Juan',
                     },
                 ]);
-
             if (error) {
                 throw new Error(error.message);
             }
-
-            console.log('Actividad creada correctamente', newActividad);
             setActs(newActividad);
         } catch (error) {
             console.error('Error:', error.message);
@@ -108,7 +92,6 @@ export function ActProvider({ children }) {
 
 
     const deleteAct = async (uid_actividades) => {
-        console.log(uid_actividades);
         try {
             const { data, error } = await supabase
                 .from('actividades_t')
@@ -137,11 +120,7 @@ export function ActProvider({ children }) {
             if (error) {
                 throw new Error(error.message);
             }
-
-            console.log('Actividad encontrada:', data);
-
             const [coordenadasX, coordenadasY] = data.direccion.split(', ');
-
             return { ...data, coordenadasX, coordenadasY };
         } catch (error) {
             console.error('Error al obtener la actividad:', error);
@@ -177,9 +156,6 @@ export function ActProvider({ children }) {
                 departamento: 'Cundinamarca',
                 municipio: 'San_Juan',
             };
-
-            console.log('dattos para actualizar:', updatedAct);
-
             if (url) {
                 updatedAct.photo = url;
             }
@@ -201,8 +177,6 @@ export function ActProvider({ children }) {
                     return prevAct;
                 });
             });
-
-            console.log('Actividad actualizada correctamente', data);
         } catch (error) {
             console.error('Error al actualizar la actividad:', error);
         }
@@ -273,8 +247,6 @@ export function ActProvider({ children }) {
             if (error) {
                 throw new Error(error.message);
             }
-
-            console.log("Ruta creada correctamente");
             return { message: "Ruta creada correctamente", newRuta };
         } catch (error) {
             console.error('Error al crear la ruta:', error);
@@ -285,7 +257,6 @@ export function ActProvider({ children }) {
     return (
         <ActContext.Provider value={{
             acts,
-            acti,
             createActs,
             getActs,
             deleteAct,
