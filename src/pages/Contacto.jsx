@@ -45,15 +45,15 @@ const Contacto = () => {
                 <div className="contact-form">
                     <h2>Contacto</h2>
                     <form className='contacto' onSubmit={sendEmail}>
-                        <div className="form-group">
+                        <div className="form-group-contac">
                             <label htmlFor="name">Nombre:</label>
                             <input type="text" name="name" className='formulario_con' required />
                         </div>
-                        <div className="form-group">
+                        <div className="form-group-contac">
                             <label htmlFor="email">Correo electrónico:</label>
                             <input type="email" name="email" className='formulario_con' required />
                         </div>
-                        <div className="form-group">
+                        <div className="form-group-contac">
                             <label htmlFor="message">Mensaje:</label>
                             <textarea name="message" className="areaDesCon" rows="6" required></textarea>
                         </div>
