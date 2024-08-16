@@ -29,16 +29,17 @@ function CondCard({ cond }) {
         if (selectedId !== null) {
             async function loadCond() {
                 const act = await getCond(selectedId);
+                console.log('act', act.data.cedula)
                 if (act) {
-                    setValue('first_name', act.first_name);
-                    setValue('second_name', act.second_name);
-                    setValue('first_last_name', act.first_last_name);
-                    setValue('second_last_name', act.second_last_name);
-                    setValue('correo', act.correo);
-                    setValue('phone_number', act.phone_number);
-                    setValue('cedula', act.cedula);
-                    setValue('uid_vehiculo', act.uid_vehiculo);
-                    setValue('tipo_licencia', act.tipo_licencia);
+                    setValue('first_name', act.data.first_name);
+                    setValue('second_name', act.data.second_name);
+                    setValue('first_last_name', act.data.first_last_name);
+                    setValue('second_last_name', act.data.second_last_name);
+                    setValue('correo', act.data.correo);
+                    setValue('phone_number', act.data.phone_number);
+                    setValue('cedula', act.data.cedula);
+                    setValue('uid_vehiculo', act.data.uid_vehiculo);
+                    setValue('tipo_licencia', act.data.tipo_licencia);
                     setValue('photo_perfil', file);
 
                 } else {
@@ -185,73 +186,77 @@ function CondCard({ cond }) {
                             {modalOpen && (
                                 <div className="modal" onClick={handleCloseModal}>
                                     <div className="conductor-form" onClick={(e) => e.stopPropagation()}>
-                                        <form onSubmit={onSubmit} className='conductor'>
+                                        <form onSubmit={onSubmit} className='conductor22'>
+                                            <div className="form-columns">
+                                                <div className="col1">
+                                                    <div className="form-group">
+                                                        <label htmlFor="nombre">Nombre</label>
+                                                        <input type="text" className='formulario' {...register("first_name", { required: true })} />
+                                                    </div>
 
-                                            <div className="form-group">
-                                                <label htmlFor="nombre">Nombre</label>
-                                                <input type="text" className='formulario' {...register("first_name", { required: true })} />
+                                                    <div className="form-group">
+                                                        <label htmlFor="nombre">Segundo Nombre</label>
+                                                        <input type="text" className='formulario' {...register("second_name", { required: true })} />
+                                                    </div>
+
+                                                    <div className="form-group">
+                                                        <label htmlFor="apellido">Primer Apellido</label>
+                                                        <input type="text" className='formulario'  {...register("first_last_name", { required: true })} />
+                                                    </div>
+
+                                                    <div className="form-group">
+                                                        <label htmlFor="apellido">Segundo Apellido</label>
+                                                        <input type="text" className='formulario'  {...register("second_last_name", { required: true })} />
+                                                    </div>
+
+                                                    <div className="form-group">
+                                                        <label htmlFor="apellido">Numero Telefono</label>
+                                                        <input type="text" className='formulario'  {...register("phone_number", { required: true })} />
+                                                    </div>
+                                                </div>
+                                                <div className="col2">
+                                                    <div className="form-group">
+                                                        <label htmlFor="apellido">Correo</label>
+                                                        <input type="text" className='formulario'  {...register("correo", { required: true })} />
+                                                    </div>
+
+                                                    <div className="form-group">
+                                                        <label htmlFor="licencia">Cedula/Licencia</label>
+                                                        <input type="text" className='formulario'  {...register("cedula", { required: true })} />
+                                                    </div>
+
+                                                    <div className="form-group">
+                                                        <label htmlFor="clase">Tipo Licencia</label>&nbsp;&nbsp;
+                                                        <select {...register('tipo_licencia', { required: true })} onChange={handleTipoVehChange} type="text" className='formulario-tipo' value={clase} >
+                                                            <option value="">Selecciona un tipo</option>
+                                                            {opciones.map((clase, i) => (
+                                                                <option key={clase.value} value={clase.value}>
+                                                                    {clase.label}
+                                                                </option>
+                                                            ))}
+                                                        </select>
+                                                    </div>
+
+                                                    <div className="form-group">
+                                                        <label htmlFor="vehiculo">Placa Vehiculo</label>&nbsp;&nbsp;
+                                                        <select {...register('uid_vehiculo', { required: true })} className='formulario-tipo' onChange={handleVehiculoChange} value={vehiculo ? vehiculo.value : ''}>
+                                                            <option value="">Seleccione la placa</option>
+                                                            {vehiculo && vehiculo.map((vehiculoItem, index) => (
+                                                                <option key={vehiculoItem.value} value={vehiculoItem.value}>
+                                                                    {vehiculoItem.label}
+                                                                </option>
+                                                            ))}
+                                                        </select>
+                                                    </div>
+
+                                                    <div className="form-group-image">
+                                                    <label htmlFor="imagen">Imagen de Perfil</label>
+                                                        <input id='inputFile' type="file" onChange={handleImagenChange} className='formulario1' />
+                                                        <input type="text" value={nombreArchivo} hidden className='formulario' {...register("photo_perfil")} />
+                                                    </div>
+
+                                                </div>
                                             </div>
-
-                                            <div className="form-group">
-                                                <label htmlFor="nombre">Segundo Nombre</label>
-                                                <input type="text" className='formulario' {...register("second_name", { required: true })} />
-                                            </div>
-
-                                            <div className="form-group">
-                                                <label htmlFor="apellido">Primer Apellido</label>
-                                                <input type="text" className='formulario'  {...register("first_last_name", { required: true })} />
-                                            </div>
-
-                                            <div className="form-group">
-                                                <label htmlFor="apellido">Segundo Apellido</label>
-                                                <input type="text" className='formulario'  {...register("second_last_name", { required: true })} />
-                                            </div>
-
-                                            <div className="form-group">
-                                                <label htmlFor="apellido">Numero Telefono</label>
-                                                <input type="text" className='formulario'  {...register("phone_number", { required: true })} />
-                                            </div>
-
-                                            <div className="form-group">
-                                                <label htmlFor="apellido">Correo</label>
-                                                <input type="text" className='formulario'  {...register("correo", { required: true })} />
-                                            </div>
-
-                                            <div className="form-group">
-                                                <label htmlFor="licencia">Cedula/Licencia</label>
-                                                <input type="text" className='formulario'  {...register("cedula", { required: true })} />
-                                            </div>
-
-                                            <div className="form-group">
-                                                <label htmlFor="clase">Tipo Licencia</label>&nbsp;&nbsp;
-                                                <select {...register('tipo_licencia', { required: true })} onChange={handleTipoVehChange} type="text" className='formulario-tipo' value={clase} >
-                                                    <option value="">Selecciona un tipo</option>
-                                                    {opciones.map((clase, i) => (
-                                                        <option key={clase.value} value={clase.value}>
-                                                            {clase.label}
-                                                        </option>
-                                                    ))}
-                                                </select>
-                                            </div>
-
-                                            <div className="form-group">
-                                                <label htmlFor="vehiculo">Placa Vehiculo</label>&nbsp;&nbsp;
-                                                <select {...register('uid_vehiculo', { required: true })} className='formulario-tipo' onChange={handleVehiculoChange} value={vehiculo ? vehiculo.value : ''}>
-                                                    <option value="">Seleccione la placa</option>
-                                                    {vehiculo && vehiculo.map((vehiculoItem, index) => (
-                                                        <option key={vehiculoItem.value} value={vehiculoItem.value}>
-                                                            {vehiculoItem.label}
-                                                        </option>
-                                                    ))}
-                                                </select>
-                                            </div>
-
-                                            <div className="form-group-image">
-                                                <input id='inputFile' type="file" onChange={handleImagenChange} className='formulario1' />
-                                                <input type="text" value={nombreArchivo} hidden className='formulario' {...register("photo_perfil")} />
-                                            </div>
-
-
                                             <div className="form-group">
                                                 <button type='submit'>Editar</button>
                                                 <button type='button' onClick={handleLimpiarClick}>Limpiar</button>

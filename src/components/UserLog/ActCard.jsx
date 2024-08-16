@@ -32,8 +32,8 @@ function ActCard({ act }) {
                     setValue('photo', act.photo);
                     setValue('coordenadasX', act.coordenadasX);
                     setValue('coordenadasY', act.coordenadasY);
-                    setValue('hora_inicio', act.hr_inicio);
-                    setValue('hora_fin', act.hr_fin);
+                    setValue('hr_inicio', act.hr_inicio);
+                    setValue('hr_fin', act.hr_fin);
                 } else {
                     console.error('No se encontró la actividad.');
                 }
@@ -69,8 +69,8 @@ function ActCard({ act }) {
                     formData.append('tipo', data.tipo);
                     formData.append('coordenadasX', data.coordenadasX);
                     formData.append('coordenadasY', data.coordenadasY);
-                    formData.append('hora_inicio', data.hr_inicio);
-                    formData.append('hora_fin', data.hr_fin);
+                    formData.append('hr_inicio', data.hr_inicio);
+                    formData.append('hr_fin', data.hr_fin);
                     formData.append('photo', file);
 
                     await updateAct(selectedId, formData);
@@ -132,12 +132,12 @@ function ActCard({ act }) {
 
                                         <div className="form-group">
                                             <label htmlFor="direccion">Hora Inicio</label>
-                                            <input type="time" className='formulario' {...register("hora_inicio", { required: true })} />
+                                            <input type="time" className='formulario' {...register("hr_inicio", { required: true })} />
                                         </div>
 
                                         <div className="form-group">
                                             <label htmlFor="direccion">Hora Final</label>
-                                            <input type="time" className='formulario' {...register("hora_fin", { required: true })} />
+                                            <input type="time" className='formulario' {...register("hr_fin", { required: true })} />
                                         </div>
 
                                         <div className="form-group">

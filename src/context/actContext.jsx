@@ -130,57 +130,79 @@ export function ActProvider({ children }) {
 
 
 
-    const updateAct = async (uid_actividades, act) => {
+    const updateAct = async (uid_actividades, formData) => {
         try {
-            let url;
-            const file = act.get('photo');
-            if (file) {
-                url = await uploadImageAndGetURL(file);
+            let updatedAct = {};
+            let isFormData = typeof formData.get === 'function';
+    
+            if (isFormData) {
+                updatedAct = {
+                    nombre: formData.get('nombre'),
+                    direccion: `${formData.get('coordenadasX')}, ${formData.get('coordenadasY')}`,
+                    descripcion: formData.get('descripcion'),
+                    tipo: formData.get('tipo'),
+                    hr_inicio: formData.get('hr_inicio'),
+                    hr_fin: formData.get('hr_fin'),
+                    departamento: 'Cundinamarca',
+                    municipio: 'San_Juan',
+                };
+    
+                const file = formData.get('photo');
+                if (file) {
+                    const url = await uploadImageAndGetURL(file);
+                    updatedAct.photo = url;
+                }
+            } else {
+                const { nombre, descripcion, tipo, coordenadasX, coordenadasY, hr_inicio, hr_fin, photo } = formData;
+                updatedAct = {
+                    nombre,
+                    direccion: `${coordenadasX}, ${coordenadasY}`,
+                    descripcion,
+                    tipo,
+                    hr_inicio,
+                    hr_fin,
+                    departamento: 'Cundinamarca',
+                    municipio: 'San_Juan',
+                    photo 
+                };
             }
-
-            const nombre = act.get('nombre');
-            const descripcion = act.get('descripcion');
-            const tipo = act.get('tipo');
-            const coordenadasX = act.get('coordenadasX');
-            const coordenadasY = act.get('coordenadasY');
-            const hr_inicio = act.get('hr_inicio');
-            const hr_fin = act.get('hr_fin');
-
-            const updatedAct = {
-                nombre,
-                direccion: `${coordenadasX}, ${coordenadasY}`,
-                descripcion,
-                tipo,
-                hr_inicio,
-                hr_fin,
-                departamento: 'Cundinamarca',
-                municipio: 'San_Juan',
-            };
-            if (url) {
-                updatedAct.photo = url;
+    
+            if (!updatedAct.photo) {
+                const { data: existingAct, error: fetchError } = await supabase
+                    .from('actividades_t')
+                    .select('photo')
+                    .eq('uid_actividades', uid_actividades)
+                    .single();
+    
+                if (fetchError) {
+                    throw new Error(fetchError.message);
+                }
+    
+                updatedAct.photo = existingAct.photo;
             }
-
+    
             const { data, error } = await supabase
                 .from('actividades_t')
                 .update(updatedAct)
                 .eq('uid_actividades', uid_actividades);
-
+    
             if (error) {
                 throw new Error(error.message);
             }
-
-            setActs(prevActs => {
-                return prevActs.map(prevAct => {
-                    if (prevAct.uid_actividades === uid_actividades) {
-                        return { ...prevAct, ...updatedAct };
-                    }
-                    return prevAct;
-                });
-            });
+    
+            setActs(prevActs =>
+                prevActs.map(prevAct =>
+                    prevAct.uid_actividades === uid_actividades
+                        ? { ...prevAct, ...updatedAct }
+                        : prevAct
+                )
+            );
         } catch (error) {
             console.error('Error al actualizar la actividad:', error);
         }
     };
+    
+    
 
     const getRutas = async (tipo) => {
         try {

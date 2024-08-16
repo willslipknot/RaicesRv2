@@ -133,38 +133,58 @@ export function CondProvider({ children }) {
         }
     }
 
-    const updateCond = async (uid_conductor, cond) => {
+    const updateCond = async (uid_conductor, formData) => {
         try {
-            let url;
-            const file = cond.get('photo_perfil');
-            if (file) {
-                url = await uploadImageAndGetURL(file);
+            let updatedCond = {};
+            let isFormData = typeof formData.get === 'function';
+
+            if (isFormData) {
+                updatedCond = {
+                    first_name: formData.get('first_name'),
+                    second_name: formData.get('second_name'),
+                    first_last_name: formData.get('first_last_name'),
+                    second_last_name: formData.get('second_last_name'),
+                    phone_number: formData.get('phone_number'),
+                    cedula: formData.get('cedula'),
+                    correo: formData.get('correo'),
+                    tipo_licencia: formData.get('tipo_licencia'),
+                    uid_vehiculo: formData.get('uid_vehiculo')
+                };
+
+                const file = formData.get('photo_perfil');
+                if (file) {
+                    const url = await uploadImageAndGetURL(file);
+                    updatedCond.photo_perfil = url;
+                }
+            } else {
+                const { first_name, second_name, first_last_name, second_last_name, phone_number, correo, cedula, tipo_licencia, uid_vehiculo, photo_perfil } = formData;
+
+                updatedCond = {
+                    first_name,
+                    second_name,
+                    first_last_name,
+                    second_last_name,
+                    phone_number,
+                    cedula,
+                    correo,
+                    tipo_licencia,
+                    uid_vehiculo,
+                    photo_perfil
+                };
             }
 
-            const first_name = cond.get('first_name');
-            const second_name = cond.get('second_name');
-            const first_last_name = cond.get('first_last_name');
-            const second_last_name = cond.get('second_last_name');
-            const phone_number = cond.get('phone_number');
-            const cedula = cond.get('cedula');
-            const correo = cond.get('correo');
-            const tipo_licencia = cond.get('tipo_licencia');
-            const uid_vehiculo = cond.get('uid_vehiculo');
+            if (!updatedCond.photo_perfil) {
+                const { data: existingCond, error: fetchError } = await supabase
+                    .from('inf_conductor_t')
+                    .select('photo_perfil')
+                    .eq('uid_conductor', uid_conductor)
+                    .single();
 
-            const updatedCond = {
-                first_name,
-                second_name,
-                first_last_name,
-                second_last_name,
-                phone_number,
-                cedula,
-                correo,
-                tipo_licencia,
-                uid_vehiculo
-            };
+                if (fetchError) {
+                    throw new Error(fetchError.message);
+                }
 
-            if (url) {
-                updatedCond.photo_perfil = url;
+                updatedCond.photo_perfil = existingCond.photo_perfil;
             }
 
             const { data, error } = await supabase
@@ -176,19 +196,18 @@ export function CondProvider({ children }) {
                 throw new Error(error.message);
             }
 
-            // Actualizar el estado local
-            setConds(prevconds => {
-                return prevconds.map(prevcond => {
-                    if (prevcond.uid_conductor === uid_conductor) {
-                        return { ...prevcond, ...updatedCond };
-                    }
-                    return prevcond;
-                });
-            });
+            setConds(prevconds =>
+                prevconds.map(prevcond =>
+                    prevcond.uid_conductor === uid_conductor
+                        ? { ...prevcond, ...updatedCond }
+                        : prevcond
+                )
+            );
         } catch (error) {
             console.error('Error al actualizar Conductor:', error);
         }
     };
+
 
     return (
         <condContext.Provider value={{
