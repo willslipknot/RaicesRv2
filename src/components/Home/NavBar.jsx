@@ -49,9 +49,9 @@ function NavBar() {
                             <li><Link to="/Reservas"><b className='menu'>Reservas</b></Link></li>
                             <li><Link to="/Profile"><b className='menu'>Perfil</b></Link></li>
                             <li>
-                                <label className='labelcheck' htmlFor="menuCheckbox">
+                                <label className='labelcheck'>
                                     <b className='menu'>
-                                        <input type="checkbox" className='check' id="menuCheckbox" onChange={handleCheckboxChange} />
+                                        <input type="checkbox" className='check' onChange={handleCheckboxChange} />
                                         {user?.username}
 
                                     </b>
