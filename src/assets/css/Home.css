@@ -1,0 +1,125 @@
+@font-face {
+    font-family: 'Brothers-Bold.otf';
+    src: url('../fonts/Brothers-Bold.otf');
+}
+
+
+.react-calendar__navigation{
+  background-color: aquamarine;
+  font-family: 'Brothers-Bold.otf';
+}
+
+.react-calendar__viewContainer .react-calendar__month-view__weekdays{
+  font-family: 'Brothers-Bold.otf';
+  text-decoration: none;
+}
+
+
+.react-calendar__tile{
+  color:  black; 
+}
+
+.react-calendar.calendario{
+  color: black;
+  width: 70%;
+  height: 300px;
+  position: relative;
+  left: 80px;
+  right: 50px;
+
+}
+
+.main-container {
+    width: 90%;
+    display: block;
+    grid-area: main;
+    overflow-y: auto;
+    padding: 40px;
+    margin: auto;
+    color: rgba(255, 255, 255, 0.95);
+}
+
+h1{
+  font-family: 'Brothers-Bold.otf';
+}
+
+h2{
+  font-family: 'Brothers-Bold.otf';
+  color:black;
+  text-align: center;
+}
+  
+  .main-title {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .main-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 20px;
+    margin: 15px 0;
+  }
+  
+  .card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 8px 15px;
+    border-radius: 5px;
+  }
+  
+  .card:first-child {
+    background-color: #2962ff;
+  }
+  
+  .card:nth-child(2) {
+    background-color: #ff6d00;
+  }
+  
+  .card:nth-child(3) {
+    background-color: #2e7d32;
+  }
+  
+  .card:nth-child(4) {
+    background-color: #d50000;
+  }
+  
+  .card-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 80px;
+    font-family: 'Brothers-Bold.otf';
+  }
+  
+  .card-inner > .card_icon {
+    font-size: 25px;
+  }
+  
+  .charts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 60px;
+    height: 300px;
+  }
+
+  .charts0 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 60px;
+    height: 280px;
+    align-content: center;
+  }
+
+  .minimapa {
+    width: 70%;
+    height: 280px;
+    position: relative;
+    border: 1px solid #ccc;
+    left: 80px;
+    top:10px;
+    z-index: 0;
+}

@@ -1,0 +1,255 @@
+@font-face {
+    font-family: 'Brothers-Bold.otf';
+    src: url('../fonts/Brothers-Bold.otf');
+}
+
+
+.actividad-container {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0;
+    text-align: center;
+    font-family: 'Brothers-Bold.otf';
+}
+
+.actividad-form {
+    padding: 20px;
+    width: 400px;
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+
+.actividad {
+    padding-left: 25%;
+    padding-right: 25%;
+    text-align: center;
+    width: 100%;
+    align-items: center;
+
+}
+
+.ruta-form {
+    padding: 20px;
+    width: 500px;
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.ruta {
+    padding-left: 25%;
+    padding-right: 25%;
+    text-align: center;
+    width: 100%;
+    align-items: center;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: medium;
+}
+
+.form-group-image {
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: medium;
+}
+
+.form-columns1 {
+    display: flex;
+    justify-content: center; 
+    gap: 20px;
+    width: 100%;
+}
+
+.col11, .col22 {
+    flex: 2;
+    max-width: 100%;
+}
+
+.formulario-tipo {
+    text-align: center;
+    color: black;
+}
+
+.formulario-tipos {
+    text-align: center;
+    color: black;
+    width: 95%;
+}
+
+
+.area {
+    color: black;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.area1 {
+    color: black;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 180px;
+}
+
+.actividad-form input[type="text"] {
+    color: black;
+    text-align: center;
+}
+
+.actividad-form input[type="number"] {
+    color: black;
+    text-align: center;
+}
+
+.ruta-form input[type="number"] {
+    color: black;
+    text-align: center;
+}
+
+.actividad-form input[type="time"] {
+    color: black;
+    text-align: center;
+}
+
+.formulario1 {
+    width: 110%;
+
+}
+
+.ruta-form input[type="text"] {
+    color: black;
+    text-align: center;
+}
+
+.conductor-form button[type="submit"] {
+    background-color: #007bff;
+    color: white;
+}
+
+.ruta-form button {
+    margin: 0 4px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+.ruta-form button[type="submit"] {
+    background-color: #007bff;
+    color: white;
+}
+
+.actividad-form button {
+    margin: 0 4px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+.actividad-form button[type="submit"] {
+    background-color: #007bff;
+    color: white;
+}
+
+.mensaje {
+    background-color: #4caf50;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.cards {
+    display: grid;
+    position: absolute;
+    top: 170px;
+    grid-template-columns: repeat(3, 2fr);
+    gap: 10px;
+    max-width: 1200px; 
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.actividad-buttons {
+    position: absolute;
+    top: 100px;
+    left: 62px;
+    width: 10%;
+    background-color: #007bff;
+    text-align: center;
+    padding: 10px 0;
+    margin: 0 4px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .actividad-buttons2 {
+    position: absolute;
+    top: 100px;
+    left: 62px;
+    width: 10%;
+    background-color: #007bff;
+    text-align: center;
+    padding: 10px 0;
+    margin: 0 4px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .rutas-buttons {
+    position: absolute;
+    top: 100px;
+    left: 226px;
+    width: 9%;
+    background-color: #007bff;
+    text-align: center;
+    padding: 10px 0;
+    margin: 0 4px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  
+  .actividad-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+  }
+
+  .form-group button[type="button"] {
+    background-color: #ff0000;
+    color: white;
+}

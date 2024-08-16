@@ -1,0 +1,48 @@
+
+.encabezado-container {
+    display: flex;
+    height:100vh;
+    width: 100%;
+    
+}
+.encabezado-container img{
+    width: 0px;
+    flex-grow: 1;
+    object-fit: cover;
+    filter:brightness(40%);
+    transition: .7s ease;
+}
+.encabezado-container img:hover {
+    width: 500px;
+    opacity: 2;
+    filter: brightness(100%);
+
+}
+
+
+@font-face {
+    font-family: 'Brothers-Bold.otf';
+    src: url('../fonts/Brothers-Bold.otf');
+}
+
+.texto_superpuesto{
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+    font-family: 'Brothers-Bold.otf' ;
+    font-size: 80px;
+    padding: 10px;
+}
+
+
+.parrafo {
+
+    font-family: 'Brothers-Bold.otf' ;
+    font-size: 30px;
+    top: 20;
+    left: 40;
+
+}

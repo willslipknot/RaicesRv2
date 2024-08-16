@@ -1,0 +1,171 @@
+@font-face {
+    font-family: 'Brothers-Bold.otf';
+    src: url('../fonts/Brothers-Bold.otf');
+}
+
+.nav {
+    background-color: black;
+    width: 90%;
+    height: 85px;
+    right: 5%;
+    top: -10px;
+    position: absolute;
+    z-index: 10;
+}
+
+
+.navLis {
+    align-items: center;
+    width: 90%;
+    padding-right: 0%;
+    list-style: none;
+    display: flex;
+    justify-content: flex-end;
+    z-index: 10;
+}
+
+li {
+
+    margin-top: 1%;
+    padding-left: 50px;
+
+
+}
+
+li a {
+    text-align: center;
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+}
+
+div .logo {
+    background: url('../images/logo.png');
+    width: 100%;
+    margin-left: 5px;
+    margin-top: 12px;
+    height: 70px;
+    background-size: 200px;
+    background-repeat: no-repeat;
+}
+
+nav>ul li {
+    display: table-cell;
+    z-index: 10;
+}
+
+
+nav>ul ul {
+    position: absolute;
+    top: 85px;
+    right: 0px;
+    display: inline-table;
+    transform: translateX(600%);
+    opacity: 1;
+    z-index: 10;
+}
+
+
+.submenu {
+    position: absolute;
+    align-items: center;
+    top: 100%;
+    right: 0;
+    background-color: black;
+    width: 100px;
+    transform: translateX(0%);
+    opacity: 1;
+    transition: all 0.3s ease;
+
+
+}
+
+.submenuUser {
+
+    position: absolute;
+    align-items: center;
+    top: 100%;
+    background-color: black;
+    width: 200px;
+    transform: translateX(0%);
+    opacity: 1;
+    transition: all 0.3s ease;
+
+}
+
+b {
+    width: 100%;
+    position: relative;
+    font-family: 'Brothers-Bold.otf';
+
+}
+
+.menu {
+    font-size: 17px;
+    line-height: 24px;
+}
+
+.formulario {
+    font-size: 15px;
+    line-height: 24px;
+    color:white;
+}
+
+.botones {
+    font-size: 16px;
+    line-height: 24px;
+    color: white;
+}
+
+form {
+    width: 200px;
+    text-align: center;
+}
+
+.menucheckbox:checked~.dropdown-menu {
+    opacity: 1;
+    transform: translateX(0%);
+    pointer-events: auto;
+}
+
+.labelcheck {
+    color: white;
+    cursor: pointer;
+    align-items: center;
+}
+
+.check {
+    opacity: 0;
+    position: absolute;
+}
+
+.button {
+    width: 40%;
+    align-items: center;
+    font-size: smaller;
+    font-family: 'Brothers-Bold.otf';
+    vertical-align: middle;
+    color: white;
+}
+
+
+input {
+    padding-top: 10%;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+
+}
+
+.form-group-register {
+    margin-bottom: 20px;
+    text-align: center;
+
+
+}
+
+.form-group-login {
+    margin-bottom: 30px;
+    text-align: center;
+ 
+
+}

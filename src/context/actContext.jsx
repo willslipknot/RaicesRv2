@@ -1,0 +1,302 @@
+import { createContext, useContext, useState } from "react"
+import supabase from '../db1.js';
+import { uploadImageAndGetURL } from '../middlewares/imagen.js';
+
+
+const ActContext = createContext();
+
+export const useActs = () => {
+    const context = useContext(ActContext);
+
+    if (!context) {
+        throw new Error("useActs must be used whitin a TaskProvider")
+    }
+    return context;
+}
+
+export function ActProvider({ children }) {
+
+    const [acts, setActs] = useState([]);
+    const [acti, setActi] = useState([]);
+
+    const getActs = async () => {
+        try {
+            const { data, error } = await supabase
+                .from('actividades_t')
+                .select('*');
+
+            if (error) {
+                throw new Error(error.message);
+            }
+            console.log(data)
+            setActs(data)
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    const getContActs = async () => {
+        try {
+            const { data: actividades, error } = await supabase
+                .from('actividades_t')
+                .select('*');
+
+            if (error) {
+                throw new Error(error.message);
+            }
+
+            const numActs = actividades.length;
+            console.log(`Número de actividades existentes: ${numActs}`);
+            setActs(numActs);
+
+        } catch (error) {
+            console.error('Error al obtener el número de actividades:', error);
+        }
+    };
+
+
+    const createActs = async (formData) => {
+        console.log('Datos del FormData:', formData);
+
+        // Asegúrate de que `file` esté en `formData`
+        const file = formData.get('photo');
+        if (!file) {
+            console.error('No file found in formData');
+            return;
+        }
+
+        // Subir imagen y obtener URL
+        const url = await uploadImageAndGetURL(file);
+        console.log(url);
+
+        // Obtener otros campos de `formData`
+        const nombre = formData.get('nombre');
+        const descripcion = formData.get('descripcion');
+        const tipo = formData.get('tipo');
+        const coordenadasX = formData.get('coordenadasX');
+        const coordenadasY = formData.get('coordenadasY');
+        const hr_inicio = formData.get('hr_inicio');
+        const hr_fin = formData.get('hr_fin');
+
+        try {
+            const { data: newActividad, error } = await supabase
+                .from('actividades_t')
+                .insert([
+                    {
+                        nombre,
+                        direccion: `${coordenadasX}, ${coordenadasY}`,
+                        descripcion,
+                        tipo,
+                        photo: url,
+                        hr_inicio,
+                        hr_fin,
+                        departamento: 'Cundinamarca',
+                        municipio: 'San_Juan',
+                    },
+                ]);
+
+            if (error) {
+                throw new Error(error.message);
+            }
+
+            console.log('Actividad creada correctamente', newActividad);
+            setActs(newActividad);
+        } catch (error) {
+            console.error('Error:', error.message);
+        }
+    };
+
+
+    const deleteAct = async (uid_actividades) => {
+        console.log(uid_actividades);
+        try {
+            const { data, error } = await supabase
+                .from('actividades_t')
+                .delete()
+                .eq('uid_actividades', uid_actividades).single();
+            if (error) {
+                throw new Error(error.message);
+            }
+            if (!data) {
+                return res.status(405).json(["No existe la actividad, por lo que no se eliminó nada"]);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+
+    }
+
+    const getAct = async (uid_actividades) => {
+        try {
+            const { data, error } = await supabase
+                .from('actividades_t')
+                .select('*')
+                .eq('uid_actividades', uid_actividades)
+                .single();
+
+            if (error) {
+                throw new Error(error.message);
+            }
+
+            console.log('Actividad encontrada:', data);
+
+            const [coordenadasX, coordenadasY] = data.direccion.split(', ');
+
+            return { ...data, coordenadasX, coordenadasY };
+        } catch (error) {
+            console.error('Error al obtener la actividad:', error);
+            return null;
+        }
+    };
+
+
+
+    const updateAct = async (uid_actividades, act) => {
+        try {
+            let url;
+            const file = act.get('photo');
+            if (file) {
+                url = await uploadImageAndGetURL(file);
+            }
+
+            const nombre = act.get('nombre');
+            const descripcion = act.get('descripcion');
+            const tipo = act.get('tipo');
+            const coordenadasX = act.get('coordenadasX');
+            const coordenadasY = act.get('coordenadasY');
+            const hr_inicio = act.get('hr_inicio');
+            const hr_fin = act.get('hr_fin');
+
+            const updatedAct = {
+                nombre,
+                direccion: `${coordenadasX}, ${coordenadasY}`,
+                descripcion,
+                tipo,
+                hr_inicio,
+                hr_fin,
+                departamento: 'Cundinamarca',
+                municipio: 'San_Juan',
+            };
+
+            console.log('dattos para actualizar:', updatedAct);
+
+            if (url) {
+                updatedAct.photo = url;
+            }
+
+            const { data, error } = await supabase
+                .from('actividades_t')
+                .update(updatedAct)
+                .eq('uid_actividades', uid_actividades);
+
+            if (error) {
+                throw new Error(error.message);
+            }
+
+            setActs(prevActs => {
+                return prevActs.map(prevAct => {
+                    if (prevAct.uid_actividades === uid_actividades) {
+                        return { ...prevAct, ...updatedAct };
+                    }
+                    return prevAct;
+                });
+            });
+
+            console.log('Actividad actualizada correctamente', data);
+        } catch (error) {
+            console.error('Error al actualizar la actividad:', error);
+        }
+    };
+
+    const getRutas = async (tipo) => {
+        try {
+            const { data, error } = await supabase
+                .from('actividades_t')
+                .select('*')
+                .eq('tipo', tipo);
+
+            if (error) {
+                throw new Error(error.message);
+            }
+
+            if (data.length === 0) {
+                throw new Error('No se encontraron rutas para el tipo especificado.');
+            }
+
+            return data;
+        } catch (error) {
+            console.error('Error al obtener rutas:', error);
+            return [];
+        }
+    };
+
+    const getConduc = async () => {
+        try {
+            const { data, error } = await supabase
+                .from('inf_conductor_t')
+                .select('*');
+
+            if (error) {
+                throw new Error(error.message);
+            }
+
+            return data;
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    const createRutas = async (values) => {
+        const { nombre, act_1, act_2, act_3, act_4, act_5, act_6, act_7, act_8, act_9, descripcion } = values;
+        const dep = "Cundinamarca";
+        const mun = "San_Juan";
+        const fot = "https://piazhwrekcgxbvsyqiwi.supabase.co/storage/v1/object/public/actividades/sanjuan.png?t=2024-08-15T15%3A32%3A05.313Z";
+        const inicio = "05:00:00";
+        const fin = "19:00:00";
+
+        try {
+            const { data: newRuta, error } = await supabase
+                .from('ruta_t')
+                .insert([
+                    {
+                        nombre,
+                        foto: fot,
+                        departamento: dep,
+                        municipio: mun,
+                        hr_inicio: inicio,
+                        hr_fin: fin,
+                        act_1, act_2, act_3, act_4, act_5, act_6, act_7, act_8, act_9,
+                        descripcion
+                    }
+                ]);
+
+            if (error) {
+                throw new Error(error.message);
+            }
+
+            console.log("Ruta creada correctamente");
+            return { message: "Ruta creada correctamente", newRuta };
+        } catch (error) {
+            console.error('Error al crear la ruta:', error);
+            throw new Error('Error interno del servidor');
+        }
+    };
+
+    return (
+        <ActContext.Provider value={{
+            acts,
+            acti,
+            createActs,
+            getActs,
+            deleteAct,
+            getAct,
+            updateAct,
+            getContActs,
+            getConduc,
+            getRutas,
+            createRutas
+        }}>
+            {children}
+        </ActContext.Provider>
+    );
+}

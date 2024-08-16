@@ -1,0 +1,154 @@
+@font-face {
+    font-family: 'Brothers-Bold.otf';
+    src: url('../fonts/Brothers-Bold.otf');
+}
+
+.contacto-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    gap: 20px;
+}
+
+.logoCon img{
+    position: absolute;
+    width: 300px;
+    filter:brightness(60%);
+    margin-top: 120px;
+    margin-left: 350px;
+}
+
+.iconos{
+    margin-top: 500px;
+    display: inline-flex;
+    width: 300px;
+    gap: 40px;
+}
+
+.contacto-iconos-face {
+    display:flex;
+    flex-direction:row;
+}
+
+.contacto-iconos-andro {
+    display: flex;
+    flex-direction:row;
+}
+
+.contacto-iconos-apple {
+    display: flex;
+    flex-direction:row;
+}
+
+.contacto-icono {
+    margin-bottom: 20px;
+    color: #333;
+    transition: color 0.3s ease;
+    width: 1000px;
+}
+
+
+
+.contacto-icono:hover {
+    color: #007bff;
+}
+
+.contacto-formulario {
+    margin-top: 100px;
+    color: #000000;
+    text-align: center;
+    font-family: 'Brothers-Bold.otf';
+    padding: 20px;
+    width: 500px;
+    background-color: black;
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-right: 100px;
+    
+}
+
+.contacto {
+    padding-left: 25%;
+    padding-right: 25%;
+    text-align: center;
+    width: 100%;
+    align-items:center;
+}
+
+.contact-form {
+    margin-right: 350px;
+}
+
+.contact-form input[type="text"],
+.contact-form input[type="email"] {
+    color: black;
+    text-align: center;
+    width: 100%;
+}
+
+.areaDesCon {
+    color: black;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 180px;
+
+}
+
+.contacto-formulario h2 {
+    margin-bottom: 20px;
+    color: white;
+    margin-left: 190px;
+}
+
+.contacto-formulario button{
+    margin-left: 190px;
+}
+
+.formulario_con input[type="text"] {
+    color: black;
+    text-align: center;
+}
+
+.formulario_con input[type="email"] {
+    color: black;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: center; 
+    font-size: medium;
+    color: white;
+    width: 400px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}

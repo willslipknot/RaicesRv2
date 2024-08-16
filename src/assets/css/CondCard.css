@@ -1,0 +1,120 @@
+.card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  background-color: black;
+  color: white;
+}
+
+.title {
+  display: flex;
+  align-items: right;
+  text-align: left;
+  padding: 2px;
+}
+
+.botones{
+  display: flex;
+  flex-direction: row;
+  gap: 0px;
+  align-items: center;
+}
+
+.buttons {
+  position: relative;
+  color: #007bff;
+
+}
+
+.buttons1 {
+  position: relative;
+  color: #d22b2b;
+}
+
+.buttons button {
+  background-color: #007bff;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: smaller;
+}
+
+.buttons1 button {
+  background-color: #d22b2b;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: smaller;
+}
+
+.conductor-form button {
+  margin: 0 4px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+
+.conductor-form button[type="submit"] {
+  background-color: #007bff;
+  color: white;
+}
+
+.conductor-form {
+  padding: 20px;
+  width: 400px;
+  background-color: black;
+  color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: medium;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.conductor-buttons {
+  position: absolute;
+  top: 100px;
+  left: 62px;
+  width: 10%;
+  background-color: #007bff;
+  text-align: center;
+  padding: 10px 0;
+  margin: 0 4px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.conductor-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px;
+}
