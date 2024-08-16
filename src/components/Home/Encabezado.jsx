@@ -9,9 +9,9 @@ class Encabezado extends Component {
         return (
             <div> 
                 <div className="encabezado-container" >
-                    <img className= 'imagen_p1' src={imagen1} alt=" " />
-                    <img className= 'imagen_p3' src={imagen3} alt=" " />
-                    <img className= 'imagen_p2' src={imagen2} alt=" " />   
+                    <img className= 'imagen_p1' src={imagen1} alt="imagen_1" />
+                    <img className= 'imagen_p3' src={imagen3} alt="imagen_2" />
+                    <img className= 'imagen_p2' src={imagen2} alt="imagen_3" />   
                 </div>
                 <div className="texto_superpuesto">
                     <h1>Raices Rurales</h1>

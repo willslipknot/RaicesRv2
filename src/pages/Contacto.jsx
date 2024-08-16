@@ -57,7 +57,7 @@ const Contacto = () => {
                             <label htmlFor="message">Mensaje:</label>
                             <textarea name="message" className="areaDesCon" rows="6" required></textarea>
                         </div>
-                        <button type="submit">Enviar</button>
+                        <button type="submit" >Enviar</button>
                     </form>
                 </div>
             </div>
