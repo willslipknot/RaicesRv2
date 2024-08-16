@@ -11,17 +11,15 @@
 }
 
 .logoCon img{
-    position: absolute;
-    width: 300px;
     filter:brightness(60%);
     margin-top: 120px;
-    margin-left: 350px;
+    margin-left: 300px;
 }
 
 .iconos{
     margin-top: 500px;
     display: inline-flex;
-    width: 300px;
+    width: 10000px;
     gap: 40px;
 }
 
