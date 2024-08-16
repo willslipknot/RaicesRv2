@@ -66,7 +66,6 @@ function VehCard({ veh }) {
                     <div className='buttons1'>
                         <button onDoubleClick={() => {
                             deleteVehiculo(veh.id);
-                            window.location.reload();
                         }}>Eliminar</button>
                     </div>
                 </div>

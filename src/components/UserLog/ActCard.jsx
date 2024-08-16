@@ -86,7 +86,6 @@ function ActCard({ act }) {
         } finally {
             setTimeout(() => {
                 setMensaje('');
-                window.location.reload();
             }, 3000);
         }
     });
@@ -176,7 +175,6 @@ function ActCard({ act }) {
 
                         <button onDoubleClick={() => {
                             deleteAct(act.uid_actividades);
-                            window.location.reload();
                         }}>Eliminar</button>
                     </div>
                 </div>

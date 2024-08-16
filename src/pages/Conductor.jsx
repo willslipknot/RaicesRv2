@@ -110,7 +110,6 @@ function Conductor() {
 
         setTimeout(() => {
             setMensaje('');
-            window.location.reload();
         }, 3000);
     });
 
@@ -139,7 +138,6 @@ function Conductor() {
 
         setTimeout(() => {
             setMensaje('');
-            window.location.reload();
         }, 3000);
     });
 

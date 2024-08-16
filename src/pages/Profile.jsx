@@ -46,7 +46,6 @@ function Profile() {
             console.error('Error al actualizar el perfil:', error);
         } finally {
             setTimeout(() => {
-                window.location.reload();
             }, 3000);
         }
     };

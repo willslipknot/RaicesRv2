@@ -91,7 +91,6 @@ function CondCard({ cond }) {
         } finally {
             setTimeout(() => {
                 setMensaje('');
-                window.location.reload();
             }, 3000);
         }
     });
@@ -266,7 +265,6 @@ function CondCard({ cond }) {
                         </div>
                         <p className='buttons1'><button onDoubleClick={() => {
                             deleteCond(cond.uid_conductor);
-                            window.location.reload();
                         }}>Eliminar</button></p>
                     </div>
                 </div>
