@@ -17,10 +17,8 @@ body {
     width: 100%;
     bottom: 0;
     color: white;
-    font-size: 25px;
     align-content: center;
     text-align: center;
-    font-family: 'Brothers-Bold.otf';
+    font-family: 'Brothers-Bold.otf', sans-serif;
     font-size: small;
-
    }

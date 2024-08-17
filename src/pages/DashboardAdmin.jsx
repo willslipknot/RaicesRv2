@@ -17,7 +17,7 @@ function DashboardAdmin() {
     const { getContActs, acts } = useActs();
     const { getContConds, conds, getCond } = useCond();
     const { getContVehiculos, vehiculos } = useVehiculo();
-    const { getContReserva, reservas, getTopActivities } = useReserva();
+    const { getContReserva, getTopActivities } = useReserva();
     const [datosGrafico, setDatosGrafico] = useState([]);
     const [datosGrafico1, setDatosGrafico1] = useState([]);
     const [date, setDate] = useState(new Date());

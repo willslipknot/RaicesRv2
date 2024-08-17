@@ -32,7 +32,7 @@
     transform: translate(-50%, -50%);
     text-align: center;
     color: white;
-    font-family: 'Brothers-Bold.otf' ;
+    font-family: 'Brothers-Bold.otf', sans-serif;
     font-size: 80px;
     padding: 10px;
 }
@@ -40,7 +40,7 @@
 
 .parrafo {
 
-    font-family: 'Brothers-Bold.otf' ;
+    font-family: 'Brothers-Bold.otf', sans-serif;
     font-size: 30px;
     top: 20;
     left: 40;

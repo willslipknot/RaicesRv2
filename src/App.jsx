@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { Routes, Route, BrowserRouter as Router } from 'react-router-dom';
 import { AuthProvider } from '../src/context/authContext.jsx';
 import Home from './pages/Home.jsx';

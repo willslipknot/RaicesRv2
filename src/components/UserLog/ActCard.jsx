@@ -15,25 +15,26 @@ function ActCard({ act }) {
     const { deleteAct, getAct, updateAct } = useActs()
     const [selectedId, setSelectedId] = useState(null);
     const { register, handleSubmit, reset, setValue } = useForm();
-    const [tip, setTip] = useState('');
+    const [setTip] = useState('');
     const [file, setFile] = useState(null);
-    const [nombreArchivo, setNombreArchivo] = useState('');
+    const [nombreArchivo] = useState('');
     const [mensaje, setMensaje] = useState('');
 
     useEffect(() => {
         if (selectedId !== null) {
             async function loadAct() {
-                const act = await getAct(selectedId);
-                if (act) { 
-                    setValue('nombre', act.nombre);
-                    setValue('direccion', act.direccion);
-                    setValue('descripcion', act.descripcion);
-                    setValue('tipo', act.tipo);
-                    setValue('photo', act.photo);
-                    setValue('coordenadasX', act.coordenadasX);
-                    setValue('coordenadasY', act.coordenadasY);
-                    setValue('hr_inicio', act.hr_inicio);
-                    setValue('hr_fin', act.hr_fin);
+                const acti = await getAct(selectedId);
+                console.log('dd',acti)
+                if (acti) { 
+                    setValue('nombre', acti.nombre);
+                    setValue('direccion', acti.direccion);
+                    setValue('descripcion', acti.descripcion);
+                    setValue('tipo', acti.tipo);
+                    setValue('photo', acti.photo);
+                    setValue('coordenadasX', acti.coordenadasX);
+                    setValue('coordenadasY', acti.coordenadasY);
+                    setValue('hr_inicio', acti.hr_inicio);
+                    setValue('hr_fin', acti.hr_fin);
                 } else {
                     console.error('No se encontró la actividad.');
                 }

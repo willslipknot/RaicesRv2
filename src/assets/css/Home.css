@@ -6,11 +6,11 @@
 
 .react-calendar__navigation{
   background-color: aquamarine;
-  font-family: 'Brothers-Bold.otf';
+  font-family: 'Brothers-Bold.otf', sans-serif;
 }
 
 .react-calendar__viewContainer .react-calendar__month-view__weekdays{
-  font-family: 'Brothers-Bold.otf';
+  font-family: 'Brothers-Bold.otf', sans-serif;
   text-decoration: none;
 }
 
@@ -40,11 +40,11 @@
 }
 
 h1{
-  font-family: 'Brothers-Bold.otf';
+  font-family: 'Brothers-Bold.otf', sans-serif;
 }
 
 h2{
-  font-family: 'Brothers-Bold.otf';
+  font-family: 'Brothers-Bold.otf', sans-serif;
   color:black;
   text-align: center;
 }
@@ -90,7 +90,7 @@ h2{
     align-items: center;
     justify-content: space-between;
     height: 80px;
-    font-family: 'Brothers-Bold.otf';
+    font-family: 'Brothers-Bold.otf', sans-serif;
   }
   
   .card-inner > .card_icon {

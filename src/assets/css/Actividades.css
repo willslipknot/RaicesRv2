@@ -10,7 +10,8 @@
     align-items: center;
     background-color: #f0f0f0;
     text-align: center;
-    font-family: 'Brothers-Bold.otf';
+    font-family: 'Brothers-Bold.otf', sans-serif;
+
 }
 
 .actividad-form {
@@ -204,7 +205,6 @@
     width: 10%;
     background-color: #007bff;
     text-align: center;
-    padding: 10px 0;
     margin: 0 4px;
     padding: 5px 10px;
     border: none;
@@ -219,7 +219,6 @@
     width: 10%;
     background-color: #007bff;
     text-align: center;
-    padding: 10px 0;
     margin: 0 4px;
     padding: 5px 10px;
     border: none;
@@ -234,7 +233,6 @@
     width: 9%;
     background-color: #007bff;
     text-align: center;
-    padding: 10px 0;
     margin: 0 4px;
     padding: 5px 10px;
     border: none;
@@ -270,7 +268,7 @@
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
-    font-family: 'Brothers-Bold.otf';
+    font-family: 'Brothers-Bold.otf', sans-serif;
   }
 
   th {

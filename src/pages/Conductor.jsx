@@ -29,8 +29,6 @@ function Conductor() {
 
     const [vehiculoSel, setVehiculoSel] = useState('');
     const [vehiculo, setVehiculo] = useState(null);
-    const [nombreArchivo, setNombreArchivo] = useState('');
-    const [nombreArchivo1, setNombreArchivo1] = useState('');
 
     const handleOpenModal = () => {
         setModalOpen(true);

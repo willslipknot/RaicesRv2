@@ -10,12 +10,12 @@ const opciones = [
 
 function VehCard({ veh }) {
 
-    const [modalOpen, setModalOpen] = useState(false);
-    const { deleteVehiculo, getVehiculo} = useVehiculo();
+    const [setModalOpen] = useState(false);
+    const {deleteVehiculo, getVehiculo} = useVehiculo();
 
     const [selectedId, setSelectedId] = useState(null);
-    const { register, handleSubmit, reset, setValue } = useForm();
-    const [mensaje, setMensaje] = useState('');
+    const {reset, setValue } = useForm();
+    const [setMensaje] = useState('');
 
     useEffect(() => {
         if (selectedId !== null) {

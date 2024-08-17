@@ -21,7 +21,7 @@ function Actividades({ rutasAll }) {
     const { createActs, createRutas, getActs, acts, getRutas, getConduc, getAct } = useActs();
     const { getVehiculo } = useVehiculo();
     const { getRutasAll, updateRuta, getRuta } = useRutas();
-    const [tip, setTip] = useState('');
+    const [setTip] = useState('');
     const [file, setFile] = useState(null);
     const [nombreArchivo, setNombreArchivo] = useState('');
     const [mensaje, setMensaje] = useState('');
@@ -30,19 +30,18 @@ function Actividades({ rutasAll }) {
     const [modalEditarOpen, setModalEditarOpen] = useState(false);
     const [mostrarActividades, setMostrarActividades] = useState(true)
     const [mostrarRutas, setMostrarRutas] = useState(false)
-    const [Alimentacion, setAlimentacion] = useState('');
+    const [setAlimentacion] = useState('');
     const [comida, setComida] = useState(null);
-    const [ComSel, setComSel] = useState('');
-    const [actividades, setActividades] = useState('');
+    const [ setComSel] = useState('');
+    const [setActividades] = useState('');
     const [activity, setActivity] = useState(null);
-    const [actSel, setActSel] = useState('');
-    const [hospedaje, setHospedaje] = useState('');
+    const [setActSel] = useState('');
+    const [setHospedaje] = useState('');
     const [hosped, setHosped] = useState(null);
-    const [hosSel, setHosSel] = useState('');
-    const [conduc, setConduc] = useState(null);
-    const [condSel, setCondSel] = useState('');
-    const [placas, setPlacas] = useState('');
-    const [pla, setPla] = useState('');
+    const [setHosSel] = useState('');
+    const [setConduc] = useState(null);
+    const [placas] = useState('');
+    const [setPla] = useState('');
     const [rutas, setRutas] = useState([]);
     const [selectedId, setSelectedId] = useState(null);
 

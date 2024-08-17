@@ -10,7 +10,7 @@
     align-items: center;
     background-color: #f0f0f0;
     text-align: center;
-    font-family: 'Brothers-Bold.otf';
+    font-family: 'Brothers-Bold.otf', sans-serif;
 }
 
 .conductor-form11 {
@@ -168,7 +168,6 @@
     width: 9%;
     background-color: #007bff;
     text-align: center;
-    padding: 10px 0;
     margin: 0 4px;
     padding: 5px 10px;
     border: none;
@@ -183,7 +182,6 @@
     width: 8%;
     background-color: #007bff;
     text-align: center;
-    padding: 10px 0;
     margin: 0 4px;
     padding: 5px 10px;
     border: none;
@@ -198,7 +196,6 @@
     width: 9.5%;
     background-color: #9fd5d1;
     text-align: center;
-    padding: 10px 0;
     margin: 0 4px;
     padding: 5px 10px;
     border: none;
@@ -213,7 +210,6 @@
     width: 8%;
     background-color: #9fd5d1;
     text-align: center;
-    padding: 10px 0;
     margin: 0 4px;
     padding: 5px 10px;
     border: none;

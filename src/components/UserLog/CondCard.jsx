@@ -17,13 +17,12 @@ function CondCard({ cond }) {
 
     const [selectedId, setSelectedId] = useState(null);
     const { register, handleSubmit, reset, setValue } = useForm();
-    const [tip, setTip] = useState('');
     const [mensaje, setMensaje] = useState('');
-    const [vehiculoSel, setVehiculoSel] = useState('');
+    const [ setVehiculoSel] = useState('');
     const [vehiculo, setVehiculo] = useState(null);
     const [clase, setClase] = useState('');
     const [file, setFile] = useState(null);
-    const [nombreArchivo, setNombreArchivo] = useState('');
+    const [nombreArchivo] = useState('');
 
     useEffect(() => {
         if (selectedId !== null) {
