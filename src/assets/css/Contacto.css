@@ -10,42 +10,51 @@
     gap: 20px;
 }
 
-.logoCon img{
-    filter:brightness(60%);
-    margin-top: 120px;
+
+.logoCon img {
+    filter: brightness(60%);
+    width: 250px;
+    margin-top: 100px;
     margin-left: 300px;
 }
 
-.iconos{
-    margin-top: 500px;
-    display: inline-flex;
-    width: 10000px;
-    gap: 40px;
+.iconosRedsocial {
+    margin-left: 280px;
 }
 
-.contacto-iconos-face {
-    display:flex;
-    flex-direction:row;
+.iconosDescarga {
+    margin-left: 336px;
 }
 
-.contacto-iconos-andro {
+.logoCon {
     display: flex;
-    flex-direction:row;
+    margin-bottom: 50px;
 }
 
-.contacto-iconos-apple {
-    display: flex;
-    flex-direction:row;
+.iconosRedsocial,
+.iconosDescarga {
+    margin-bottom: 50px;
 }
 
-.contacto-icono {
-    margin-bottom: 20px;
-    color: #333;
+.iconosRedsocial .contacto-icono,
+.iconosDescarga .contacto-icono {
+    display: inline-block;
+    margin-right: 15px;
+    color: #4e4c4c;
     transition: color 0.3s ease;
-    width: 1000px;
 }
 
+.iconosRedsocial .contacto-icono:hover,
+.iconosDescarga .contacto-icono:hover {
+    color: #007bff;
+}
 
+.TitulosR {
+    font-family: 'Brothers-Bold.otf', sans-serif;
+    font-size: large;
+    margin-left: 120px;
+    margin-bottom: 20px;
+}
 
 .contacto-icono:hover {
     color: #007bff;
@@ -62,7 +71,7 @@
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin-right: 100px;
-    
+
 }
 
 .contacto {
@@ -70,7 +79,7 @@
     padding-right: 25%;
     text-align: center;
     width: 100%;
-    align-items:center;
+    align-items: center;
 }
 
 .contact-form {
@@ -98,8 +107,8 @@
     margin-left: 190px;
 }
 
-.contacto-formulario button{
-    margin-left: 190px;
+.contacto-formulario button {
+    margin-left: 170px;
 }
 
 .formulario_con input[type="text"] {
@@ -114,7 +123,7 @@
 
 .form-group-contac {
     margin-bottom: 20px;
-    text-align: center; 
+    text-align: center;
     font-size: medium;
     color: white;
     width: 400px;
@@ -123,6 +132,7 @@
 .form-group-contac label {
     display: block;
     margin-bottom: 5px;
+    text-align: left;
 }
 
 .form-group-contacinput,
@@ -148,4 +158,18 @@ button {
 
 button:hover {
     background-color: #0056b3;
+}
+
+.BotonEnviar button {
+    background-color: #007bff;
+    color: white;
+    width: 150%;
+}
+
+.columna-1 {
+    width: 60%;
+}
+
+.columna-3 {
+    width: 40%;
 }

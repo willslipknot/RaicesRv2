@@ -5,8 +5,8 @@ import { useCond } from '../../context/condContext';
 import { useVehiculo } from '../../context/vehiculoContext.jsx';
 
 const opciones = [
-    { label: 'A2', value: 'A2' },
-    { label: 'B1', value: 'B1' }
+    { label: 'a2', value: 'a2' },
+    { label: 'b1', value: 'b1' }
 ];
 
 function CondCard({ cond }) {
@@ -106,8 +106,8 @@ function CondCard({ cond }) {
 
     useEffect(() => {
         const cargarVehiculos = async () => {
-            if (cond.tipo_licencia === 'A2') {
-                const selectedTipVeh = 'A2';
+            if (cond.tipo_licencia === 'a2') {
+                const selectedTipVeh = 'a2';
                 setClase(selectedTipVeh);
 
                 if (selectedTipVeh) {
@@ -124,8 +124,8 @@ function CondCard({ cond }) {
                 }
             }
 
-            if (cond.tipo_licencia === 'B1') {
-                const selectedTipVeh = 'B1';
+            if (cond.tipo_licencia === 'b1') {
+                const selectedTipVeh = 'b1';
                 setClase(selectedTipVeh);
 
                 if (selectedTipVeh) {

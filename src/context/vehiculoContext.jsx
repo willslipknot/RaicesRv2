@@ -82,15 +82,15 @@ export function VehiculoProvider({ children }) {
             return;
         }
         const url = await uploadImageAndGetURL(file);
-        const placa = formData.get('placa');
-        const marca = formData.get('marca');
-        const linea = formData.get('linea');
-        const modelo = formData.get('modelo');
-        const cilindra = formData.get('cilindra');
-        const color = formData.get('color');
-        const clase = formData.get('clase');
-        const carroceria = formData.get('carroceria');
-        const combustible = formData.get('combustible');
+        const placa = formData.get('placa').toLowerCase();
+        const marca = formData.get('marca').toLowerCase();
+        const linea = formData.get('linea').toLowerCase();
+        const modelo = formData.get('modelo').toLowerCase();
+        const cilindra = formData.get('cilindra').toLowerCase();
+        const color = formData.get('color').toLowerCase();
+        const clase = formData.get('clase').toLowerCase();
+        const carroceria = formData.get('carroceria').toLowerCase();
+        const combustible = formData.get('combustible').toLowerCase();
 
 
         try {

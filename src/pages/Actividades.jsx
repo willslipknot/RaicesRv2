@@ -9,9 +9,9 @@ import ActCard from '../components/UserLog/ActCard';
 
 
 const opciones = [
-    { label: 'Estadia', value: 'cdca80ef-6f8d-478b-94f1-80e1e67da46d' },
-    { label: 'Alimentacion', value: '35a0e8e0-728c-4712-81fd-1df805a0e294' },
-    { label: 'Actividad', value: '859a6b07-ecd9-4c13-bc1c-6894d8fb0520' },
+    { label: 'estadia', value: 'cdca80ef-6f8d-478b-94f1-80e1e67da46d' },
+    { label: 'alimentacion', value: '35a0e8e0-728c-4712-81fd-1df805a0e294' },
+    { label: 'actividad', value: '859a6b07-ecd9-4c13-bc1c-6894d8fb0520' },
 ];
 
 const colores = ['#FFC0CB', '#DDA0DD', '#7B68EE', '#7FFFD4', '#90EE90'];

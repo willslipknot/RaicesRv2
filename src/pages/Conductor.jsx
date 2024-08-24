@@ -4,12 +4,13 @@ import '../assets/css/Conductor.css';
 import NavBar from '../components/Home/NavBar.jsx';
 import { useCond } from '../context/condContext';
 import { useVehiculo } from '../context/vehiculoContext.jsx';
+import { useAuth } from '../context/authContext.jsx';
 import CondCard from '../components/UserLog/CondCard';
 import VehCard from '../components/UserLog/VehCard.jsx';
 
 const opciones = [
-    { label: 'A2', value: 'A2' },
-    { label: 'B1', value: 'B1' },
+    { label: 'a2', value: 'a2' },
+    { label: 'b1', value: 'b1' },
 ];
 
 const colores = ['#FFC0CB', '#DDA0DD', '#7B68EE', '#7FFFD4', '#90EE90'];
@@ -18,6 +19,7 @@ function Conductor() {
     const { register, handleSubmit, reset } = useForm();
     const { createConds, getConds, conds } = useCond();
     const { getVeh, createVehiculos, vehiculos, getVehiculos } = useVehiculo();
+    const { createUserConds } = useAuth();
 
     const [clase, setClase] = useState('');
     const [file, setFile] = useState(null);
@@ -102,6 +104,7 @@ function Conductor() {
         formData.append('photo_perfil', file);
 
         createConds(formData);
+        createUserConds(formData);
 
         setMensaje('Conductor creado exitosamente');
         reset();

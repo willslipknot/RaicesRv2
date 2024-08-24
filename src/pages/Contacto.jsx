@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaFacebookF, FaAndroid, FaApple } from 'react-icons/fa'; // Asegúrate de instalar react-icons si no lo has hecho
+import { FaFacebookF, FaAndroid, FaApple, FaTwitter, FaInstagram } from 'react-icons/fa';
 import '../assets/css/Contacto.css';
 import imagenLogo from '../assets/images/logo_progrado.png';
 import emailjs from 'emailjs-com';
@@ -15,49 +15,67 @@ const Contacto = () => {
                 console.error('Error sending email:', error.text);
                 alert('Error al enviar el mensaje.');
             });
-           
     };
 
     return (
         <div className="contacto-container">
-            <div className='logoCon'>
-                <img className='imagenLogo' src={imagenLogo} alt=" " />
+            <div className="columna-1">
+                <div className='logoCon'>
+                    <img className='imagenLogo' src={imagenLogo} alt="Logo" />
+                </div>
+                <p className='TitulosR'>Encuéntranos en:</p>
+                <div className='iconosRedsocial'>
+                    <div className="contacto-icono">
+                        <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
+                            <FaFacebookF size={60} />
+                        </a>
+                    </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div className="contacto-icono">
+                        <a href="https://x.com/?lang=es" target="_blank" rel="noopener noreferrer">
+                            <FaTwitter size={60} />
+                        </a>
+                    </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div className="contacto-icono">
+                        <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
+                            <FaInstagram size={60} />
+                        </a>
+                    </div>
+                </div>
+                <p className='TitulosR'>Descarga nuestra Aplicación:</p>
+                <div className='iconosDescarga'>
+                    <div className="contacto-icono">
+                        <a href="https://play.google.com" target="_blank" rel="noopener noreferrer">
+                            <FaAndroid size={60} />
+                        </a>
+                    </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div className="contacto-icono">
+                        <a href="https://apps.apple.com" target="_blank" rel="noopener noreferrer">
+                            <FaApple size={60} />
+                        </a>
+                    </div>
+                </div>
             </div>
-            <div className='iconos'>
-                <div className="contacto-icono-face">
-                    <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" className="contacto-icono">
-                        <FaFacebookF size={80} />
-                    </a>
-                </div>
-                <div className="contacto-icono-andro">
-                    <a href="https://play.google.com" target="_blank" rel="noopener noreferrer" className="contacto-icono">
-                        <FaAndroid size={80} />
-                    </a>
-                </div>
-                <div className="contacto-icono-apple">
-                    <a href="https://apps.apple.com" target="_blank" rel="noopener noreferrer" className="contacto-icono">
-                        <FaApple size={80} />
-                    </a>
-                </div>
-            </div>
-            <div className="contacto-formulario">
-                <div className="contact-form">
-                    <h2>Contacto</h2>
-                    <form className='contacto' onSubmit={sendEmail}>
-                        <div className="form-group-contac">
-                            <label htmlFor="name">Nombre:</label>
-                            <input type="text" name="name" className='formulario_con' required />
-                        </div>
-                        <div className="form-group-contac">
-                            <label htmlFor="email">Correo electrónico:</label>
-                            <input type="email" name="email" className='formulario_con' required />
-                        </div>
-                        <div className="form-group-contac">
-                            <label htmlFor="message">Mensaje:</label>
-                            <textarea name="message" className="areaDesCon" rows="6" required></textarea>
-                        </div>
-                        <button type="submit" >Enviar</button>
-                    </form>
+
+            <div className="columna-3">
+                <div className="contacto-formulario">
+                    <div className="contact-form">
+                        <h2>Contacto</h2>
+                        <form className='contacto' onSubmit={sendEmail}>
+                            <div className="form-group-contac">
+                                <label htmlFor="name">Nombre:</label>
+                                <input type="text" name="name" required />
+                            </div>
+                            <div className="form-group-contac">
+                                <label htmlFor="email">Correo electrónico:</label>
+                                <input type="email" name="email" required />
+                            </div>
+                            <div className="form-group-contac">
+                                <label htmlFor="message">Mensaje:</label>
+                                <textarea name="message" rows="6" required></textarea>
+                            </div>
+                            <p className='BotonEnviar'><button type="submit" >Enviar</button></p>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

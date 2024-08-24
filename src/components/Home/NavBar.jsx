@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAuth } from '../../context/authContext.jsx';
-import { Link, useNavigate  } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import '../../assets/css/NavBar.css';
 
@@ -10,7 +10,7 @@ function NavBar() {
     const [showInitialFields, setShowInitialFields] = useState(true);
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const { isAuthenticated } = useAuth();
-    const { signin, errors: erroresLogin, logout, user } = useAuth();
+    const { signin, errors: erroresLogin, logout, user, getUserRole } = useAuth();
     const navigate = useNavigate();
 
     const handleCheckboxChange = () => {
@@ -19,28 +19,50 @@ function NavBar() {
         reset();
     };
 
-    const handleLogoClick = () => {
-        if (isAuthenticated && user.tipoUser === "Admin") {
-            navigate('/HomeAdmin');
-        }  else {
-            navigate('/HomeUser');
-        }
+    const handleLogoClick =async () => {
+        const userId = user?.uid;
+        if (userId) {
+            const role = await getUserRole(userId);
+
+            if (role === 'Admin') {
+                navigate('/HomeAdmin');
+            } else {
+                navigate('/');
+            }
+        } 
     };
 
-    const handleLoginSubmit = async (values) => {
+    const handleLoginSubmit = async (values) => { 
         try {
             await signin(values);
+    
+            const userId = user?.uid;
+            if (userId) {
+                const role = await getUserRole(userId);
+    
+                if (role === 'Admin') {
+                    navigate('/HomeAdmin');
+                } else {
+                    alert('El usuario no es administrador. Por favor descargue la app.');
+                    navigate('/Contacto');
+                    setIsLoginOpen(!isLoginOpen);
+                }
+            } else {
+                console.error('No se pudo obtener el ID del usuario.');
+                alert('El usuario no existe');
+            }
         } catch (error) {
             console.error('Error al iniciar sesión:', error);
         }
     };
     
+
     return (
         <div className="nav">
             <nav className="navbar">
                 <ul className="navLis">
                     <div className='logo' onClick={handleLogoClick} />
-                    {isAuthenticated ?(
+                    {isAuthenticated && user.tipoUser === "Admin" ? (
                         <>
                             <li><Link to="/DashboardAdmin"><b className='menu'>Dashboard</b></Link></li>
                             <li><Link to="/Actividades"><b className='menu'>Actividades</b></Link></li>
@@ -67,6 +89,7 @@ function NavBar() {
                             </li>
                         </>) : (
                         <>
+                            <li><Link to="/"><b className='menu'>Inicio</b></Link></li>
                             <li><Link to="/Contacto"><b className='menu'>Contacto</b></Link></li>
                             <li>
                                 <label className='labelcheck' htmlFor="menuCheckbox">
@@ -104,7 +127,7 @@ function NavBar() {
                                                         }
                                                     </div>
                                                     <div className="form-group-login">
-                                                    &nbsp;&nbsp;&nbsp; <button className="button" type='submit'><b className='botones'>Entrar</b></button>
+                                                        &nbsp;&nbsp;&nbsp; <button className="button" type='submit'><b className='botones'>Entrar</b></button>
                                                     </div>
                                                     {
                                                         erroresLogin.map((error, i) => (

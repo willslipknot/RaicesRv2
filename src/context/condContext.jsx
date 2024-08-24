@@ -59,15 +59,15 @@ export function CondProvider({ children }) {
         }
 
         const url = await uploadImageAndGetURL(file);
-        const first_name = formData.get('first_name');
-        const second_name = formData.get('second_name');
-        const first_last_name = formData.get('first_last_name');
-        const second_last_name = formData.get('second_last_name');
+        const first_name = formData.get('first_name').toLowerCase();
+        const second_name = formData.get('second_name').toLowerCase();
+        const first_last_name = formData.get('first_last_name').toLowerCase();
+        const second_last_name = formData.get('second_last_name').toLowerCase();
         const cedula = formData.get('cedula');
-        const correo = formData.get('correo');
+        const correo = formData.get('correo').toLowerCase();
         const phone_number = formData.get('phone_number');
         const uid_vehiculo = formData.get('uid_vehiculo');
-        const tipo_licencia = formData.get('tipo_licencia');
+        const tipo_licencia = formData.get('tipo_licencia').toLowerCase();
 
         try {
             const { data: newConductor, error } = await supabase
@@ -106,7 +106,7 @@ export function CondProvider({ children }) {
                 throw new Error(error.message);
             }
             if (!data) {
-                return res.status(405).json(["No existe el Conductor, por lo que no se eliminó nada"]);
+                console.error('No existe el Conductor, por lo que no se eliminó nada:', error);
             }
         } catch (error) {
             console.error(error);
@@ -140,14 +140,14 @@ export function CondProvider({ children }) {
 
             if (isFormData) {
                 updatedCond = {
-                    first_name: formData.get('first_name'),
-                    second_name: formData.get('second_name'),
-                    first_last_name: formData.get('first_last_name'),
-                    second_last_name: formData.get('second_last_name'),
+                    first_name: formData.get('first_name').toLowerCase(),
+                    second_name: formData.get('second_name').toLowerCase(),
+                    first_last_name: formData.get('first_last_name').toLowerCase(),
+                    second_last_name: formData.get('second_last_name').toLowerCase(),
                     phone_number: formData.get('phone_number'),
                     cedula: formData.get('cedula'),
-                    correo: formData.get('correo'),
-                    tipo_licencia: formData.get('tipo_licencia'),
+                    correo: formData.get('correo').toLowerCase(),
+                    tipo_licencia: formData.get('tipo_licencia').toLowerCase(),
                     uid_vehiculo: formData.get('uid_vehiculo')
                 };
 

@@ -57,14 +57,14 @@ export function ActProvider({ children }) {
             return;
         }
         const url = await uploadImageAndGetURL(file);
-        const nombre = formData.get('nombre');
-        const descripcion = formData.get('descripcion');
-        const tipo = formData.get('tipo');
+        const nombre = formData.get('nombre').toLowerCase();
+        const descripcion = formData.get('descripcion').toLowerCase();
+        const tipo = formData.get('tipo').toLowerCase();
         const coordenadasX = formData.get('coordenadasX');
         const coordenadasY = formData.get('coordenadasY');
         const hr_inicio = formData.get('hr_inicio');
         const hr_fin = formData.get('hr_fin');
-
+    
         try {
             const { data: newActividad, error } = await supabase
                 .from('actividades_t')
@@ -89,6 +89,7 @@ export function ActProvider({ children }) {
             console.error('Error:', error.message);
         }
     };
+    
 
 
     const deleteAct = async (uid_actividades) => {
@@ -137,10 +138,10 @@ export function ActProvider({ children }) {
     
             if (isFormData) {
                 updatedAct = {
-                    nombre: formData.get('nombre'),
+                    nombre: formData.get('nombre').toLowerCase(),
                     direccion: `${formData.get('coordenadasX')}, ${formData.get('coordenadasY')}`,
-                    descripcion: formData.get('descripcion'),
-                    tipo: formData.get('tipo'),
+                    descripcion: formData.get('descripcion').toLowerCase(),
+                    tipo: formData.get('tipo').toLowerCase(),
                     hr_inicio: formData.get('hr_inicio'),
                     hr_fin: formData.get('hr_fin'),
                     departamento: 'Cundinamarca',
@@ -249,7 +250,7 @@ export function ActProvider({ children }) {
         const fot = "https://piazhwrekcgxbvsyqiwi.supabase.co/storage/v1/object/public/actividades/sanjuan.png?t=2024-08-15T15%3A32%3A05.313Z";
         const inicio = "05:00:00";
         const fin = "19:00:00";
-
+        
         try {
             const { data: newRuta, error } = await supabase
                 .from('ruta_t')

@@ -104,6 +104,16 @@
   align-items: center;
   margin-top: 50px;
 }
+
+.buttons1 button {
+  background-color: #d22b2b;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: smaller;
+}
   
 
   

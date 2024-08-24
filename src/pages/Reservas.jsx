@@ -10,7 +10,7 @@ import '../assets/css/Reservas.css';
 function Reservas() {
     const [reservas, setReservas] = useState([]);
     const [reservasFecha, setReservasFecha] = useState([]);
-    const { getReservas, getFechaReservas } = useReserva();
+    const { getReservas, getFechaReservas, updateReservaStatus } = useReserva();
     const { getCond } = useCond();
     const { getVehiculo } = useVehiculo();
     const { getCliente } = useAuth();
@@ -25,6 +25,14 @@ function Reservas() {
     const handleMostrarDia = () => {
         setMostrarDia(true);
         setMostrarReservas(false);
+    };
+
+    const handleAprobarPago = async (uid_compra) => {
+        try {
+            await updateReservaStatus(uid_compra, 'pagado');
+        } catch (error) {
+            console.error('Error al aprobar pago:', error);
+        }
     };
 
     useEffect(() => {
@@ -114,6 +122,7 @@ function Reservas() {
                             <th>Hora</th>
                             <th>Cliente</th>
                             <th>Telefono</th>
+                            <th>Estado</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -126,6 +135,14 @@ function Reservas() {
                                 <td>{reserv.hora || 'Hora no disponible'}</td>
                                 <td>{typeof reserv.cliente === 'string' ? reserv.cliente : 'Cliente no disponible'}</td>
                                 <td>{reserv.telefono || 'Teléfono no disponible'}</td>
+                                <td>{reserv.status || 'Estado no disponible'}</td>
+                                <td className='status'>
+                                    {reserv.status === 'Pago en Proceso' && (
+                                        <button onClick={() => handleAprobarPago(reserv.uid_compra)} className='BotonStatus'>
+                                            Aprobar
+                                        </button>
+                                    )}
+                                </td>
                             </tr>
                         ))}
                     </tbody>
@@ -143,6 +160,7 @@ function Reservas() {
                             <th>Hora</th>
                             <th>Cliente</th>
                             <th>Telefono</th>
+                            <th>Estado</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -155,6 +173,14 @@ function Reservas() {
                                 <td>{reservF.hora || 'Hora no disponible'}</td>
                                 <td>{typeof reservF.cliente === 'string' ? reservF.cliente : 'Cliente no disponible'}</td>
                                 <td>{reservF.telefono || 'Teléfono no disponible'}</td>
+                                <td>{reservF.status || 'Estado no disponible'}</td>
+                                <td className='status'>
+                                    {reservF.status === 'pago en proceso' && (
+                                        <button onClick={() => handleAprobarPago(reserv.uid_compra)} className='BotonStatus'>
+                                            Aprobar
+                                        </button>
+                                    )}
+                                </td>
                             </tr>
                         ))}
                     </tbody>

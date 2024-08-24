@@ -24,8 +24,8 @@ function ActCard({ act }) {
         if (selectedId !== null) {
             async function loadAct() {
                 const acti = await getAct(selectedId);
-                console.log('dd',acti)
-                if (acti) { 
+                console.log('dd', acti)
+                if (acti) {
                     setValue('nombre', acti.nombre);
                     setValue('direccion', acti.direccion);
                     setValue('descripcion', acti.descripcion);
@@ -51,7 +51,7 @@ function ActCard({ act }) {
         }
         setModalOpen(true);
     };
-    
+
     const handleCloseModal = () => {
         setModalOpen(false);
     };
@@ -174,9 +174,9 @@ function ActCard({ act }) {
                             </div>
                         )}
 
-                        <button onDoubleClick={() => {
+                        <p className='buttons1'><button onDoubleClick={() => {
                             deleteAct(act.uid_actividades);
-                        }}>Eliminar</button>
+                        }}>Eliminar</button></p>
                     </div>
                 </div>
             </div>

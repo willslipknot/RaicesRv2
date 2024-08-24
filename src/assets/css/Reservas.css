@@ -83,3 +83,13 @@
     cursor: pointer;
     font-family: 'Brothers-Bold.otf', sans-serif;
   }
+
+  .BotonStatus{
+    background-color: #3e8e41;
+    width: 80%;
+  }
+
+  .status{
+    text-align: center;
+    vertical-align: middle;
+  }

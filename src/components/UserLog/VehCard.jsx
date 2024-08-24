@@ -3,11 +3,6 @@ import { useForm } from 'react-hook-form';
 import '../../assets/css/CondCard.css';
 import { useVehiculo } from '../../context/vehiculoContext.jsx';
 
-const opciones = [
-    { label: 'Moto', value: 'Moto' },
-    { label: 'Carro', value: 'Carro' }
-];
-
 function VehCard({ veh }) {
 
     const [setModalOpen] = useState(false);

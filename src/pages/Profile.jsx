@@ -116,7 +116,7 @@ function Profile() {
                             <button type="button" onClick={handleCancelClick}>Cancelar</button>
                         </div>
                     ) : (
-                        <button type="button" onClick={handleEditClick}>Editar</button>
+                        <button className='boton1' onClick={handleEditClick}>Editar</button>
                     )}
                 </form>
             </div>

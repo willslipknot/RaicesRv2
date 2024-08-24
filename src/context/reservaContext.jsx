@@ -121,7 +121,30 @@ export function ReservaProvider({ children }) {
         }
     };
 
-
+    const updateReservaStatus = async (uid_compra, newStatus) => {
+        try {
+            const { data, error } = await supabase
+                .from('carrito_ven_t')
+                .update({ status: newStatus })
+                .eq('uid_compra', uid_compra);
+    
+            if (error) {
+                throw new Error(error.message);
+            }
+    
+            // Actualiza la lista de reservas en el estado
+            setReservas((prevReservas) =>
+                prevReservas.map((reserva) =>
+                    reserva.uid_compra === uid_compra ? { ...reserva, status: newStatus } : reserva
+                )
+            );
+    
+            return data;
+        } catch (error) {
+            console.error("Error al actualizar el estado de la reserva:", error);
+            throw error;
+        }
+    };
 
     return (
         <reservaContext.Provider value={{
@@ -130,7 +153,8 @@ export function ReservaProvider({ children }) {
             getReservas,
             getFechaReservas,
             getContReserva,
-            getTopActivities
+            getTopActivities,
+            updateReservaStatus
         }}>
             {children}
         </reservaContext.Provider>
