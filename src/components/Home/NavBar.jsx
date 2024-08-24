@@ -62,7 +62,7 @@ function NavBar() {
             <nav className="navbar">
                 <ul className="navLis">
                     <div className='logo' onClick={handleLogoClick} />
-                    {isAuthenticated && user.tipoUser === "Admin" ? (
+                    {isAuthenticated ? (
                         <>
                             <li><Link to="/DashboardAdmin"><b className='menu'>Dashboard</b></Link></li>
                             <li><Link to="/Actividades"><b className='menu'>Actividades</b></Link></li>
