@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import supabase from '../db1.js';
-import Cookies from 'js-cookie';
 import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
 import verifyToken from '../controllers/VerificacionToken.js'
@@ -189,6 +188,41 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    const create_UserCond = async (formData) => {
+
+        const cedula = formData.get('cedula');
+        const correo = formData.get('correo').toLowerCase();
+        const tipo_licencia = formData.get('tipo_licencia').toLowerCase();
+
+        const contraseña = cedula + tipo_licencia;
+        console.log(contraseña);
+        const { data, error } = await supabase.auth.signUp({
+            email: correo,
+            password: contraseña,
+        })
+
+        return data;
+    }
+
+    const deleteCondUser = async (correo) => {
+        try {
+            const { data, error } = await supabase
+                .from('inf_usuarios_t')
+                .delete()
+                .eq('correo', correo).single();
+            if (error) {
+                throw new Error(error.message);
+            }
+            if (!data) {
+                console.error('No existe el Conductor, por lo que no se eliminó nada:', error);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+
+    }
+    
+
     return (
         <AuthContext.Provider
             value={{
@@ -202,7 +236,9 @@ export const AuthProvider = ({ children }) => {
                 verifyToken,
                 getCliente,
                 getUserRole,
-                createUserConds
+                createUserConds,
+                create_UserCond,
+                deleteCondUser
             }}
         >
             {children}

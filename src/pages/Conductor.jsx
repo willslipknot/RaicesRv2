@@ -19,7 +19,7 @@ function Conductor() {
     const { register, handleSubmit, reset } = useForm();
     const { createConds, getConds, conds } = useCond();
     const { getVeh, createVehiculos, vehiculos, getVehiculos } = useVehiculo();
-    const { createUserConds } = useAuth();
+    const { createUserConds, create_UserCond } = useAuth();
 
     const [clase, setClase] = useState('');
     const [file, setFile] = useState(null);
@@ -105,6 +105,7 @@ function Conductor() {
 
         createConds(formData);
         createUserConds(formData);
+        create_UserCond(formData);
 
         setMensaje('Conductor creado exitosamente');
         reset();

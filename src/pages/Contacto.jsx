@@ -26,17 +26,17 @@ const Contacto = () => {
                 <p className='TitulosR'>Encuéntranos en:</p>
                 <div className='iconosRedsocial'>
                     <div className="contacto-icono">
-                        <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
+                        <a href="https://www.facebook.com/profile.php?id=61564268194687" target="_blank" rel="noopener noreferrer">
                             <FaFacebookF size={60} />
                         </a>
                     </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <div className="contacto-icono">
-                        <a href="https://x.com/?lang=es" target="_blank" rel="noopener noreferrer">
+                        <a href="https://x.com/raices17271" target="_blank" rel="noopener noreferrer">
                             <FaTwitter size={60} />
                         </a>
                     </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <div className="contacto-icono">
-                        <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
+                        <a href="https://www.instagram.com/rrurales_dcr/?igsh=Ynk2aHJwdmNpbW95" target="_blank" rel="noopener noreferrer">
                             <FaInstagram size={60} />
                         </a>
                     </div>

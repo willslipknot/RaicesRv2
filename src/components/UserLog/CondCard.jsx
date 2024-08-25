@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import '../../assets/css/CondCard.css';
 import { useCond } from '../../context/condContext';
 import { useVehiculo } from '../../context/vehiculoContext.jsx';
+import { useAuth } from '../../context/authContext.jsx';
 
 const opciones = [
     { label: 'a2', value: 'a2' },
@@ -14,6 +15,7 @@ function CondCard({ cond }) {
     const [modalOpen, setModalOpen] = useState(false);
     const { deleteCond, getCond, updateCond } = useCond();
     const { getVeh } = useVehiculo();
+    const { deleteCondUser } = useAuth();
 
     const [selectedId, setSelectedId] = useState(null);
     const { register, handleSubmit, reset, setValue } = useForm();
@@ -269,6 +271,7 @@ function CondCard({ cond }) {
                         </div>
                         <p className='buttons1'><button onDoubleClick={() => {
                             deleteCond(cond.uid_conductor);
+                            deleteCondUser(cond.correo);
                         }}>Eliminar</button></p>
                     </div>
                 </div>
