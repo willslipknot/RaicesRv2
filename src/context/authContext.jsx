@@ -32,13 +32,13 @@ export const AuthProvider = ({ children }) => {
 
             if (error || !data) {
                 setErrors(["Usuario no encontrado."]);
-                return;
+                return null; // Devuelve null si hay un error
             }
 
             const passwordMatch = await bcrypt.compare(user.password, data.password);
             if (!passwordMatch) {
                 setErrors(["Contraseña incorrecta."]);
-                return;
+                return null; // Devuelve null si la contraseña es incorrecta
             }
 
             const token = `${data.uid}-${uuidv4()}`;
@@ -48,10 +48,13 @@ export const AuthProvider = ({ children }) => {
             setUser(data);
             setIsAuthenticated(true);
 
+            return data; // Devuelve los datos del usuario autenticado
         } catch (error) {
             setErrors([error.message || "Error al iniciar sesión."]);
+            return null; // Devuelve null si hay una excepción
         }
     };
+
 
     const logout = () => {
         Cookies.remove('token');
@@ -171,16 +174,14 @@ export const AuthProvider = ({ children }) => {
 
     const getUserRole = async (userId) => {
         try {
-            if (!user) throw new Error("No se encontró usuario");
-
             const { data, error } = await supabase
                 .from('inf_usuarios_t')
                 .select('tipoUser')
                 .eq('uid', userId)
                 .single();
 
-            if (error) {
-                throw new Error(error.message);
+            if (error || !data) {
+                throw new Error('No se encontró usuario');
             }
 
             return data.tipoUser;

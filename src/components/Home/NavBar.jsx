@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAuth } from '../../context/authContext.jsx';
 import { Link, useNavigate } from 'react-router-dom';
@@ -8,10 +8,23 @@ import '../../assets/css/NavBar.css';
 function NavBar() {
     const [isLoginOpen, setIsLoginOpen] = useState(false);
     const [showInitialFields, setShowInitialFields] = useState(true);
+    const [admin, setAdmin] = useState(null); // Cambié null para hacer mejor el manejo de estados
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
-    const { isAuthenticated } = useAuth();
-    const { signin, errors: erroresLogin, logout, user, getUserRole } = useAuth();
+    const { isAuthenticated, signin, errors: erroresLogin, logout, user, getUserRole } = useAuth();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const checkUserRole = async () => {
+            if (user && user.uid) {
+                const role = await getUserRole(user.uid);
+                setAdmin(role);
+            } else {
+                setAdmin(null);
+            }
+        };
+
+        checkUserRole();
+    }, [user]);
 
     const handleCheckboxChange = () => {
         setIsLoginOpen(!isLoginOpen);
@@ -19,50 +32,53 @@ function NavBar() {
         reset();
     };
 
-    const handleLogoClick =async () => {
-        const userId = user?.uid;
-        if (userId) {
-            const role = await getUserRole(userId);
-
-            if (role === 'Admin') {
-                navigate('/HomeAdmin');
-            } else {
-                navigate('/');
-            }
-        } 
+    const handleLogoClick = () => {
+        if (admin === 'Admin') {
+            navigate('/HomeAdmin');
+        } else {
+            navigate('/');
+        }
     };
 
-    const handleLoginSubmit = async (values) => { 
+    const handleLoginSubmit = async (values) => {
         try {
-            await signin(values);
+            const userCredentials = await signin(values);
     
-            const userId = user?.uid;
-            if (userId) {
+            if (userCredentials) {
+                const userId = userCredentials.uid;
                 const role = await getUserRole(userId);
-    
+                setAdmin(role);
                 if (role === 'Admin') {
                     navigate('/HomeAdmin');
                 } else {
+                    setAdmin(null);
                     alert('El usuario no es administrador. Por favor descargue la app.');
                     navigate('/Contacto');
-                    setIsLoginOpen(!isLoginOpen);
                 }
             } else {
-                console.error('No se pudo obtener el ID del usuario.');
-                alert('El usuario no existe');
+                console.error('No se pudieron obtener las credenciales del usuario.');
             }
+    
         } catch (error) {
             console.error('Error al iniciar sesión:', error);
         }
+    
+        setIsLoginOpen(false);
     };
     
+    const handleLogout = () => {
+        logout();
+        setAdmin(null);
+        navigate('/');
+        setIsLoginOpen(false);
+    };
 
     return (
         <div className="nav">
             <nav className="navbar">
                 <ul className="navLis">
                     <div className='logo' onClick={handleLogoClick} />
-                    {isAuthenticated ? (
+                    {isAuthenticated && admin === 'Admin' ? (
                         <>
                             <li><Link to="/DashboardAdmin"><b className='menu'>Dashboard</b></Link></li>
                             <li><Link to="/Actividades"><b className='menu'>Actividades</b></Link></li>
@@ -74,20 +90,20 @@ function NavBar() {
                                     <b className='menu'>
                                         <input type="checkbox" className='check' onChange={handleCheckboxChange} />
                                         {user?.username}
-
                                     </b>
                                 </label>
                                 {isLoginOpen && (
                                     <ul className="submenuUser">
-                                        <form className='login' >
+                                        <form className='login'>
                                             <div className="form-group">
-                                                <li><button href="/" onClick={() => { logout() }}><b className='menu'>Logout</b></button></li>
+                                                <li><button href="/" onClick={handleLogout}><b className='menu'>Logout</b></button></li>
                                             </div>
                                         </form>
                                     </ul>
                                 )}
                             </li>
-                        </>) : (
+                        </>
+                    ) : (
                         <>
                             <li><Link to="/"><b className='menu'>Inicio</b></Link></li>
                             <li><Link to="/Contacto"><b className='menu'>Contacto</b></Link></li>
@@ -101,41 +117,34 @@ function NavBar() {
                                 {isLoginOpen && (
                                     <ul className="submenu">
                                         {showInitialFields && (
-                                            <form className='login' onSubmit={handleSubmit(handleLoginSubmit)} >
+                                            <form className='login' onSubmit={handleSubmit(handleLoginSubmit)}>
                                                 <div>
                                                     <div className="form-group-login">
                                                         <label htmlFor="username"><b className='formulario'>Nombre Usuario</b></label>
                                                         <input type="text" {...register('username', { required: true })} />
-                                                        {
-                                                            errors.username && (
-                                                                <p className='text-red-500'>
-                                                                    Nombre de usuario es requerido
-                                                                </p>
-                                                            )
-                                                        }
+                                                        {errors.username && (
+                                                            <p className='text-red-500'>
+                                                                Nombre de usuario es requerido
+                                                            </p>
+                                                        )}
                                                     </div>
                                                     <div className="form-group-login">
                                                         <label htmlFor="password"><b className='formulario'>Contraseña</b></label>
                                                         <input type="password" {...register('password', { required: true })} />
-                                                        {
-                                                            errors.password && (
-                                                                <p className='text-red-500'>
-                                                                    Contraseña es requerida
-                                                                </p>
-                                                            )
-
-                                                        }
+                                                        {errors.password && (
+                                                            <p className='text-red-500'>
+                                                                Contraseña es requerida
+                                                            </p>
+                                                        )}
                                                     </div>
                                                     <div className="form-group-login">
                                                         &nbsp;&nbsp;&nbsp; <button className="button" type='submit'><b className='botones'>Entrar</b></button>
                                                     </div>
-                                                    {
-                                                        erroresLogin.map((error, i) => (
-                                                            <div className='bg-red-500 p-0 text-white' key={i}>
-                                                                {error}
-                                                            </div>
-                                                        ))
-                                                    }
+                                                    {erroresLogin.map((error, i) => (
+                                                        <div className='bg-red-500 p-0 text-white' key={i}>
+                                                            {error}
+                                                        </div>
+                                                    ))}
                                                 </div>
                                             </form>
                                         )}
