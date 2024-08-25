@@ -32,33 +32,31 @@ export const AuthProvider = ({ children }) => {
 
             if (error || !data) {
                 setErrors(["Usuario no encontrado."]);
-                return null; // Devuelve null si hay un error
+                return null;
             }
 
             const passwordMatch = await bcrypt.compare(user.password, data.password);
             if (!passwordMatch) {
                 setErrors(["Contraseña incorrecta."]);
-                return null; // Devuelve null si la contraseña es incorrecta
+                return null;
             }
 
             const token = `${data.uid}-${uuidv4()}`;
-            Cookies.set('token', token, { expires: 1 });
-            localStorage.setItem('token', token);
+            sessionStorage.setItem('token', token);
 
             setUser(data);
             setIsAuthenticated(true);
 
-            return data; // Devuelve los datos del usuario autenticado
+            return data;
         } catch (error) {
             setErrors([error.message || "Error al iniciar sesión."]);
-            return null; // Devuelve null si hay una excepción
+            return null;
         }
     };
 
 
     const logout = () => {
-        Cookies.remove('token');
-        localStorage.removeItem('token');
+        sessionStorage.removeItem('token');
         setIsAuthenticated(false);
         setUser(null);
     };
@@ -133,7 +131,7 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         async function checkLogin() {
-            const token = localStorage.getItem('token') || Cookies.get('token');
+            const token = sessionStorage.getItem('token');
             if (!token) {
                 setIsAuthenticated(false);
                 setUser(null);
