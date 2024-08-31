@@ -83,48 +83,64 @@ function Reservas() {
 
         obtenerReservasDesdeBD();
         obtenerReservasFechaDesdeBD();
+        const drivers = await getAllDrivers();
+        const activities = await getAllActivities();
     }, [getReservas, getFechaReservas, getCond, getVehiculo, getCliente]);
 
-    const addHeaderStyle = (ws) => {
-        // Add header style (blue color) to the worksheet
-        const headers = ws['!cols'] || [];
-        headers.forEach((col) => {
-            col.s = {
-                fill: {
-                    fgColor: { rgb: '0000FF' }
-                },
-                font: {
-                    color: { rgb: 'FFFFFF' },
-                    bold: true
-                }
-            };
-        });
-        ws['!cols'] = headers;
-        return ws;
-    };
-
-    const exportToExcel = (conductores, actividades) => {
+    const exportToExcel = (data, filename, drivers, activities) => {
+        const wsReservas = XLSX.utils.json_to_sheet(data.reservas);
+        const wsConductores = XLSX.utils.json_to_sheet(drivers);
+        const wsActividades = XLSX.utils.json_to_sheet(activities);
+    
         const wb = XLSX.utils.book_new();
-
-        // Process conductores sheet
-        const wsConductores = XLSX.utils.json_to_sheet(conductores);
-        addHeaderStyle(wsConductores);
+        XLSX.utils.book_append_sheet(wb, wsReservas, "Reservas");
         XLSX.utils.book_append_sheet(wb, wsConductores, "Conductores");
-
-        // Process actividades sheet
-        const wsActividades = XLSX.utils.json_to_sheet(actividades);
-        addHeaderStyle(wsActividades);
         XLSX.utils.book_append_sheet(wb, wsActividades, "Actividades");
-
-        const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-        saveAs(new Blob([wbout], { type: 'application/octet-stream' }), 'reservas_report.xlsx');
+    
+        const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+        saveAs(new Blob([wbout], { type: "application/octet-stream" }), filename);
     };
 
-    const handleDownloadReport = () => {
-        const sortedConductores = [...reservas].sort((a, b) => b.calificacion - a.calificacion);
-        const sortedActividades = [...reservasFecha].sort((a, b) => b.calificacion - a.calificacion);
 
-        exportToExcel(sortedConductores, sortedActividades);
+    const handleDownloadReport = async () => {
+    const data = mostrarReservas ? reservas : reservasFecha;
+    const filename = mostrarReservas ? "reservas_historico.xlsx" : "reservas_dia.xlsx";
+
+    if (mostrarReservas) {
+        try {
+            const drivers = await getAllDrivers();
+            const activities = await getAllActivities();
+
+            exportToExcel({ reservas: data }, filename, drivers, activities);
+        } catch (error) {
+            console.error('Error al generar el reporte:', error);
+        }
+    } else {
+        exportToExcel({ reservas: data }, filename, [], []);
+    }
+};
+
+
+    const getAllDrivers = async () => {
+    try {
+        const { data, error } = await supabase.from('inf_conductor_t').select('*');
+        if (error) throw new Error(error.message);
+        return data.sort((a, b) => b.calificacion - a.calificacion); // Ordenar por calificación de mayor a menor
+    } catch (error) {
+        console.error('Error al obtener conductores:', error);
+        return [];
+    }
+    };
+
+    const getAllActivities = async () => {
+        try {
+            const { data, error } = await supabase.from('actividades_t').select('*');
+            if (error) throw new Error(error.message);
+            return data;
+        } catch (error) {
+            console.error('Error al obtener actividades:', error);
+            return [];
+        }
     };
 
     return (
@@ -204,7 +220,7 @@ function Reservas() {
                                 <td>{reservF.status || 'Estado no disponible'}</td>
                                 <td className='status'>
                                     {reservF.status === 'pago en proceso' && (
-                                        <button onClick={() => handleAprobarPago(reservF.uid_compra)} className='BotonStatus'>
+                                        <button onClick={() => handleAprobarPago(reserv.uid_compra)} className='BotonStatus'>
                                             Aprobar
                                         </button>
                                     )}
