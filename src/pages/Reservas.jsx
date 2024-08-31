@@ -81,70 +81,22 @@ function Reservas() {
             }
         };
 
-        const obtenerDatosCondActi = async () => {
-            const drivers = await getAllDrivers();
-            const activities = await getAllActivities();
-        }
-
         obtenerReservasDesdeBD();
         obtenerReservasFechaDesdeBD();
-        obtenerDatosCondActi();
     }, [getReservas, getFechaReservas, getCond, getVehiculo, getCliente]);
 
-    const exportToExcel = (data, filename, drivers, activities) => {
-        const wsReservas = XLSX.utils.json_to_sheet(data.reservas);
-        const wsConductores = XLSX.utils.json_to_sheet(drivers);
-        const wsActividades = XLSX.utils.json_to_sheet(activities);
-    
+    const exportToExcel = (data, filename) => {
+        const ws = XLSX.utils.json_to_sheet(data);
         const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, wsReservas, "Reservas");
-        XLSX.utils.book_append_sheet(wb, wsConductores, "Conductores");
-        XLSX.utils.book_append_sheet(wb, wsActividades, "Actividades");
-    
+        XLSX.utils.book_append_sheet(wb, ws, "Reservas");
         const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
         saveAs(new Blob([wbout], { type: "application/octet-stream" }), filename);
     };
 
-
-    const handleDownloadReport = async () => {
-    const data = mostrarReservas ? reservas : reservasFecha;
-    const filename = mostrarReservas ? "reservas_historico.xlsx" : "reservas_dia.xlsx";
-
-    if (mostrarReservas) {
-        try {
-            const drivers = await getAllDrivers();
-            const activities = await getAllActivities();
-
-            exportToExcel({ reservas: data }, filename, drivers, activities);
-        } catch (error) {
-            console.error('Error al generar el reporte:', error);
-        }
-    } else {
-        exportToExcel({ reservas: data }, filename, [], []);
-    }
-};
-
-
-    const getAllDrivers = async () => {
-    try {
-        const { data, error } = await supabase.from('inf_conductor_t').select('*');
-        if (error) throw new Error(error.message);
-        return data.sort((a, b) => b.calificacion - a.calificacion); // Ordenar por calificación de mayor a menor
-    } catch (error) {
-        console.error('Error al obtener conductores:', error);
-        return [];
-    }
-    };
-
-    const getAllActivities = async () => {
-        try {
-            const { data, error } = await supabase.from('actividades_t').select('*');
-            if (error) throw new Error(error.message);
-            return data;
-        } catch (error) {
-            console.error('Error al obtener actividades:', error);
-            return [];
-        }
+    const handleDownloadReport = () => {
+        const data = mostrarReservas ? reservas : reservasFecha;
+        const filename = mostrarReservas ? "reservas_historico.xlsx" : "reservas_dia.xlsx";
+        exportToExcel(data, filename);
     };
 
     return (
