@@ -93,15 +93,13 @@ function Reservas() {
         obtenerDatosConductoresActividades();
     }, [getReservas, getFechaReservas, getCond, getVehiculo, getCliente]);
 
-    const exportToExcel = (data, filename, drivers, activities) => {
+    const exportToExcel = (data, filename, conductores) => {
         const wsReservas = XLSX.utils.json_to_sheet(data.reservas);
-        const wsConductores = XLSX.utils.json_to_sheet(drivers);
-        const wsActividades = XLSX.utils.json_to_sheet(activities);
+        const wsConductores = XLSX.utils.json_to_sheet(conductores);
     
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, wsReservas, "Reservas");
         XLSX.utils.book_append_sheet(wb, wsConductores, "Conductores");
-        XLSX.utils.book_append_sheet(wb, wsActividades, "Actividades");
     
         const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
         saveAs(new Blob([wbout], { type: "application/octet-stream" }), filename);
@@ -120,7 +118,7 @@ function Reservas() {
                 console.error('Error al generar el reporte:', error);
             }
         } else {
-            exportToExcel({ reservas: data }, filename, [], []);
+            exportToExcel({ reservas: data }, filename, []);
         }
     };
 
