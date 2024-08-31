@@ -3,7 +3,6 @@ import { useReserva } from '../context/reservaContext';
 import { useCond } from '../context/condContext';
 import { useAuth } from '../context/authContext';
 import { useVehiculo } from '../context/vehiculoContext';
-import { useActs } from '../context/actContext';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import '../assets/css/Reservas.css';
@@ -11,11 +10,10 @@ import '../assets/css/Reservas.css';
 function Reservas() {
     const [reservas, setReservas] = useState([]);
     const [reservasFecha, setReservasFecha] = useState([]);
-    const { getReservas, getFechaReservas, updateReservaStatus } = useReserva();
-    const { getCond, getAllCondsOrdenados } = useCond();
+    const { getReservas, getFechaReservas, updateReservaStatus, getAllCondsOrdenados, getAllActsOrdenadas } = useReserva();
+    const { getCond } = useCond();
     const { getVehiculo } = useVehiculo();
     const { getCliente } = useAuth();
-    const { getActs } = useActs();
     const [mostrarReservas, setMostrarReservas] = useState(true);
     const [mostrarDia, setMostrarDia] = useState(false);
 
