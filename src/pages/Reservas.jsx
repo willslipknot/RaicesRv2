@@ -83,8 +83,7 @@ function Reservas() {
 
         obtenerReservasDesdeBD();
         obtenerReservasFechaDesdeBD();
-        const drivers = await getAllDrivers();
-        const activities = await getAllActivities();
+
     }, [getReservas, getFechaReservas, getCond, getVehiculo, getCliente]);
 
     const exportToExcel = (data, filename, drivers, activities) => {
