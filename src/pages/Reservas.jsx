@@ -83,14 +83,14 @@ function Reservas() {
             }
         };
 
-        const obtenerDatosCondctoresActividades = async () =>{
+        const obtenerDatosConductoresActividades = async () =>{
             const conductores = await getAllCondsOrdenados();
             const actividades = await getActs();
         }
 
         obtenerReservasDesdeBD();
         obtenerReservasFechaDesdeBD();
-        obtenerDatosCondctoresActividades
+        obtenerDatosConductoresActividades();
     }, [getReservas, getFechaReservas, getCond, getVehiculo, getCliente]);
 
     const exportToExcel = (data, filename, drivers, activities) => {
