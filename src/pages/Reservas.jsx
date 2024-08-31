@@ -85,18 +85,46 @@ function Reservas() {
         obtenerReservasFechaDesdeBD();
     }, [getReservas, getFechaReservas, getCond, getVehiculo, getCliente]);
 
-    const exportToExcel = (data, filename) => {
-        const ws = XLSX.utils.json_to_sheet(data);
+    const addHeaderStyle = (ws) => {
+        // Add header style (blue color) to the worksheet
+        const headers = ws['!cols'] || [];
+        headers.forEach((col) => {
+            col.s = {
+                fill: {
+                    fgColor: { rgb: '0000FF' }
+                },
+                font: {
+                    color: { rgb: 'FFFFFF' },
+                    bold: true
+                }
+            };
+        });
+        ws['!cols'] = headers;
+        return ws;
+    };
+
+    const exportToExcel = (conductores, actividades) => {
         const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Reservas");
-        const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-        saveAs(new Blob([wbout], { type: "application/octet-stream" }), filename);
+
+        // Process conductores sheet
+        const wsConductores = XLSX.utils.json_to_sheet(conductores);
+        addHeaderStyle(wsConductores);
+        XLSX.utils.book_append_sheet(wb, wsConductores, "Conductores");
+
+        // Process actividades sheet
+        const wsActividades = XLSX.utils.json_to_sheet(actividades);
+        addHeaderStyle(wsActividades);
+        XLSX.utils.book_append_sheet(wb, wsActividades, "Actividades");
+
+        const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+        saveAs(new Blob([wbout], { type: 'application/octet-stream' }), 'reservas_report.xlsx');
     };
 
     const handleDownloadReport = () => {
-        const data = mostrarReservas ? reservas : reservasFecha;
-        const filename = mostrarReservas ? "reservas_historico.xlsx" : "reservas_dia.xlsx";
-        exportToExcel(data, filename);
+        const sortedConductores = [...reservas].sort((a, b) => b.calificacion - a.calificacion);
+        const sortedActividades = [...reservasFecha].sort((a, b) => b.calificacion - a.calificacion);
+
+        exportToExcel(sortedConductores, sortedActividades);
     };
 
     return (
@@ -176,7 +204,7 @@ function Reservas() {
                                 <td>{reservF.status || 'Estado no disponible'}</td>
                                 <td className='status'>
                                     {reservF.status === 'pago en proceso' && (
-                                        <button onClick={() => handleAprobarPago(reserv.uid_compra)} className='BotonStatus'>
+                                        <button onClick={() => handleAprobarPago(reservF.uid_compra)} className='BotonStatus'>
                                             Aprobar
                                         </button>
                                     )}
