@@ -3,6 +3,7 @@ import { useReserva } from '../context/reservaContext';
 import { useCond } from '../context/condContext';
 import { useAuth } from '../context/authContext';
 import { useVehiculo } from '../context/vehiculoContext';
+import { useActs } from '../context/actContext';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import '../assets/css/Reservas.css';
@@ -11,9 +12,10 @@ function Reservas() {
     const [reservas, setReservas] = useState([]);
     const [reservasFecha, setReservasFecha] = useState([]);
     const { getReservas, getFechaReservas, updateReservaStatus } = useReserva();
-    const { getCond } = useCond();
+    const { getCond, getAllCondsOrdenados } = useCond();
     const { getVehiculo } = useVehiculo();
     const { getCliente } = useAuth();
+    const { getActs } = useActs();
     const [mostrarReservas, setMostrarReservas] = useState(true);
     const [mostrarDia, setMostrarDia] = useState(false);
 
@@ -81,22 +83,45 @@ function Reservas() {
             }
         };
 
+        const obtenerDatosCondctoresActividades = async () =>{
+            const conductores = await getAllCondsOrdenados();
+            const actividades = await getActs();
+        }
+
         obtenerReservasDesdeBD();
         obtenerReservasFechaDesdeBD();
+        obtenerDatosCondctoresActividades
     }, [getReservas, getFechaReservas, getCond, getVehiculo, getCliente]);
 
-    const exportToExcel = (data, filename) => {
-        const ws = XLSX.utils.json_to_sheet(data);
+    const exportToExcel = (data, filename, drivers, activities) => {
+        const wsReservas = XLSX.utils.json_to_sheet(data.reservas);
+        const wsConductores = XLSX.utils.json_to_sheet(drivers);
+        const wsActividades = XLSX.utils.json_to_sheet(activities);
+    
         const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Reservas");
+        XLSX.utils.book_append_sheet(wb, wsReservas, "Reservas");
+        XLSX.utils.book_append_sheet(wb, wsConductores, "Conductores");
+        XLSX.utils.book_append_sheet(wb, wsActividades, "Actividades");
+    
         const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
         saveAs(new Blob([wbout], { type: "application/octet-stream" }), filename);
     };
-
-    const handleDownloadReport = () => {
+    
+    const handleDownloadReport = async () => {
         const data = mostrarReservas ? reservas : reservasFecha;
         const filename = mostrarReservas ? "reservas_historico.xlsx" : "reservas_dia.xlsx";
-        exportToExcel(data, filename);
+    
+        if (mostrarReservas) {
+            try {
+                const conductores = await getAllCondsOrdenados();
+    
+                exportToExcel({ reservas: data }, filename, conductores);
+            } catch (error) {
+                console.error('Error al generar el reporte:', error);
+            }
+        } else {
+            exportToExcel({ reservas: data }, filename, [], []);
+        }
     };
 
     return (
