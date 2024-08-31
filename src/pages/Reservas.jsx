@@ -89,7 +89,7 @@ function Reservas() {
         const wsReservas = XLSX.utils.json_to_sheet(data.reservas);
         const wsConductores = XLSX.utils.json_to_sheet(conductores);
         const wsActividades = XLSX.utils.json_to_sheet(actividades);
-    
+
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, wsReservas, "Reservas");
         XLSX.utils.book_append_sheet(wb, wsConductores, "Conductores");
@@ -98,17 +98,53 @@ function Reservas() {
         const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
         saveAs(new Blob([wbout], { type: "application/octet-stream" }), filename);
     };
-    
+
     const handleDownloadReport = async () => {
         const data = mostrarReservas ? reservas : reservasFecha;
         const filename = mostrarReservas ? "reservas_historico.xlsx" : "reservas_dia.xlsx";
     
         if (mostrarReservas) {
             try {
-                const conductores = await getAllCondsOrdenados();
                 const actividades = await getAllActsOrdenadas();
+                const conductores = await getAllCondsOrdenados();    
+
+                const actividadMap = actividades.reduce((acc, act) => {
+                    acc[act.uid_actividades] = act.nombre;
+                    return acc;
+                }, {});
     
-                exportToExcel({ reservas: data }, filename, conductores, actividades);
+                const reservasTransformadas = data.map(reserv => {
+                    const transformedReserv = { ...reserv };
+    
+                    for (let i = 1; i <= 9; i++) {
+                        const key = `act_${i}`;
+                        if (transformedReserv[key] && actividadMap[transformedReserv[key]]) {
+                            transformedReserv[key] = actividadMap[transformedReserv[key]];
+                        }
+                    }
+    
+                    return {
+                        uid_compra: reserv.uid_compra,
+                        nombreRuta: reserv.nombreRuta || 'Nombre no disponible',
+                        act_1: transformedReserv.act_1 || 'N/A',
+                        act_2: transformedReserv.act_2 || 'N/A',
+                        act_3: transformedReserv.act_3 || 'N/A',
+                        act_4: transformedReserv.act_4 || 'N/A',
+                        act_5: transformedReserv.act_5 || 'N/A',
+                        act_6: transformedReserv.act_6 || 'N/A',
+                        act_7: transformedReserv.act_7 || 'N/A',
+                        act_8: transformedReserv.act_8 || 'N/A',
+                        act_9: transformedReserv.act_9 || 'N/A',
+                        conductor: reserv.conductor,
+                        vehiculo: reserv.vehiculo,
+                        cliente: reserv.cliente,
+                        telefono: reserv.telefono,
+                        fecha_reserva: reserv.fecha_reserva,
+                        hora: reserv.hora,
+                    };
+                });
+    
+                exportToExcel({ reservas: reservasTransformadas }, filename, conductores, actividades);
             } catch (error) {
                 console.error('Error al generar el reporte:', error);
             }
@@ -116,7 +152,7 @@ function Reservas() {
             exportToExcel({ reservas: data }, filename, [], []);
         }
     };
-
+    
     return (
         <div className='tablaRes'>
             <div className="buttons3">
