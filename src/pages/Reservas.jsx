@@ -93,7 +93,7 @@ function Reservas() {
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, wsReservas, "Reservas");
         XLSX.utils.book_append_sheet(wb, wsConductores, "Conductores");
-        XLSX.utils.book_append_sheet(wb, wsConductores, "Actividades");
+        XLSX.utils.book_append_sheet(wb, wsActividades, "Actividades");
     
         const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
         saveAs(new Blob([wbout], { type: "application/octet-stream" }), filename);
