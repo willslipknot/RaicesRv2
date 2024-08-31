@@ -10,7 +10,7 @@ import '../assets/css/Reservas.css';
 function Reservas() {
     const [reservas, setReservas] = useState([]);
     const [reservasFecha, setReservasFecha] = useState([]);
-    const { getReservas, getFechaReservas, updateReservaStatus, getAllCondsOrdenados, getAllActsOrdenadas } = useReserva();
+    const { getReservas, getFechaReservas, updateReservaStatus } = useReserva();
     const { getCond } = useCond();
     const { getVehiculo } = useVehiculo();
     const { getCliente } = useAuth();
@@ -85,36 +85,18 @@ function Reservas() {
         obtenerReservasFechaDesdeBD();
     }, [getReservas, getFechaReservas, getCond, getVehiculo, getCliente]);
 
-    const exportToExcel = (data, filename, conductores, actividades) => {
-        const wsReservas = XLSX.utils.json_to_sheet(data.reservas);
-        const wsConductores = XLSX.utils.json_to_sheet(conductores);
-        const wsActividades = XLSX.utils.json_to_sheet(actividades);
-    
+    const exportToExcel = (data, filename) => {
+        const ws = XLSX.utils.json_to_sheet(data);
         const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, wsReservas, "Reservas");
-        XLSX.utils.book_append_sheet(wb, wsConductores, "Conductores");
-        XLSX.utils.book_append_sheet(wb, wsActividades, "Actividades");
-    
+        XLSX.utils.book_append_sheet(wb, ws, "Reservas");
         const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
         saveAs(new Blob([wbout], { type: "application/octet-stream" }), filename);
     };
-    
-    const handleDownloadReport = async () => {
+
+    const handleDownloadReport = () => {
         const data = mostrarReservas ? reservas : reservasFecha;
         const filename = mostrarReservas ? "reservas_historico.xlsx" : "reservas_dia.xlsx";
-    
-        if (mostrarReservas) {
-            try {
-                const conductores = await getAllCondsOrdenados();
-                const actividades = await getAllActsOrdenadas();
-    
-                exportToExcel({ reservas: data }, filename, conductores, actividades);
-            } catch (error) {
-                console.error('Error al generar el reporte:', error);
-            }
-        } else {
-            exportToExcel({ reservas: data }, filename, [], []);
-        }
+        exportToExcel(data, filename);
     };
 
     return (
