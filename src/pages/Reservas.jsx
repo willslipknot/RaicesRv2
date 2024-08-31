@@ -81,8 +81,14 @@ function Reservas() {
             }
         };
 
+        const obtenerDatosCondActi = async () => {
+            const drivers = await getAllDrivers();
+            const activities = await getAllActivities();
+        }
+
         obtenerReservasDesdeBD();
         obtenerReservasFechaDesdeBD();
+        obtenerDatosCondActi();
     }, [getReservas, getFechaReservas, getCond, getVehiculo, getCliente]);
 
     const exportToExcel = (data, filename, drivers, activities) => {
