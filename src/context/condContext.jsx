@@ -34,23 +34,6 @@ export function CondProvider({ children }) {
 
     }
 
-    const getAllCondsOrdenados= async () => {
-        try {
-            const { data, error } = await supabase
-                .from('inf_conductor_t')
-                .select('*');
-
-            if (error) {
-                throw new Error(error.message);
-            }
-
-            return data.sort((a, b) => b.calificacion - a.calificacion);
-
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
     const getContConds = async () => {
         try {
             const { data: conductores, error } = await supabase
@@ -234,8 +217,7 @@ export function CondProvider({ children }) {
             deleteCond,
             getCond,
             updateCond,
-            getContConds,
-            getAllCondsOrdenados
+            getContConds
 
         }}>
             {children}
