@@ -146,6 +146,40 @@ export function ReservaProvider({ children }) {
         }
     };
 
+    const getAllCondsOrdenados= async () => {
+        try {
+            const { data, error } = await supabase
+                .from('inf_conductor_t')
+                .select('*');
+
+            if (error) {
+                throw new Error(error.message);
+            }
+
+            return data.sort((a, b) => b.calificacion - a.calificacion);
+
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const getAllActsOrdenadas= async () => {
+        try {
+            const { data, error } = await supabase
+                .from('actividades_t')
+                .select('*');
+
+            if (error) {
+                throw new Error(error.message);
+            }
+
+            return data.sort((a, b) => b.calificacion - a.calificacion);
+
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     return (
         <reservaContext.Provider value={{
             reservas,
@@ -154,7 +188,9 @@ export function ReservaProvider({ children }) {
             getFechaReservas,
             getContReserva,
             getTopActivities,
-            updateReservaStatus
+            updateReservaStatus,
+            getAllActsOrdenadas,
+            getAllCondsOrdenados
         }}>
             {children}
         </reservaContext.Provider>
