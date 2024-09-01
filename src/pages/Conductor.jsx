@@ -129,12 +129,13 @@ function Conductor() {
             await createUserConds(formData);
 
             setMensaje('Conductor creado exitosamente');
+            navigate('/Conductores');
             reset();
             
 
             setTimeout(() => {
                 setMensaje('');
-                navigate('/Conductores');
+                
             }, 3000);
         } catch (error) {
             console.error('Error al crear conductor:', error);
