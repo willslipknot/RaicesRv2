@@ -129,7 +129,7 @@ function Conductor() {
             await createUserConds(formData);
 
             setMensaje('Conductor creado exitosamente');
-            navigate('/Conductores');
+            navigate('/Actividades');
             reset();
             
 
