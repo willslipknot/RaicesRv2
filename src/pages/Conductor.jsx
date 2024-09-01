@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import '../assets/css/Conductor.css';
 import NavBar from '../components/Home/NavBar.jsx';
 import { useCond } from '../context/condContext';
@@ -7,6 +8,7 @@ import { useVehiculo } from '../context/vehiculoContext.jsx';
 import { useAuth } from '../context/authContext.jsx';
 import CondCard from '../components/UserLog/CondCard';
 import VehCard from '../components/UserLog/VehCard.jsx';
+
 
 const opciones = [
     { label: 'a2', value: 'a2' },
@@ -122,6 +124,7 @@ function Conductor() {
 
             setMensaje('Conductor creado exitosamente');
             reset();
+            navigate('/Conductores');
 
             setTimeout(() => {
                 setMensaje('');

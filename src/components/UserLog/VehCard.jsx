@@ -61,7 +61,7 @@ function VehCard({ veh }) {
                     <div className='buttons1'>
                         <button onDoubleClick={() => {
                             if (window.confirm('¿Estás seguro de que deseas eliminar este vehiculo?')) {
-                                deleteVehiculo(veh.id);
+                                deleteVehiculo(veh.uid_vehiculo);
                             }
                         }}>Eliminar</button>
                     </div>

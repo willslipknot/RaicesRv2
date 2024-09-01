@@ -81,64 +81,70 @@ export function VehiculoProvider({ children }) {
 
     // Función para crear un vehículo
     const createVehiculos = useCallback(async (formData) => {
-        setLoading(true);
         const file = formData.get('photo_perfil');
-        if (file) {
-            const url = await uploadImageAndGetURL(file);
-            formData.set('photo_perfil', url);
+        if (!file) {
+            console.error('No file found in formData');
+            return;
         }
+        const url = await uploadImageAndGetURL(file);
+        const placa = formData.get('placa').toLowerCase();
+        const marca = formData.get('marca').toLowerCase();
+        const linea = formData.get('linea').toLowerCase();
+        const modelo = formData.get('modelo').toLowerCase();
+        const cilindra = formData.get('cilindra').toLowerCase();
+        const color = formData.get('color').toLowerCase();
+        const clase = formData.get('clase').toLowerCase();
+        const carroceria = formData.get('carroceria').toLowerCase();
+        const combustible = formData.get('combustible').toLowerCase();
+        const tipo_vehiculo = formData.get('tipo_licencia').toLowerCase();
 
-        const newVehiculo = {
-            placa: formData.get('placa').toLowerCase(),
-            marca: formData.get('marca').toLowerCase(),
-            linea: formData.get('linea').toLowerCase(),
-            modelo: formData.get('modelo').toLowerCase(),
-            cilindra: formData.get('cilindra').toLowerCase(),
-            color: formData.get('color').toLowerCase(),
-            clase: formData.get('clase').toLowerCase(),
-            carroceria: formData.get('carroceria').toLowerCase(),
-            combustible: formData.get('combustible').toLowerCase(),
-            tipo_vehiculo: formData.get('tipo_vehiculo').toLowerCase(),
-            photo_perfil: formData.get('photo_perfil'),
-            disponible: "1"
-        };
 
         try {
-            const { data: newVehiculos, error } = await supabase
+            const { data: newVehiculo, error } = await supabase
                 .from('inf_vehi_t')
-                .insert([newVehiculo]);
+                .insert([
+                    {
+                        placa,
+                        marca,
+                        linea,
+                        modelo,
+                        photo_perfil: url,
+                        cilindra,
+                        color,
+                        clase,
+                        carroceria,
+                        combustible,
+                        disponible: "1",
+                        tipo_vehiculo
+                    },
+                ]);
 
             if (error) {
                 throw new Error(error.message);
             }
-            setVehiculos(prevVehiculos => [...prevVehiculos, ...newVehiculos]);
+            setVehiculos(newVehiculo);
         } catch (error) {
-            console.error('Error al crear el vehículo:', error.message);
-        } finally {
-            setLoading(false);
+            console.error('Error:', error.message);
         }
-    }, []);
+    },[]);
+
 
     // Función para eliminar un vehículo
-    const deleteVehiculo = useCallback(async (uid_vehiculo) => {
-        setLoading(true);
+    const deleteVehiculo =useCallback(async (uid_vehiculo) => {
         try {
-            const { error } = await supabase
+            const { data, error } = await supabase
                 .from('inf_vehi_t')
                 .delete()
-                .eq('uid_vehiculo', uid_vehiculo);
-
+                .eq('uid_vehiculo', uid_vehiculo).single();
             if (error) {
                 throw new Error(error.message);
             }
 
-            setVehiculos(prevVehiculos => prevVehiculos.filter(veh => veh.uid_vehiculo !== uid_vehiculo));
         } catch (error) {
-            console.error('Error al eliminar el vehículo:', error);
-        } finally {
-            setLoading(false);
+            console.error(error);
         }
-    }, []);
+
+    },[]);
 
     // Función para obtener un vehículo específico
     const getVehiculo = useCallback(async (uid_vehiculo) => {
