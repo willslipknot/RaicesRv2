@@ -126,7 +126,7 @@ function Conductor() {
 
         try {
             await createConds(formData);
-            await createUserConds(formData);
+            
 
             setMensaje('Conductor creado exitosamente');
             navigate('/Conductores');
