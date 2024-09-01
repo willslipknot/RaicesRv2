@@ -85,12 +85,12 @@ function Conductor() {
         setFile(e.target.files[0]);
     };
 
-    const onSubmit = handleSubmit((data) => {
+    const onSubmit = handleSubmit(async (data) => {
         if (!file) {
             alert('Debes subir un archivo');
             return;
         }
-
+    
         const formData = new FormData();
         formData.append('first_name', data.first_name);
         formData.append('second_name', data.second_name);
@@ -102,17 +102,23 @@ function Conductor() {
         formData.append('uid_vehiculo', data.uid_vehiculo);
         formData.append('tipo_licencia', data.tipo_licencia);
         formData.append('photo_perfil', file);
+    
+        try {
 
-        createConds(formData);
-        createUserConds(formData);
-        create_UserCond(formData);
-
-        setMensaje('Conductor creado exitosamente');
-        reset();
-
-        setTimeout(() => {
-            setMensaje('');
-        }, 3000);
+            await createConds(formData);
+            await createUserConds(formData);
+            await create_UserCond(formData);
+    
+            setMensaje('Conductor creado exitosamente');
+            reset();
+    
+            setTimeout(() => {
+                setMensaje('');
+            }, 3000);
+        } catch (error) {
+            console.error('Error al crear conductor:', error);
+            alert('Ocurrió un error al crear el conductor');
+        }
     });
 
     const onSubmit1 = handleSubmit((data) => {

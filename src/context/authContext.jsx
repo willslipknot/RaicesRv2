@@ -100,6 +100,8 @@ export const AuthProvider = ({ children }) => {
         const correo = formData.get('correo').toLowerCase();
         const phone_number = formData.get('phone_number');
         const tipoUsuario = "Conductor";
+        const cedula = formData.get('cedula');
+        const contraseña = "CC" + cedula;
 
         try {
             const { data: newConductor, error } = await supabase
@@ -114,7 +116,8 @@ export const AuthProvider = ({ children }) => {
                         username,
                         phone_number,
                         correo,
-                        tipoUser: tipoUsuario
+                        tipoUser: tipoUsuario,
+                        password: contraseña
                     },
                 ]);
 
@@ -189,21 +192,26 @@ export const AuthProvider = ({ children }) => {
     };
 
     const create_UserCond = async (formData) => {
-
         const cedula = formData.get('cedula');
         const correo = formData.get('correo').toLowerCase();
-        const tipo_licencia = formData.get('tipo_licencia').toLowerCase();
-
-        const contraseña = cedula + tipo_licencia;
-        console.log(contraseña);
+        const contraseña = "CC" + cedula;
+    
+        console.log('user', correo);
+        console.log('contra',contraseña);
+        
         const { data, error } = await supabase.auth.signUp({
             email: correo,
             password: contraseña,
-        })
-
+        });
+    
+        if (error) {
+            console.error("Error al crear el usuario:", error.message);
+            return null;
+        }
+    
         return data;
-    }
-
+    };
+    
     const deleteCondUser = async (correo) => {
         try {
             const { data, error } = await supabase
@@ -213,13 +221,10 @@ export const AuthProvider = ({ children }) => {
             if (error) {
                 throw new Error(error.message);
             }
-            if (!data) {
-                console.error('No existe el Conductor, por lo que no se eliminó nada:', error);
-            }
+
         } catch (error) {
             console.error(error);
         }
-
     }
     
 

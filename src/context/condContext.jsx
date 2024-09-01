@@ -105,9 +105,6 @@ export function CondProvider({ children }) {
             if (error) {
                 throw new Error(error.message);
             }
-            if (!data) {
-                console.error('No existe el Conductor, por lo que no se eliminó nada:', error);
-            }
         } catch (error) {
             console.error(error);
         }

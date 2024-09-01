@@ -8,7 +8,7 @@ import '../../assets/css/NavBar.css';
 function NavBar() {
     const [isLoginOpen, setIsLoginOpen] = useState(false);
     const [showInitialFields, setShowInitialFields] = useState(true);
-    const [admin, setAdmin] = useState(null); // Cambié null para hacer mejor el manejo de estados
+    const [admin, setAdmin] = useState(null); 
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const { isAuthenticated, signin, errors: erroresLogin, logout, user, getUserRole } = useAuth();
     const navigate = useNavigate();

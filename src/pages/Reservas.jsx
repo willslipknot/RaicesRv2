@@ -41,9 +41,17 @@ function Reservas() {
                 const reservasData = await getReservas();
                 const reservasConDetalles = await Promise.all(reservasData.map(async (reserv) => {
                     const conductorData = await getCond(reserv.uid_conductor);
-                    const vehiculoData = await getVehiculo(reserv.uid_vehiculo);
+                    const uid_vehiculo = conductorData?.data?.uid_vehiculo;
+                    let vehiculoData;
+                    
+                    if (uid_vehiculo) {
+                        vehiculoData = await getVehiculo(uid_vehiculo);
+                    } else {
+                        vehiculoData = { data: { placa: 'Placa no disponible' } };
+                    }
+    
                     const clienteData = await getCliente(reserv.uid_cliente);
-
+    
                     return {
                         ...reserv,
                         conductor: `${conductorData?.data?.first_name || 'Nombre no disponible'} ${conductorData?.data?.first_last_name || ''}`,
@@ -63,9 +71,17 @@ function Reservas() {
                 const reservasFechaData = await getFechaReservas();
                 const reservasFechaConDetalles = await Promise.all(reservasFechaData.map(async (reservF) => {
                     const conductorData = await getCond(reservF.uid_conductor);
-                    const vehiculoData = await getVehiculo(reservF.uid_vehiculo);
+                    const uid_vehiculo = conductorData?.data?.uid_vehiculo;
+                    let vehiculoData;
+    
+                    if (uid_vehiculo) {
+                        vehiculoData = await getVehiculo(uid_vehiculo);
+                    } else {
+                        vehiculoData = { data: { placa: 'Placa no disponible' } };
+                    }
+    
                     const clienteData = await getCliente(reservF.uid_cliente);
-
+    
                     return {
                         ...reservF,
                         conductor: `${conductorData?.data?.first_name || 'Nombre no disponible'} ${conductorData?.data?.first_last_name || ''}`,
@@ -74,17 +90,17 @@ function Reservas() {
                         telefono: clienteData?.data?.phone_number || 'Teléfono no disponible'
                     };
                 }));
-
+    
                 setReservasFecha(reservasFechaConDetalles);
             } catch (error) {
                 console.error('Error al obtener reservas:', error);
             }
         };
-
+    
         obtenerReservasDesdeBD();
         obtenerReservasFechaDesdeBD();
     }, [getReservas, getFechaReservas, getCond, getVehiculo, getCliente]);
-
+    
     const exportToExcel = (data, filename, conductores, actividades) => {
         const wsReservas = XLSX.utils.json_to_sheet(data.reservas);
         const wsConductores = XLSX.utils.json_to_sheet(conductores);
