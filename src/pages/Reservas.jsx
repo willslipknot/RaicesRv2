@@ -55,7 +55,7 @@ function Reservas() {
                     return {
                         ...reserv,
                         conductor: `${conductorData?.data?.first_name || 'Nombre no disponible'} ${conductorData?.data?.first_last_name || ''}`,
-                        vehiculo: vehiculoData?.data?.placa || 'Placa no disponible',
+                        vehiculo: vehiculoData?.placa || 'Placa no disponible',
                         cliente: `${clienteData?.data?.first_name || 'Nombre no disponible'} ${clienteData?.data?.first_last_name || ''}`,
                         telefono: clienteData?.data?.phone_number || 'Teléfono no disponible'
                     };
