@@ -270,8 +270,10 @@ function CondCard({ cond }) {
                             )}
                         </div>
                         <p className='buttons1'><button onDoubleClick={() => {
-                            deleteCond(cond.uid_conductor);
-                            deleteCondUser(cond.correo);
+                             if (window.confirm('¿Estás seguro de que deseas eliminar este conductor?')){
+                                deleteCond(cond.uid_conductor);
+                                deleteCondUser(cond.correo);
+                             }
                         }}>Eliminar</button></p>
                     </div>
                 </div>

@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react"
+import { createContext, useContext, useState, useCallback } from "react"
 import supabase from '../db1.js';
 import { uploadImageAndGetURL } from '../middlewares/imagen.js';
 
@@ -18,7 +18,7 @@ export function CondProvider({ children }) {
 
     const [conds, setConds] = useState([]);
 
-    const getConds = async () => {
+    const getConds = useCallback(async () => {
         try {
             const { data, error } = await supabase
                 .from('inf_conductor_t')
@@ -32,9 +32,9 @@ export function CondProvider({ children }) {
             console.error(error);
         }
 
-    }
+    }, []);
 
-    const getContConds = async () => {
+    const getContConds = useCallback(async () => {
         try {
             const { data: conductores, error } = await supabase
                 .from('inf_conductor_t')
@@ -48,10 +48,10 @@ export function CondProvider({ children }) {
         } catch (error) {
             console.error('Error al obtener el número de conductores:', error);
         }
-    };
+    }, []);
 
 
-    const createConds = async (formData) => {
+    const createConds =useCallback( async (formData) => {
         const file = formData.get('photo_perfil');
         if (!file) {
             console.error('No file found in formData');
@@ -59,6 +59,7 @@ export function CondProvider({ children }) {
         }
 
         const url = await uploadImageAndGetURL(file);
+        const id = formData.get('uid_conductor');
         const first_name = formData.get('first_name').toLowerCase();
         const second_name = formData.get('second_name').toLowerCase();
         const first_last_name = formData.get('first_last_name').toLowerCase();
@@ -74,6 +75,7 @@ export function CondProvider({ children }) {
                 .from('inf_conductor_t')
                 .insert([
                     {
+                        uid_conductor:id,
                         first_name,
                         second_name,
                         first_last_name,
@@ -94,9 +96,9 @@ export function CondProvider({ children }) {
         } catch (error) {
             console.error('Error:', error.message);
         }
-    }
+    }, []);
 
-    const deleteCond = async (uid_conductor) => {
+    const deleteCond = useCallback(async (uid_conductor) => {
         try {
             const { data, error } = await supabase
                 .from('inf_conductor_t')
@@ -109,9 +111,9 @@ export function CondProvider({ children }) {
             console.error(error);
         }
 
-    }
+    }, []);
 
-    const getCond = async (uid_conductor) => {
+    const getCond = useCallback(async (uid_conductor) => {
         try {
             const { data, error } = await supabase
                 .from('inf_conductor_t')
@@ -128,9 +130,9 @@ export function CondProvider({ children }) {
             console.error('Error al obtener el Conductor:', error);
             return null;
         }
-    }
+    }, []);
 
-    const updateCond = async (uid_conductor, formData) => {
+    const updateCond = useCallback(async (uid_conductor, formData) => {
         try {
             let updatedCond = {};
             let isFormData = typeof formData.get === 'function';
@@ -203,7 +205,7 @@ export function CondProvider({ children }) {
         } catch (error) {
             console.error('Error al actualizar Conductor:', error);
         }
-    };
+    }, []);
 
 
     return (

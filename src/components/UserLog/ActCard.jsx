@@ -10,21 +10,17 @@ const opciones = [
 ];
 
 function ActCard({ act }) {
-
     const [modalOpen, setModalOpen] = useState(false);
-    const { deleteAct, getAct, updateAct } = useActs()
+    const { deleteAct, getAct, updateAct } = useActs();
     const [selectedId, setSelectedId] = useState(null);
     const { register, handleSubmit, reset, setValue } = useForm();
-    const [setTip] = useState('');
     const [file, setFile] = useState(null);
-    const [nombreArchivo] = useState('');
     const [mensaje, setMensaje] = useState('');
 
     useEffect(() => {
         if (selectedId !== null) {
             async function loadAct() {
                 const acti = await getAct(selectedId);
-                console.log('dd', acti)
                 if (acti) {
                     setValue('nombre', acti.nombre);
                     setValue('direccion', acti.direccion);
@@ -57,10 +53,10 @@ function ActCard({ act }) {
     };
 
     const handleImagenChange = (e) => {
-        setFile(e.target.files[0])
-    }
+        setFile(e.target.files[0]);
+    };
 
-    const onSubmit = handleSubmit(async (data) => {
+    const onSubmit = async (data) => {
         try {
             if (selectedId !== null) {
                 if (file) {
@@ -89,17 +85,11 @@ function ActCard({ act }) {
                 setMensaje('');
             }, 3000);
         }
-    });
-
+    };
 
     const handleLimpiarClick = () => {
         reset();
         setMensaje('');
-
-    };
-
-    const handleTipoChange = (e) => {
-        setTip(e.target.value);
     };
 
     return (
@@ -114,30 +104,29 @@ function ActCard({ act }) {
                         {modalOpen && (
                             <div className="modal" onClick={handleCloseModal}>
                                 <div className="actividad-form" onClick={(e) => e.stopPropagation()}>
-                                    <form onSubmit={onSubmit} className='actividad'>
-
+                                    <form onSubmit={handleSubmit(onSubmit)} className='actividad'>
                                         <div className="form-group">
                                             <label htmlFor="nombre">Nombre</label>
                                             <input type="text" className='formulario' {...register("nombre", { required: true })} />
                                         </div>
 
                                         <div className="form-group">
-                                            <label htmlFor="direccion">Coordenada X</label>
+                                            <label htmlFor="coordenadasX">Coordenada X</label>
                                             <input type="text" className='formulario' {...register("coordenadasX", { required: true })} />
                                         </div>
 
                                         <div className="form-group">
-                                            <label htmlFor="direccion">Coordenada Y</label>
+                                            <label htmlFor="coordenadasY">Coordenada Y</label>
                                             <input type="text" className='formulario' {...register("coordenadasY", { required: true })} />
                                         </div>
 
                                         <div className="form-group">
-                                            <label htmlFor="direccion">Hora Inicio</label>
+                                            <label htmlFor="hr_inicio">Hora Inicio</label>
                                             <input type="time" className='formulario' {...register("hr_inicio", { required: true })} />
                                         </div>
 
                                         <div className="form-group">
-                                            <label htmlFor="direccion">Hora Final</label>
+                                            <label htmlFor="hr_fin">Hora Final</label>
                                             <input type="time" className='formulario' {...register("hr_fin", { required: true })} />
                                         </div>
 
@@ -148,7 +137,7 @@ function ActCard({ act }) {
 
                                         <div className="form-group">
                                             <label htmlFor="tipo">Tipo</label>&nbsp;&nbsp;
-                                            <select {...register('tipo', { required: true })} onChange={handleTipoChange} type="text" className='formulario-tipo' >
+                                            <select {...register('tipo', { required: true })} className='formulario-tipo'>
                                                 <option value="">Selecciona un tipo</option>
                                                 {opciones.map((opcion) => (
                                                     <option key={opcion.value} value={opcion.value}>
@@ -160,11 +149,11 @@ function ActCard({ act }) {
 
                                         <div className="form-group-image">
                                             <input type="file" onChange={handleImagenChange} className='formulario1' />
-                                            <input type="text" value={nombreArchivo} hidden className='formulario' {...register("photo")} />
+                                            <input type="text" hidden className='formulario' {...register("photo")} />
                                         </div>
 
                                         <div className="form-group">
-                                            <button type='submit' onClick={handleSubmit}>Editar</button>
+                                            <button type='submit'>Editar</button>
                                             <button type='button' onClick={handleLimpiarClick}>Limpiar</button>
                                         </div>
 
@@ -174,9 +163,13 @@ function ActCard({ act }) {
                             </div>
                         )}
 
-                        <p className='buttons1'><button onDoubleClick={() => {
-                            deleteAct(act.uid_actividades);
-                        }}>Eliminar</button></p>
+                        <p className='buttons1'>
+                            <button onClick={() => {
+                                if (window.confirm('¿Estás seguro de que deseas eliminar esta actividad?')) {
+                                    deleteAct(act.uid_actividades);
+                                }
+                            }}>Eliminar</button>
+                        </p>
                     </div>
                 </div>
             </div>

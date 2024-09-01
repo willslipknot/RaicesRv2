@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useCallback } from "react";
 import supabase from '../db1.js';
 import { uploadImageAndGetURL } from '../middlewares/imagen.js';
 
@@ -6,19 +6,19 @@ const VehiculoContext = createContext();
 
 export const useVehiculo = () => {
     const context = useContext(VehiculoContext);
-
     if (!context) {
-        throw new Error("useVehiculo must be used whitin a TaskProvider")
+        throw new Error("useVehiculo must be used within a VehiculoProvider");
     }
     return context;
-}
+};
 
 export function VehiculoProvider({ children }) {
-
     const [vehiculos, setVehiculos] = useState([]);
+    const [loading, setLoading] = useState(false);
 
-
-    const getVehiculos = async () => {
+    // Función para obtener todos los vehículos
+    const getVehiculos = useCallback(async () => {
+        setLoading(true);
         try {
             const { data, error } = await supabase
                 .from('inf_vehi_t')
@@ -27,26 +27,25 @@ export function VehiculoProvider({ children }) {
             if (error) {
                 throw new Error(error.message);
             }
-            setVehiculos(data)
+            setVehiculos(data);
         } catch (error) {
-            console.error(error);
+            console.error('Error al obtener vehículos:', error);
+        } finally {
+            setLoading(false);
         }
+    }, []);
 
-    }
-
-    const getVeh = async (clase) => {
+    // Función para obtener vehículos por clase
+    const getVeh = useCallback(async (clase) => {
+        setLoading(true);
         try {
             const { data, error } = await supabase
                 .from('inf_vehi_t')
                 .select('*')
-                .eq('clase', clase);
+                .eq('tipo_vehiculo', clase);
 
             if (error) {
                 throw new Error(error.message);
-            }
-
-            if (data.length === 0) {
-                return [];
             }
 
             setVehiculos(data);
@@ -54,12 +53,16 @@ export function VehiculoProvider({ children }) {
         } catch (error) {
             console.error('Error al obtener vehículos por clase:', error);
             return null;
+        } finally {
+            setLoading(false);
         }
-    };
+    }, []);
 
-    const getContVehiculos = async () => {
+    // Función para obtener el conteo de vehículos
+    const getContVehiculos = useCallback(async () => {
+        setLoading(true);
         try {
-            const { data: vehiculos, error } = await supabase
+            const { data, error } = await supabase
                 .from('inf_vehi_t')
                 .select('*');
 
@@ -67,79 +70,79 @@ export function VehiculoProvider({ children }) {
                 throw new Error(error.message);
             }
 
-            const numVehs = vehiculos.length;
+            const numVehs = data.length;
             setVehiculos(numVehs);
-
         } catch (error) {
-            console.error('Error al obtener el número de vehiculos:', error);
+            console.error('Error al obtener el número de vehículos:', error);
+        } finally {
+            setLoading(false);
         }
-    }
+    }, []);
 
-    const createVehiculos = async (formData) => {
+    // Función para crear un vehículo
+    const createVehiculos = useCallback(async (formData) => {
+        setLoading(true);
         const file = formData.get('photo_perfil');
-        if (!file) {
-            console.error('No file found in formData');
-            return;
+        if (file) {
+            const url = await uploadImageAndGetURL(file);
+            formData.set('photo_perfil', url);
         }
-        const url = await uploadImageAndGetURL(file);
-        const placa = formData.get('placa').toLowerCase();
-        const marca = formData.get('marca').toLowerCase();
-        const linea = formData.get('linea').toLowerCase();
-        const modelo = formData.get('modelo').toLowerCase();
-        const cilindra = formData.get('cilindra').toLowerCase();
-        const color = formData.get('color').toLowerCase();
-        const clase = formData.get('clase').toLowerCase();
-        const carroceria = formData.get('carroceria').toLowerCase();
-        const combustible = formData.get('combustible').toLowerCase();
 
+        const newVehiculo = {
+            placa: formData.get('placa').toLowerCase(),
+            marca: formData.get('marca').toLowerCase(),
+            linea: formData.get('linea').toLowerCase(),
+            modelo: formData.get('modelo').toLowerCase(),
+            cilindra: formData.get('cilindra').toLowerCase(),
+            color: formData.get('color').toLowerCase(),
+            clase: formData.get('clase').toLowerCase(),
+            carroceria: formData.get('carroceria').toLowerCase(),
+            combustible: formData.get('combustible').toLowerCase(),
+            tipo_vehiculo: formData.get('tipo_vehiculo').toLowerCase(),
+            photo_perfil: formData.get('photo_perfil'),
+            disponible: "1"
+        };
 
         try {
-            const { data: newVehiculo, error } = await supabase
+            const { data: newVehiculos, error } = await supabase
                 .from('inf_vehi_t')
-                .insert([
-                    {
-                        placa,
-                        marca,
-                        linea,
-                        modelo,
-                        photo_perfil: url,
-                        cilindra,
-                        color,
-                        clase,
-                        carroceria,
-                        combustible,
-                        disponible: "1"
-                    },
-                ]);
+                .insert([newVehiculo]);
 
             if (error) {
                 throw new Error(error.message);
             }
-            setVehiculos(newVehiculo);
+            setVehiculos(prevVehiculos => [...prevVehiculos, ...newVehiculos]);
         } catch (error) {
-            console.error('Error:', error.message);
+            console.error('Error al crear el vehículo:', error.message);
+        } finally {
+            setLoading(false);
         }
-    }
+    }, []);
 
-    const deleteVehiculo = async (uid_vehiculo) => {
+    // Función para eliminar un vehículo
+    const deleteVehiculo = useCallback(async (uid_vehiculo) => {
+        setLoading(true);
         try {
-            const { data, error } = await supabase
+            const { error } = await supabase
                 .from('inf_vehi_t')
                 .delete()
-                .eq('uid_vehiculo', uid_vehiculo).single();
+                .eq('uid_vehiculo', uid_vehiculo);
+
             if (error) {
                 throw new Error(error.message);
             }
-            if (!data) {
-                return res.status(405).json(["No existe el vehiculo, por lo que no se eliminó nada"]);
-            }
+
+            setVehiculos(prevVehiculos => prevVehiculos.filter(veh => veh.uid_vehiculo !== uid_vehiculo));
         } catch (error) {
-            console.error(error);
+            console.error('Error al eliminar el vehículo:', error);
+        } finally {
+            setLoading(false);
         }
+    }, []);
 
-    }
-
-    const getVehiculo = async (uid_vehiculo) => {
+    // Función para obtener un vehículo específico
+    const getVehiculo = useCallback(async (uid_vehiculo) => {
+        setLoading(true);
         try {
             const { data, error } = await supabase
                 .from('inf_vehi_t')
@@ -150,24 +153,25 @@ export function VehiculoProvider({ children }) {
             if (error) {
                 throw new Error(error.message);
             }
-            return { data };
+            return data;
         } catch (error) {
-            console.error('Error al obtener el Vehiculo:', error);
+            console.error('Error al obtener el vehículo:', error);
             return null;
+        } finally {
+            setLoading(false);
         }
-    }
-
+    }, []);
 
     return (
         <VehiculoContext.Provider value={{
             vehiculos,
+            loading,
             createVehiculos,
             getVehiculos,
             deleteVehiculo,
             getVehiculo,
             getContVehiculos,
-            getVeh,
-
+            getVeh
         }}>
             {children}
         </VehiculoContext.Provider>

@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react"
+import { createContext, useContext, useState, useCallback } from "react"
 import supabase from '../db1.js';
 import { uploadImageAndGetURL } from '../middlewares/imagen.js';
 
@@ -18,7 +18,7 @@ export function RutaProvider({ children }) {
 
     const [rutasAll, setRutasAll] = useState([]);
 
-    const getRutasAll = async () => {
+    const getRutasAll = useCallback( async () => {
         try {
             const { data, error } = await supabase
                 .from('ruta_t')
@@ -33,10 +33,10 @@ export function RutaProvider({ children }) {
             console.error(error);
             return [];
         }
-    };
+    }, []);
     
 
-    const deleteRuta = async (uid_ruta) => {
+    const deleteRuta = useCallback(async (uid_ruta) => {
         try {
             const { data, error } = await supabase
                 .from('ruta_t')
@@ -52,9 +52,9 @@ export function RutaProvider({ children }) {
             console.error(error);
         }
 
-    }
+    }, []);
 
-    const getRuta = async (uid_ruta) => {
+    const getRuta = useCallback(async (uid_ruta) => {
         try {
             const { data, error } = await supabase
                 .from('ruta_t')
@@ -71,11 +71,9 @@ export function RutaProvider({ children }) {
             console.error('Error al obtener la ruta:', error);
             return null;
         }
-    };
+    }, []);
 
-
-
-    const updateRuta = async (uid_ruta, rutaData ) => {
+    const updateRuta = useCallback(async (uid_ruta, rutaData ) => {
         try {
             const { data, error } = await supabase
                 .from('ruta_t')
@@ -91,9 +89,9 @@ export function RutaProvider({ children }) {
         } catch (error) {
             setErrors([error.message || 'Error al actualizar la ruta.']);
         }
-    };
+    }, []);
 
-    const createRutas = async (values) => {
+    const createRutas =useCallback(async (values) => {
         const { nombre, act_1, act_2, act_3, act_4, act_5, act_6, act_7, act_8, act_9, descripcion } = values;
         const dep = "Cundinamarca";
         const mun = "San_Juan";
@@ -125,7 +123,7 @@ export function RutaProvider({ children }) {
             console.error('Error al crear la ruta:', error);
             throw new Error('Error interno del servidor');
         }
-    };
+    }, []);
 
     return (
         <RutaContext.Provider value={{

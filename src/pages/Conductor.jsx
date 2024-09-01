@@ -29,8 +29,9 @@ function Conductor() {
     const [mostrarConductores, setMostrarConductores] = useState(true);
     const [mostrarVehiculos, setMostrarVehiculos] = useState(false);
 
-    const [vehiculoSel, setVehiculoSel] = useState('');
+    const [vehiculoSel, setVehiculoSel] = useState(null);
     const [vehiculo, setVehiculo] = useState(null);
+    const [allVehiculo, setAllVehiculo] = useState([]);
 
     const handleOpenModal = () => {
         setModalOpen(true);
@@ -90,8 +91,20 @@ function Conductor() {
             alert('Debes subir un archivo');
             return;
         }
-    
+
+        const formData1 = new FormData();
+        formData1.append('cedula', data.cedula);
+        formData1.append('correo', data.correo);
+
+        const id_cond = await create_UserCond(formData1);
+
+        if (!id_cond) {
+            alert('No se pudo crear el usuario');
+            return;
+        }
+
         const formData = new FormData();
+        formData.append('uid_conductor', id_cond);
         formData.append('first_name', data.first_name);
         formData.append('second_name', data.second_name);
         formData.append('first_last_name', data.first_last_name);
@@ -102,16 +115,14 @@ function Conductor() {
         formData.append('uid_vehiculo', data.uid_vehiculo);
         formData.append('tipo_licencia', data.tipo_licencia);
         formData.append('photo_perfil', file);
-    
-        try {
 
+        try {
             await createConds(formData);
             await createUserConds(formData);
-            await create_UserCond(formData);
-    
+
             setMensaje('Conductor creado exitosamente');
             reset();
-    
+
             setTimeout(() => {
                 setMensaje('');
             }, 3000);
@@ -120,6 +131,7 @@ function Conductor() {
             alert('Ocurrió un error al crear el conductor');
         }
     });
+
 
     const onSubmit1 = handleSubmit((data) => {
         if (!file) {
@@ -137,6 +149,7 @@ function Conductor() {
         formData.append('color', data.color);
         formData.append('carroceria', data.carroceria);
         formData.append('combustible', data.combustible);
+        formData.append('tipo_licencia', data.tipo_licencia);
         formData.append('photo_perfil', file);
 
         createVehiculos(formData);
@@ -156,8 +169,13 @@ function Conductor() {
 
     useEffect(() => {
         getConds();
-        getVehiculos();
-    }, [getConds, getVehiculos]);
+        const obtenerConductores = async () => {
+            await getVehiculos();
+            setAllVehiculo(vehiculos);
+        };
+
+        obtenerConductores();
+    }, [getVehiculos, vehiculos]);
 
     return (
         <div className="conductor-container">
@@ -193,8 +211,8 @@ function Conductor() {
 
                 {mostrarVehiculos && (
                     <div className='cards'>
-                        {vehiculos && Array.isArray(vehiculos) ? (
-                            vehiculos.map((veh) => (
+                        {allVehiculo && Array.isArray(allVehiculo) ? (
+                            allVehiculo.map((veh) => (
                                 <VehCard key={veh.uid_vehiculo} veh={veh} />
                             ))
                         ) : (
@@ -202,6 +220,7 @@ function Conductor() {
                         )}
                     </div>
                 )}
+
 
                 {modalOpen && (
                     <div className="modal" onClick={handleCloseModal}>
@@ -311,6 +330,16 @@ function Conductor() {
                                         <div className="form-group">
                                             <label htmlFor="clase">Clase</label>
                                             <input type="text" className='formulario' {...register("clase", { required: true })} />
+                                        </div>
+
+                                        <div className="form-group">
+                                            <label htmlFor="clase">Tipo Licencia</label>&nbsp;&nbsp;
+                                            <select {...register('tipo_licencia', { required: true })} onChange={handleTipoVehChange} type="text" className='formulario-tipo' value={clase}>
+                                                <option value="">Selecciona un tipo</option>
+                                                {opciones.map((clase) => (
+                                                    <option key={opciones.value} value={opciones.value}>{clase.label}</option>
+                                                ))}
+                                            </select>
                                         </div>
                                     </div>
                                     <div className="col2">

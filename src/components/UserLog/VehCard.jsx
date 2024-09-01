@@ -6,10 +6,10 @@ import { useVehiculo } from '../../context/vehiculoContext.jsx';
 function VehCard({ veh }) {
 
     const [setModalOpen] = useState(false);
-    const {deleteVehiculo, getVehiculo} = useVehiculo();
+    const { deleteVehiculo, getVehiculo } = useVehiculo();
 
     const [selectedId, setSelectedId] = useState(null);
-    const {reset, setValue } = useForm();
+    const { reset, setValue } = useForm();
     const [setMensaje] = useState('');
 
     useEffect(() => {
@@ -51,7 +51,7 @@ function VehCard({ veh }) {
     return (
         <div className="card">
             <div className='title'>
-            <img className='imagen_p1' src={veh.photo_perfil} alt="Imagen" />
+                <img className='imagen_p1' src={veh.photo_perfil} alt="Imagen" />
                 <div>
                     <h1>Marca: {veh.marca} </h1>
                     <p>Color {veh.color}</p>
@@ -60,7 +60,9 @@ function VehCard({ veh }) {
 
                     <div className='buttons1'>
                         <button onDoubleClick={() => {
-                            deleteVehiculo(veh.id);
+                            if (window.confirm('¿Estás seguro de que deseas eliminar este vehiculo?')) {
+                                deleteVehiculo(veh.id);
+                            }
                         }}>Eliminar</button>
                     </div>
                 </div>

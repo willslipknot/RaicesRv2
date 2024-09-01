@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react"
+import { createContext, useContext, useState,useCallback } from "react"
 import supabase from '../db1.js';
 import { uploadImageAndGetURL } from '../middlewares/imagen.js';
 
@@ -18,7 +18,7 @@ export function ActProvider({ children }) {
 
     const [acts, setActs] = useState([]);
 
-    const getActs = async () => {
+    const getActs = useCallback(async () => {
         try {
             const { data, error } = await supabase
                 .from('actividades_t')
@@ -31,9 +31,9 @@ export function ActProvider({ children }) {
         } catch (error) {
             console.error(error);
         }
-    }
+    }, []);
 
-    const getContActs = async () => {
+    const getContActs = useCallback( async () => {
         try {
             const { data: actividades, error } = await supabase
                 .from('actividades_t')
@@ -47,10 +47,10 @@ export function ActProvider({ children }) {
         } catch (error) {
             console.error('Error al obtener el número de actividades:', error);
         }
-    };
+    }, []);
 
 
-    const createActs = async (formData) => {
+    const createActs = useCallback( async (formData) => {
         const file = formData.get('photo');
         if (!file) {
             console.error('No file found in formData');
@@ -88,11 +88,9 @@ export function ActProvider({ children }) {
         } catch (error) {
             console.error('Error:', error.message);
         }
-    };
+    }, []);
     
-
-
-    const deleteAct = async (uid_actividades) => {
+    const deleteAct =useCallback( async (uid_actividades) => {
         try {
             const { data, error } = await supabase
                 .from('actividades_t')
@@ -101,16 +99,13 @@ export function ActProvider({ children }) {
             if (error) {
                 throw new Error(error.message);
             }
-            if (!data) {
-                return res.status(405).json(["No existe la actividad, por lo que no se eliminó nada"]);
-            }
         } catch (error) {
             console.error(error);
         }
 
-    }
+    }, []);
 
-    const getAct = async (uid_actividades) => {
+    const getAct = useCallback( async (uid_actividades) => {
         try {
             const { data, error } = await supabase
                 .from('actividades_t')
@@ -127,11 +122,9 @@ export function ActProvider({ children }) {
             console.error('Error al obtener la actividad:', error);
             return null;
         }
-    };
+    }, []);
 
-
-
-    const updateAct = async (uid_actividades, formData) => {
+    const updateAct = useCallback(async (uid_actividades, formData) => {
         try {
             let updatedAct = {};
             let isFormData = typeof formData.get === 'function';
@@ -201,11 +194,9 @@ export function ActProvider({ children }) {
         } catch (error) {
             console.error('Error al actualizar la actividad:', error);
         }
-    };
+    }, []);
     
-    
-
-    const getRutas = async (tipo) => {
+    const getRutas =useCallback( async (tipo) => {
         try {
             const { data, error } = await supabase
                 .from('actividades_t')
@@ -225,9 +216,9 @@ export function ActProvider({ children }) {
             console.error('Error al obtener rutas:', error);
             return [];
         }
-    };
+    }, []);
 
-    const getConduc = async () => {
+    const getConduc =useCallback( async () => {
         try {
             const { data, error } = await supabase
                 .from('inf_conductor_t')
@@ -241,9 +232,9 @@ export function ActProvider({ children }) {
         } catch (error) {
             console.error(error);
         }
-    }
+    }, []);
 
-    const createRutas = async (values) => {
+    const createRutas = useCallback(async (values) => {
         const { nombre, act_1, act_2, act_3, act_4, act_5, act_6, act_7, act_8, act_9, descripcion } = values;
         const dep = "Cundinamarca";
         const mun = "San_Juan";
@@ -275,7 +266,7 @@ export function ActProvider({ children }) {
             console.error('Error al crear la ruta:', error);
             throw new Error('Error interno del servidor');
         }
-    };
+    }, []);
 
     return (
         <ActContext.Provider value={{

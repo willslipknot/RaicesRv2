@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import supabase from '../db1.js';
 import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
-import verifyToken from '../controllers/VerificacionToken.js'
+import verifyToken from '../controllers/VerificacionToken.js';
 import { uploadImageAndGetURL } from '../middlewares/imagen.js';
 
 const AuthContext = createContext();
@@ -53,7 +53,6 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-
     const logout = () => {
         sessionStorage.removeItem('token');
         setIsAuthenticated(false);
@@ -75,8 +74,7 @@ export const AuthProvider = ({ children }) => {
                 .single();
 
             if (error) {
-                console.error('Error de Supabase:', error);
-                throw error;
+                throw new Error(error.message);
             }
             setUser(data);
         } catch (error) {
@@ -92,6 +90,7 @@ export const AuthProvider = ({ children }) => {
         }
 
         const url = await uploadImageAndGetURL(file);
+        const id = formData.get('uid_conductor');
         const first_name = formData.get('first_name').toLowerCase();
         const second_name = formData.get('second_name').toLowerCase();
         const first_last_name = formData.get('first_last_name').toLowerCase();
@@ -108,6 +107,7 @@ export const AuthProvider = ({ children }) => {
                 .from('inf_usuarios_t')
                 .insert([
                     {
+                        uid: id,
                         first_name,
                         second_name,
                         first_last_name,
@@ -128,8 +128,7 @@ export const AuthProvider = ({ children }) => {
         } catch (error) {
             console.error('Error:', error.message);
         }
-    }
-
+    };
 
     useEffect(() => {
         async function checkLogin() {
@@ -170,7 +169,7 @@ export const AuthProvider = ({ children }) => {
             console.error('Error al obtener el Usuario:', error);
             return null;
         }
-    }
+    };
 
     const getUserRole = async (userId) => {
         try {
@@ -195,38 +194,39 @@ export const AuthProvider = ({ children }) => {
         const cedula = formData.get('cedula');
         const correo = formData.get('correo').toLowerCase();
         const contraseña = "CC" + cedula;
-    
-        console.log('user', correo);
-        console.log('contra',contraseña);
-        
-        const { data, error } = await supabase.auth.signUp({
-            email: correo,
-            password: contraseña,
-        });
-    
-        if (error) {
+
+        try {
+            const { data, error } = await supabase.auth.signUp({
+                email: correo,
+                password: contraseña,
+            });
+
+            if (error) {
+                throw new Error(error.message);
+            }
+
+            return data.user?.id;
+        } catch (error) {
             console.error("Error al crear el usuario:", error.message);
-            return null;
+            throw error;
         }
-    
-        return data;
     };
-    
+
     const deleteCondUser = async (correo) => {
         try {
             const { data, error } = await supabase
                 .from('inf_usuarios_t')
                 .delete()
-                .eq('correo', correo).single();
+                .eq('correo', correo)
+                .single();
+
             if (error) {
                 throw new Error(error.message);
             }
-
         } catch (error) {
             console.error(error);
         }
-    }
-    
+    };
 
     return (
         <AuthContext.Provider

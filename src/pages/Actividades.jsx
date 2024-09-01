@@ -21,7 +21,7 @@ function Actividades({ rutasAll }) {
     const { createActs, createRutas, getActs, acts, getRutas, getConduc, getAct } = useActs();
     const { getVehiculo } = useVehiculo();
     const { getRutasAll, updateRuta, getRuta } = useRutas();
-    const [setTip] = useState('');
+    const [ tip, setTip] = useState('');
     const [file, setFile] = useState(null);
     const [nombreArchivo, setNombreArchivo] = useState('');
     const [mensaje, setMensaje] = useState('');
@@ -32,16 +32,16 @@ function Actividades({ rutasAll }) {
     const [mostrarRutas, setMostrarRutas] = useState(false)
     const [alimentacion, setAlimentacion] = useState('');
     const [comida, setComida] = useState(null);
-    const [ setComSel] = useState('');
+    const [comSel, setComSel] = useState('');
     const [actividades,setActividades] = useState('');
     const [activity, setActivity] = useState(null);
-    const [setActSel] = useState('');
+    const [actSel, setActSel] = useState('');
     const [hospedaje, setHospedaje] = useState('');
     const [hosped, setHosped] = useState(null);
-    const [setHosSel] = useState('');
+    const [hosSel, setHosSel] = useState('');
     const [conduc, setConduc] = useState(null);
     const [placas] = useState('');
-    const [setPla] = useState('');
+    const [pla, setPla] = useState('');
     const [rutas, setRutas] = useState([]);
     const [selectedId, setSelectedId] = useState(null);
 
