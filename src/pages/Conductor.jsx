@@ -11,8 +11,13 @@ import VehCard from '../components/UserLog/VehCard.jsx';
 
 
 const opciones = [
-    { label: 'a2', value: 'a2' },
+    { label: 'a2 - b1', value: 'a2' },
     { label: 'b1', value: 'b1' },
+];
+
+const opciones1 = [
+    { label: 'Moto', value: 'a2' },
+    { label: 'Carro', value: 'b1' },
 ];
 
 const colores = ['#FFC0CB', '#DDA0DD', '#7B68EE', '#7FFFD4', '#90EE90'];
@@ -34,6 +39,7 @@ function Conductor() {
     const [vehiculoSel, setVehiculoSel] = useState(null);
     const [vehiculo, setVehiculo] = useState(null);
     const [allVehiculo, setAllVehiculo] = useState([]);
+    const navigate = useNavigate()
 
     const handleOpenModal = () => {
         setModalOpen(true);
@@ -124,10 +130,11 @@ function Conductor() {
 
             setMensaje('Conductor creado exitosamente');
             reset();
-            navigate('/Conductores');
+            
 
             setTimeout(() => {
                 setMensaje('');
+                navigate('/Conductores');
             }, 3000);
         } catch (error) {
             console.error('Error al crear conductor:', error);
@@ -337,10 +344,17 @@ function Conductor() {
 
                                         <div className="form-group">
                                             <label htmlFor="clase">Tipo Licencia</label>&nbsp;&nbsp;
-                                            <select {...register('tipo_licencia', { required: true })} onChange={handleTipoVehChange} type="text" className='formulario-tipo' value={clase}>
+                                            <select
+                                                {...register('tipo_licencia', { required: true })}
+                                                onChange={handleTipoVehChange}
+                                                className='formulario-tipo'
+                                                defaultValue=""
+                                            >
                                                 <option value="">Selecciona un tipo</option>
-                                                {opciones.map((clase) => (
-                                                    <option key={opciones.value} value={opciones.value}>{clase.label}</option>
+                                                {opciones1.map((opcion) => (
+                                                    <option key={opcion.value} value={opcion.value}>
+                                                        {opcion.label}
+                                                    </option>
                                                 ))}
                                             </select>
                                         </div>
