@@ -11,8 +11,9 @@ import VehCard from '../components/UserLog/VehCard.jsx';
 
 
 const opciones = [
-    { label: 'a2 - b1', value: 'a2' },
-    { label: 'b1', value: 'b1' },
+    { label: 'a2 - b1', value: 'a2-b1' },
+    { label: 'a2', value: 'a2' },
+    { label: 'b1', value: 'b1' }
 ];
 
 const opciones1 = [
@@ -71,10 +72,16 @@ function Conductor() {
         const selectedTipVeh = e.target.value;
         setClase(selectedTipVeh);
         setVehiculo(null);
+        let vehiculosData
 
         if (selectedTipVeh) {
+            if (selectedTipVeh === 'a2-b1') {
+                vehiculosData = await getVehiculos();
+            }
+            else {
+                vehiculosData = await getVeh(selectedTipVeh);
+            }
             try {
-                const vehiculosData = await getVeh(selectedTipVeh);
                 const formattedVehiculos = vehiculosData.map((vehiculoData) => ({
                     label: vehiculoData.placa,
                     value: vehiculoData.uid_vehiculo,
@@ -126,15 +133,15 @@ function Conductor() {
 
         try {
             await createConds(formData);
-            
+
             setMensaje('Conductor creado exitosamente');
             navigate('/Conductores');
             reset();
-            
+
 
             setTimeout(() => {
                 setMensaje('');
-                
+
             }, 3000);
         } catch (error) {
             console.error('Error al crear conductor:', error);
@@ -276,7 +283,7 @@ function Conductor() {
 
                                         <div className="form-group">
                                             <label htmlFor="clase">Tipo Licencia</label>&nbsp;&nbsp;
-                                            <select {...register('tipo_licencia', { required: true })} onChange={handleTipoVehChange} type="text" className='formulario-tipo' value={clase}>
+                                            <select {...register('tipo_licencia', { required: true })} onChange={handleTipoVehChange} className='formulario-tipo' value={clase || ''}>
                                                 <option value="">Selecciona un tipo</option>
                                                 {opciones.map((clase) => (
                                                     <option key={clase.value} value={clase.value}>{clase.label}</option>
@@ -286,7 +293,7 @@ function Conductor() {
 
                                         <div className="form-group">
                                             <label htmlFor="vehiculo">Vehiculo</label>&nbsp;&nbsp;
-                                            <select {...register('uid_vehiculo', { required: true })} onChange={handleVehiculoChange} type="text" className='formulario-tipo' value={vehiculoSel}>
+                                            <select {...register('uid_vehiculo', { required: true })} onChange={handleVehiculoChange} className='formulario-tipo' value={vehiculoSel || ''}>
                                                 <option value="">Selecciona un vehiculo</option>
                                                 {vehiculo && vehiculo.map((veh) => (
                                                     <option key={veh.value} value={veh.value}>{veh.label}</option>

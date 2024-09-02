@@ -6,6 +6,7 @@ import { useVehiculo } from '../../context/vehiculoContext.jsx';
 import { useAuth } from '../../context/authContext.jsx';
 
 const opciones = [
+    { label: 'a2 - b1', value: 'a2-b1' },
     { label: 'a2', value: 'a2' },
     { label: 'b1', value: 'b1' }
 ];
@@ -14,7 +15,7 @@ function CondCard({ cond }) {
 
     const [modalOpen, setModalOpen] = useState(false);
     const { deleteCond, getCond, updateCond } = useCond();
-    const { getVeh } = useVehiculo();
+    const { getVeh, getVehiculos } = useVehiculo();
     const { deleteCondUser } = useAuth();
 
     const [selectedId, setSelectedId] = useState(null);
@@ -108,6 +109,24 @@ function CondCard({ cond }) {
 
     useEffect(() => {
         const cargarVehiculos = async () => {
+            if (cond.tipo_licencia === 'a2-b1') {
+                const selectedTipVeh = 'a2-b1';
+                setClase(selectedTipVeh);
+
+                if (selectedTipVeh) {
+                    try {
+                        vehiculosData = await getVehiculos();
+                        const formattedVehiculos = vehiculosData.map((vehiculoData) => ({
+                            label: vehiculoData.placa,
+                            value: vehiculoData.uid_vehiculo,
+                        }));
+                        setVehiculo(formattedVehiculos);
+                    } catch (error) {
+                        console.error('Error al obtener vehiculos:', error);
+                    }
+                }
+            }
+
             if (cond.tipo_licencia === 'a2') {
                 const selectedTipVeh = 'a2';
                 setClase(selectedTipVeh);
@@ -150,13 +169,19 @@ function CondCard({ cond }) {
 
 
     const handleTipoVehChange = async (e) => {
-
         const selectedTipVeh = e.target.value;
         setClase(selectedTipVeh);
+        setVehiculo(null);
+        let vehiculosData
 
         if (selectedTipVeh) {
+            if (selectedTipVeh === 'a2-b1') {
+                vehiculosData = await getVehiculos();
+            }
+            else {
+                vehiculosData = await getVeh(selectedTipVeh);
+            }
             try {
-                const vehiculosData = await getVeh(selectedTipVeh);
                 const formattedVehiculos = vehiculosData.map((vehiculoData) => ({
                     label: vehiculoData.placa,
                     value: vehiculoData.uid_vehiculo,
@@ -166,7 +191,7 @@ function CondCard({ cond }) {
                 console.error('Error al obtener vehiculos:', error);
             }
         }
-    }
+    };
 
     const handleVehiculoChange = (e) => {
         setVehiculoSel(e.target.value);

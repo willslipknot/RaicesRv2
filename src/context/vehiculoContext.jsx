@@ -23,18 +23,20 @@ export function VehiculoProvider({ children }) {
             const { data, error } = await supabase
                 .from('inf_vehi_t')
                 .select('*');
-
+    
             if (error) {
                 throw new Error(error.message);
             }
             setVehiculos(data);
+            return data;  // Retornar los datos obtenidos
         } catch (error) {
             console.error('Error al obtener vehículos:', error);
+            return []; // Retornar un array vacío en caso de error
         } finally {
             setLoading(false);
         }
     }, []);
-
+    
     // Función para obtener vehículos por clase
     const getVeh = useCallback(async (clase) => {
         setLoading(true);
