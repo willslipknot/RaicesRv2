@@ -9,7 +9,7 @@ const opciones = [
     { label: 'Actividad', value: '859a6b07-ecd9-4c13-bc1c-6894d8fb0520' },
 ];
 
-function ActCard({ act }) {
+function ActCard({ act, style }) {
     const [modalOpen, setModalOpen] = useState(false);
     const { deleteAct, getAct, updateAct } = useActs();
     const [selectedId, setSelectedId] = useState(null);
@@ -93,7 +93,7 @@ function ActCard({ act }) {
     };
 
     return (
-        <div className="card">
+        <div className="card" style={style}>
             <div className='title'>
                 <img className='imagen_p1' src={act.photo} alt="Photo" />
                 <div>

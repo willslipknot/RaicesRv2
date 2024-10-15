@@ -11,7 +11,7 @@ const opciones = [
     { label: 'b1', value: 'b1' }
 ];
 
-function CondCard({ cond }) {
+function CondCard({ cond , style }) {
 
     const [modalOpen, setModalOpen] = useState(false);
     const { deleteCond, getCond, updateCond } = useCond();
@@ -31,7 +31,6 @@ function CondCard({ cond }) {
         if (selectedId !== null) {
             async function loadCond() {
                 const act = await getCond(selectedId);
-                console.log('act', act.data.cedula)
                 if (act) {
                     setValue('first_name', act.data.first_name);
                     setValue('second_name', act.data.second_name);
@@ -122,7 +121,6 @@ function CondCard({ cond }) {
                         }));
                         setVehiculo(formattedVehiculos);
                     } catch (error) {
-                        console.error('Error al obtener vehiculos:', error);
                     }
                 }
             }
@@ -140,7 +138,6 @@ function CondCard({ cond }) {
                         }));
                         setVehiculo(formattedVehiculos);
                     } catch (error) {
-                        console.error('Error al obtener vehiculos:', error);
                     }
                 }
             }
@@ -158,7 +155,6 @@ function CondCard({ cond }) {
                         }));
                         setVehiculo(formattedVehiculos);
                     } catch (error) {
-                        console.error('Error al obtener vehiculos:', error);
                     }
                 }
             }
@@ -188,7 +184,6 @@ function CondCard({ cond }) {
                 }));
                 setVehiculo(formattedVehiculos);
             } catch (error) {
-                console.error('Error al obtener vehiculos:', error);
             }
         }
     };
@@ -198,7 +193,7 @@ function CondCard({ cond }) {
     };
 
     return (
-        <div className="card">
+        <div className="card" style={style}>
             <div className='title'>
                 <img className='imagen_p1' src={cond.photo_perfil} alt="Imagen" />
                 <div>

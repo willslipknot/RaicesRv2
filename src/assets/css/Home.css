@@ -22,10 +22,11 @@
 .react-calendar.calendario{
   color: black;
   width: 70%;
-  height: 300px;
+  height: 350px;
   position: relative;
   left: 80px;
   right: 50px;
+  font-family: 'Brothers-Bold.otf', sans-serif;
 
 }
 
@@ -116,10 +117,26 @@ h2{
 
   .minimapa {
     width: 70%;
-    height: 280px;
+    height: 350px;
     position: relative;
     border: 1px solid #ccc;
     left: 80px;
     top:10px;
     z-index: 0;
+}
+
+.info-icon {
+  font-size: 20px;
+  color: #555; /* Color del ícono */
+}
+
+.tooltip {
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 4px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  font-family: 'Brothers-Bold.otf', sans-serif;
+  color: black;
+  font-size:small;
 }

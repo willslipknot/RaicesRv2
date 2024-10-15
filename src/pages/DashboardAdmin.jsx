@@ -5,7 +5,7 @@ import { useActs } from '../context/actContext.jsx';
 import { useCond } from '../context/condContext.jsx';
 import { useVehiculo } from '../context/vehiculoContext.jsx';
 import { useReserva } from '../context/reservaContext.jsx';
-import { BsFilePersonFill, BsGeoAltFill, BsFillBellFill, BsRocketFill } from 'react-icons/bs';
+import { BsFilePersonFill, BsGeoAltFill, BsFillBellFill, BsRocketFill, BsInfoCircle } from 'react-icons/bs';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
@@ -21,7 +21,9 @@ function DashboardAdmin() {
     const [datosGrafico, setDatosGrafico] = useState([]);
     const [datosGrafico1, setDatosGrafico1] = useState([]);
     const [date, setDate] = useState(new Date());
+    const [mes, setMes] = useState((date.getMonth() + 1));
     const [numReservas, setNumReservas] = useState('Cargando...');
+    const [showTooltip, setShowTooltip] = useState(false);
 
     const obtenerColorPorIndice = (index) => {
         const colores = ['#FFC0CB', '#DDA0DD', '#7B68EE', '#7FFFD4', '#90EE90'];
@@ -30,7 +32,7 @@ function DashboardAdmin() {
 
     const ContReservas = async () => {
         try {
-            const resultado = await getContReserva(); 
+            const resultado = await getContReserva();
             setNumReservas(resultado);
         } catch (error) {
             console.error('Error al obtener el conteo de reservas:', error);
@@ -45,16 +47,19 @@ function DashboardAdmin() {
     const contarActividades = async () => {
         try {
             const registros = await getTopActivities();
-
             const contadorActividades = {};
 
             registros.forEach((registro) => {
                 const nombreActividad = registro.nombre_actividad;
+                const fechaRegistro = registro.fecha_reserva;
+                const [year, month, day] = fechaRegistro.split('-');
 
-                if (contadorActividades[nombreActividad]) {
-                    contadorActividades[nombreActividad]++;
-                } else {
-                    contadorActividades[nombreActividad] = 1;
+                if (parseInt(month) === mes) {
+                    if (contadorActividades[nombreActividad]) {
+                        contadorActividades[nombreActividad]++;
+                    } else {
+                        contadorActividades[nombreActividad] = 1;
+                    }
                 }
             });
 
@@ -73,30 +78,34 @@ function DashboardAdmin() {
         }
     };
 
+
     const contarConductores = async () => {
         try {
             const registros = await getTopActivities();
-            
+
             const promesasConductor = registros.map(async (registro) => {
                 const idConductor = registro.uid_conductor;
                 const conductorA = await getCond(idConductor);
-                return conductorA.data.first_name; 
+                return conductorA.data.first_name;
             });
-    
+
             const nombresConductores = await Promise.all(promesasConductor);
-    
+
             const contadorConductores = {};
-    
+
             registros.forEach((registro, index) => {
                 const nombreConductor = nombresConductores[index] || 'Desconocido';
-    
-                if (contadorConductores[nombreConductor]) {
-                    contadorConductores[nombreConductor]++;
-                } else {
-                    contadorConductores[nombreConductor] = 1;
+                const fechaRegistro = registro.fecha_reserva;
+                const [year, month, day] = fechaRegistro.split('-');
+                if (parseInt(month) === mes) {
+                    if (contadorConductores[nombreConductor]) {
+                        contadorConductores[nombreConductor]++;
+                    } else {
+                        contadorConductores[nombreConductor] = 1;
+                    }
                 }
             });
-    
+
             const data = Object.keys(contadorConductores)
                 .map((nombre, index) => ({
                     name: nombre,
@@ -105,17 +114,24 @@ function DashboardAdmin() {
                 }))
                 .sort((a, b) => b.cantidad - a.cantidad)
                 .slice(0, 5);
-    
+
             setDatosGrafico1(data);
         } catch (error) {
             console.error(error);
         }
     };
-    
 
-    const onChange = (newDate) => {
+    useEffect(() => {
+        contarActividades();
+        contarConductores();
+    }, [mes]);
+
+    const onMonthClick = (newDate) => {
         setDate(newDate);
+        const mesSeleccionado = (newDate.getMonth() + 1);
+        setMes(mesSeleccionado);
     };
+    
 
     useEffect(() => {
         const miniMapContainer = document.getElementById('miniMap');
@@ -178,17 +194,28 @@ function DashboardAdmin() {
                                 <BsFillBellFill className='card_icon' />
                             </div>
                         </a>
-                        <h1>{typeof numReservas === 'number' ? numReservas : 'Cargando...' }</h1>
+                        <h1>{typeof numReservas === 'number' ? numReservas : 'Cargando...'}</h1>
                     </div>
                 </div>
 
                 <div className='charts0'>
                     <Calendar
                         className={'calendario'}
-                        onChange={onChange}
+                        view="year"
+                        onClickMonth={onMonthClick}
                         value={date}
-                        tileDisabled={({ date }) => date.getDate() === new Date().getDate()}
                     />
+                     <BsInfoCircle 
+                            className="info-icon" 
+                            onClick={() => setShowTooltip(!showTooltip)} 
+                            style={{ position: 'absolute', top: 260, right: 940, cursor: 'pointer' }}
+                        />
+                        {showTooltip && (
+                            <div className="tooltip" 
+                                style={{position: 'absolute', top: 285,  right: 740, zIndex: 1000 }}>
+                                Filtra por mes las graficas top
+                            </div>
+                        )}
 
                     <div id="miniMap" className='minimapa'></div>
                 </div>

@@ -21,8 +21,6 @@ const opciones1 = [
     { label: 'Carro', value: 'b1' },
 ];
 
-const colores = ['#FFC0CB', '#DDA0DD', '#7B68EE', '#7FFFD4', '#90EE90'];
-
 function Conductor() {
     const { register, handleSubmit, reset } = useForm();
     const { createConds, getConds, conds } = useCond();
@@ -40,7 +38,9 @@ function Conductor() {
     const [vehiculoSel, setVehiculoSel] = useState(null);
     const [vehiculo, setVehiculo] = useState(null);
     const [allVehiculo, setAllVehiculo] = useState([]);
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+
+    const colors = ['#2962FF', '#FF6D00', '#2E7D32', '#D50000', '#000000'];
 
     const handleOpenModal = () => {
         setModalOpen(true);
@@ -88,7 +88,6 @@ function Conductor() {
                 }));
                 setVehiculo(formattedVehiculos);
             } catch (error) {
-                console.error('Error al obtener vehiculos:', error);
             }
         }
     };
@@ -218,7 +217,7 @@ function Conductor() {
                     <div className='cards'>
                         {conds && Array.isArray(conds) ? (
                             conds.map((cond, index) => (
-                                <CondCard key={cond.uid_conductor} cond={cond} color={colores[index % colores.length]} />
+                                <CondCard key={cond.uid_conductor} cond={cond} style={{ backgroundColor: colors[index % colors.length] }}/>
                             ))
                         ) : (
                             <p>Actualizando conductores</p>
@@ -229,15 +228,14 @@ function Conductor() {
                 {mostrarVehiculos && (
                     <div className='cards'>
                         {allVehiculo && Array.isArray(allVehiculo) ? (
-                            allVehiculo.map((veh) => (
-                                <VehCard key={veh.uid_vehiculo} veh={veh} />
+                            allVehiculo.map((veh, index) => (
+                                <VehCard key={veh.uid_vehiculo} veh={veh} style={{ backgroundColor: colors[index % colors.length] }}  />
                             ))
                         ) : (
                             <p>Actualizando vehículos</p>
                         )}
                     </div>
                 )}
-
 
                 {modalOpen && (
                     <div className="modal" onClick={handleCloseModal}>

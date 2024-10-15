@@ -14,8 +14,6 @@ const opciones = [
     { label: 'actividad', value: '859a6b07-ecd9-4c13-bc1c-6894d8fb0520' },
 ];
 
-const colores = ['#FFC0CB', '#DDA0DD', '#7B68EE', '#7FFFD4', '#90EE90'];
-
 function Actividades({ rutasAll }) {
     const { register, handleSubmit, reset, setValue } = useForm();
     const { createActs, createRutas, getActs, acts, getRutas, getConduc, getAct } = useActs();
@@ -44,6 +42,7 @@ function Actividades({ rutasAll }) {
     const [pla, setPla] = useState('');
     const [rutas, setRutas] = useState([]);
     const [selectedId, setSelectedId] = useState(null);
+    const colors = ['#2962FF', '#FF6D00', '#2E7D32', '#D50000', '#000000'];
 
 
     useEffect(() => {
@@ -335,7 +334,7 @@ function Actividades({ rutasAll }) {
                     <div className='cards'>
                         {acts && acts.length > 0 ? (
                             acts.map((act, index) => (
-                                <ActCard key={act.uid_actividades} act={act} color={colores[index % colores.length]} />
+                                <ActCard key={act.uid_actividades} act={act} style={{ backgroundColor: colors[index % colors.length] }}/>
                             ))
                         ) : (
                             <p>No hay actividades disponibles.</p>
