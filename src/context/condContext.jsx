@@ -98,6 +98,54 @@ export function CondProvider({ children }) {
         }
     }, []);
 
+    const createUserConds = async (formData) => {
+        const file = formData.get('photo_perfil');
+        if (!file) {
+            console.error('No file found in formData');
+            return;
+        }
+
+        const url = await uploadImageAndGetURL(file);
+        const id = formData.get('uid_conductor');
+        const first_name = formData.get('first_name').toLowerCase();
+        const second_name = formData.get('second_name').toLowerCase();
+        const first_last_name = formData.get('first_last_name').toLowerCase();
+        const second_last_name = formData.get('second_last_name').toLowerCase();
+        const username = formData.get('correo').toLowerCase();
+        const correo = formData.get('correo').toLowerCase();
+        const phone_number = formData.get('phone_number');
+        const tipoUsuario = "Conductor";
+        const cedula = formData.get('cedula');
+        const contraseña = "CC" + cedula;
+
+        try {
+            const { data: newConductor, error } = await supabase
+                .from('inf_usuarios_t')
+                .insert([
+                    {
+                        uid: id,
+                        first_name,
+                        second_name,
+                        first_last_name,
+                        second_last_name,
+                        photo_perfil: url,
+                        username,
+                        phone_number,
+                        correo,
+                        tipoUser: tipoUsuario,
+                        password: contraseña
+                    },
+                ]);
+
+            if (error) {
+                throw new Error(error.message);
+            }
+            setConds(newConductor);
+        } catch (error) {
+            console.error('Error:', error.message);
+        }
+    };
+
     const deleteCond = useCallback(async (uid_conductor) => {
         try {
             const { data, error } = await supabase
@@ -212,6 +260,7 @@ export function CondProvider({ children }) {
         <condContext.Provider value={{
             conds,
             createConds,
+            createUserConds,
             getConds,
             deleteCond,
             getCond,

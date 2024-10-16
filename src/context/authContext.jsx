@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import supabase from '../db1.js';
+import supabaseAuth from "../dbAuth";
 import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
 import verifyToken from '../controllers/VerificacionToken.js';
@@ -24,7 +25,7 @@ export const AuthProvider = ({ children }) => {
     const signin = async (user) => {
         try {
             const { data, error } = await supabase
-                .from('inf_usuarios_t')
+                .from('inf_admin_t')
                 .select('*')
                 .eq('username', user.username)
                 .single();
@@ -79,54 +80,6 @@ export const AuthProvider = ({ children }) => {
             setUser(data);
         } catch (error) {
             setErrors([error.message || 'Error al actualizar el usuario.']);
-        }
-    };
-
-    const createUserConds = async (formData) => {
-        const file = formData.get('photo_perfil');
-        if (!file) {
-            console.error('No file found in formData');
-            return;
-        }
-
-        const url = await uploadImageAndGetURL(file);
-        const id = formData.get('uid_conductor');
-        const first_name = formData.get('first_name').toLowerCase();
-        const second_name = formData.get('second_name').toLowerCase();
-        const first_last_name = formData.get('first_last_name').toLowerCase();
-        const second_last_name = formData.get('second_last_name').toLowerCase();
-        const username = formData.get('correo').toLowerCase();
-        const correo = formData.get('correo').toLowerCase();
-        const phone_number = formData.get('phone_number');
-        const tipoUsuario = "Conductor";
-        const cedula = formData.get('cedula');
-        const contraseña = "CC" + cedula;
-
-        try {
-            const { data: newConductor, error } = await supabase
-                .from('inf_usuarios_t')
-                .insert([
-                    {
-                        uid: id,
-                        first_name,
-                        second_name,
-                        first_last_name,
-                        second_last_name,
-                        photo_perfil: url,
-                        username,
-                        phone_number,
-                        correo,
-                        tipoUser: tipoUsuario,
-                        password: contraseña
-                    },
-                ]);
-
-            if (error) {
-                throw new Error(error.message);
-            }
-            setUser(newConductor);
-        } catch (error) {
-            console.error('Error:', error.message);
         }
     };
 
@@ -228,6 +181,23 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    async function deleteUserCond(userId) {
+        try {
+          const { error } = await supabaseAuth.auth.admin.deleteUser(userId);
+          
+          if (error) {
+            console.error('Error al eliminar el usuario:', error);
+            return false;
+          }
+      
+          console.log('Usuario eliminado exitosamente');
+          return true;
+        } catch (err) {
+          console.error('Error inesperado:', err);
+          return false;
+        }
+      }
+
     return (
         <AuthContext.Provider
             value={{
@@ -241,9 +211,9 @@ export const AuthProvider = ({ children }) => {
                 verifyToken,
                 getCliente,
                 getUserRole,
-                createUserConds,
                 create_UserCond,
-                deleteCondUser
+                deleteCondUser,
+                deleteUserCond
             }}
         >
             {children}

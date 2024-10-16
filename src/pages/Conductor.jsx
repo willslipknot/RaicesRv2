@@ -23,9 +23,9 @@ const opciones1 = [
 
 function Conductor() {
     const { register, handleSubmit, reset } = useForm();
-    const { createConds, getConds, conds } = useCond();
+    const { createConds, getConds, conds, createUserConds } = useCond();
     const { getVeh, createVehiculos, vehiculos, getVehiculos } = useVehiculo();
-    const { createUserConds, create_UserCond } = useAuth();
+    const { create_UserCond } = useAuth();
 
     const [clase, setClase] = useState('');
     const [file, setFile] = useState(null);
@@ -48,6 +48,9 @@ function Conductor() {
 
     const handleCloseModal = () => {
         setModalOpen(false);
+        reset();
+        setClase('');
+        setVehiculoSel('');
     };
 
     const handleOpenModal1 = () => {
@@ -56,6 +59,10 @@ function Conductor() {
 
     const handleCloseModal1 = () => {
         setModalOpen1(false);
+        reset();
+        setClase('');
+        setVehiculoSel('');
+        
     };
 
     const handleMostrarConductores = () => {
@@ -66,6 +73,12 @@ function Conductor() {
     const handleMostrarVehiculos = () => {
         setMostrarVehiculos(true);
         setMostrarConductores(false);
+    };
+
+    const handleResetCond = () => {
+        reset();
+        setClase('');
+        setVehiculoSel('');
     };
 
     const handleTipoVehChange = async (e) => {
@@ -132,10 +145,10 @@ function Conductor() {
 
         try {
             await createConds(formData);
-
+            createUserConds(formData);
             setMensaje('Conductor creado exitosamente');
             navigate('/Conductores');
-            reset();
+            handleResetCond();
 
 
             setTimeout(() => {
@@ -181,6 +194,8 @@ function Conductor() {
     const handleLimpiarClick = () => {
         reset();
         setMensaje('');
+        setClase('');
+        setVehiculoSel('');
     };
 
     useEffect(() => {

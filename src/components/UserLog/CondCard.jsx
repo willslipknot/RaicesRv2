@@ -16,7 +16,7 @@ function CondCard({ cond , style }) {
     const [modalOpen, setModalOpen] = useState(false);
     const { deleteCond, getCond, updateCond } = useCond();
     const { getVeh, getVehiculos } = useVehiculo();
-    const { deleteCondUser } = useAuth();
+    const { deleteCondUser, deleteUserCond } = useAuth();
 
     const [selectedId, setSelectedId] = useState(null);
     const { register, handleSubmit, reset, setValue } = useForm();
@@ -293,6 +293,7 @@ function CondCard({ cond , style }) {
                              if (window.confirm('¿Estás seguro de que deseas eliminar este conductor?')){
                                 deleteCond(cond.uid_conductor);
                                 deleteCondUser(cond.correo);
+                                deleteUserCond(cond.uid_conductor);
                              }
                         }}>Eliminar</button></p>
                     </div>
