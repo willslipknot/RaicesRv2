@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }) => {
     const signin = async (user) => {
         try {
             const { data, error } = await supabase
-                .from('inf_admin_t')
+                .from('inf_usuarios_t')
                 .select('*')
                 .eq('username', user.username)
                 .single();
