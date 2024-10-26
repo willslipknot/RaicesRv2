@@ -111,14 +111,14 @@
     margin-left: 170px;
 }
 
-.formulario_con input[type="text"] {
-    color: black;
-    text-align: center;
-}
-
-.formulario_con input[type="email"] {
-    color: black;
-    text-align: center;
+.form-group-contac input[type="text"],
+.form-group-contac input[type="email"] {
+    text-align: left;
+    width: 100%;
+    padding: 2px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: #000000;
 }
 
 .form-group-contac {
@@ -135,12 +135,13 @@
     text-align: left;
 }
 
-.form-group-contacinput,
+.form-group-contac input,
 .form-group-contac textarea {
     width: 100%;
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    color: #000000;
 }
 
 .form-group-contac textarea {

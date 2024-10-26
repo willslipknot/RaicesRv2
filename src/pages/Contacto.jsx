@@ -1,16 +1,19 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { FaFacebookF, FaAndroid, FaApple, FaTwitter, FaInstagram } from 'react-icons/fa';
 import '../assets/css/Contacto.css';
 import imagenLogo from '../assets/images/logo_progrado.png';
 import emailjs from 'emailjs-com';
 
 const Contacto = () => {
+    const formRef = useRef(null);
+
     const sendEmail = (e) => {
         e.preventDefault();
 
         emailjs.sendForm('service_g5h1fxe', 'template_5sknu6j', e.target, 'OcFucUjKKDEFNAAHk')
             .then((result) => {
                 alert('Mensaje enviado con éxito!');
+                formRef.current.reset(); // Limpia los campos del formulario
             }, (error) => {
                 console.error('Error sending email:', error.text);
                 alert('Error al enviar el mensaje.');
@@ -60,7 +63,7 @@ const Contacto = () => {
                 <div className="contacto-formulario">
                     <div className="contact-form">
                         <h2>Contacto</h2>
-                        <form className='contacto' onSubmit={sendEmail}>
+                        <form ref={formRef} className='contacto' onSubmit={sendEmail}>
                             <div className="form-group-contac">
                                 <label htmlFor="name">Nombre:</label>
                                 <input type="text" name="name" required />
