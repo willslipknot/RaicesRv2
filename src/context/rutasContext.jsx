@@ -86,6 +86,7 @@ export function RutaProvider({ children }) {
                 throw error;
             }
             setRutasAll(data);
+            await getRutasAll();
         } catch (error) {
             setErrors([error.message || 'Error al actualizar la ruta.']);
         }
@@ -118,7 +119,7 @@ export function RutaProvider({ children }) {
             if (error) {
                 throw new Error(error.message);
             }
-            return { message: "Ruta creada correctamente", newRuta };
+            await getRutasAll();
         } catch (error) {
             console.error('Error al crear la ruta:', error);
             throw new Error('Error interno del servidor');

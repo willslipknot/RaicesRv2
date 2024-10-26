@@ -265,7 +265,7 @@ export function ActProvider({ children }) {
             if (error) {
                 throw new Error(error.message);
             }
-            return { message: "Ruta creada correctamente", newRuta };
+            await getRutas();
         } catch (error) {
             console.error('Error al crear la ruta:', error);
             throw new Error('Error interno del servidor');

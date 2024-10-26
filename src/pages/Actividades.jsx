@@ -16,9 +16,9 @@ const opciones = [
 
 function Actividades({ rutasAll }) {
     const { register, handleSubmit, reset, setValue } = useForm();
-    const { createActs, createRutas, getActs, acts, getRutas, getConduc, getAct } = useActs();
+    const { createActs, getActs, acts, getRutas, getConduc, getAct } = useActs();
     const { getVehiculo } = useVehiculo();
-    const { getRutasAll, updateRuta, getRuta } = useRutas();
+    const { getRutasAll, updateRuta, getRuta,createRutas } = useRutas();
     const [tip, setTip] = useState('');
     const [file, setFile] = useState(null);
     const [nombreArchivo, setNombreArchivo] = useState('');
@@ -194,16 +194,36 @@ function Actividades({ rutasAll }) {
     }
 
     const handleRutaSubmit = async (values) => {
-        createRutas(values);
-        reset();
-    };
-
-    const handleEditarRutaSubmit = async (values) => {
-        if (selectedId !== null) {
-            updateRuta(selectedId, values);
+        try {
+            await createRutas(values);
+            setMensaje('Ruta creada exitosamente');
+            await rutaData();
+            reset();
+            setTimeout(() => {
+                setMensaje('');
+            }, 3000);
+        } catch (error) {
+            console.error('Error al crear la ruta:', error);
+            setMensaje('Error al crear la ruta');
         }
     };
-
+    
+    const handleEditarRutaSubmit = async (values) => {
+        if (selectedId !== null) {
+            try {
+                await updateRuta(selectedId, values);
+                setMensaje('Ruta editada exitosamente');
+                await rutaData();
+                setTimeout(() => {
+                    setMensaje('');
+                }, 3000);
+            } catch (error) {
+                console.error('Error al editar la ruta:', error);
+                setMensaje('Error al editar la ruta');
+            }
+        }
+    };
+    
     const handleMostrarActividades = () => {
         setMostrarActividades(true);
         setMostrarRutas(false);
@@ -250,43 +270,42 @@ function Actividades({ rutasAll }) {
 
     useEffect(() => {
         getActs();
-
     }, []);
 
-    useEffect(() => {
-        const rutaData = async () => {
-            try {
-                const dataRutas = await getRutasAll();
-                const dataRutasDetalles = await Promise.all(dataRutas.map(async (rutaD) => {
-                    const actividadData1 = await getAct(rutaD.act_1);
-                    const actividadData2 = await getAct(rutaD.act_2);
-                    const actividadData3 = await getAct(rutaD.act_3);
-                    const actividadData4 = await getAct(rutaD.act_4);
-                    const actividadData5 = await getAct(rutaD.act_5);
-                    const actividadData6 = await getAct(rutaD.act_6);
-                    const actividadData7 = await getAct(rutaD.act_7);
-                    const actividadData8 = await getAct(rutaD.act_8);
-                    const actividadData9 = await getAct(rutaD.act_9);
-                    return {
-                        ...rutaD,
-                        act_1: `${actividadData1?.nombre || 'Nombre no disponible'}`,
-                        act_2: `${actividadData2?.nombre || 'Nombre no disponible'}`,
-                        act_3: `${actividadData3?.nombre || 'Nombre no disponible'}`,
-                        act_4: `${actividadData4?.nombre || 'Nombre no disponible'}`,
-                        act_5: `${actividadData5?.nombre || 'Nombre no disponible'}`,
-                        act_6: `${actividadData6?.nombre || 'Nombre no disponible'}`,
-                        act_7: `${actividadData7?.nombre || 'Nombre no disponible'}`,
-                        act_8: `${actividadData8?.nombre || 'Nombre no disponible'}`,
-                        act_9: `${actividadData9?.nombre || 'Nombre no disponible'}`
-                    };
-                }));
-                setRutas(dataRutasDetalles);
-            } catch (error) {
-                console.error('Error obteniendo rutas:', error);
-            }
-        };
-        rutaData();
+    const rutaData = async () => {
+        try {
+            const dataRutas = await getRutasAll();
+            const dataRutasDetalles = await Promise.all(dataRutas.map(async (rutaD) => {
+                const actividadData1 = await getAct(rutaD.act_1);
+                const actividadData2 = await getAct(rutaD.act_2);
+                const actividadData3 = await getAct(rutaD.act_3);
+                const actividadData4 = await getAct(rutaD.act_4);
+                const actividadData5 = await getAct(rutaD.act_5);
+                const actividadData6 = await getAct(rutaD.act_6);
+                const actividadData7 = await getAct(rutaD.act_7);
+                const actividadData8 = await getAct(rutaD.act_8);
+                const actividadData9 = await getAct(rutaD.act_9);
+                return {
+                    ...rutaD,
+                    act_1: `${actividadData1?.nombre || 'Nombre no disponible'}`,
+                    act_2: `${actividadData2?.nombre || 'Nombre no disponible'}`,
+                    act_3: `${actividadData3?.nombre || 'Nombre no disponible'}`,
+                    act_4: `${actividadData4?.nombre || 'Nombre no disponible'}`,
+                    act_5: `${actividadData5?.nombre || 'Nombre no disponible'}`,
+                    act_6: `${actividadData6?.nombre || 'Nombre no disponible'}`,
+                    act_7: `${actividadData7?.nombre || 'Nombre no disponible'}`,
+                    act_8: `${actividadData8?.nombre || 'Nombre no disponible'}`,
+                    act_9: `${actividadData9?.nombre || 'Nombre no disponible'}`
+                };
+            }));
+            setRutas(dataRutasDetalles);  // Actualizar el estado con nombres en lugar de IDs
+        } catch (error) {
+            console.error('Error obteniendo rutas:', error);
+        }
+    };
 
+    useEffect(() => {
+        rutaData();
     }, [getRutasAll]);
 
     useEffect(() => {
