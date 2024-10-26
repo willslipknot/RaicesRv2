@@ -95,7 +95,7 @@ export function RutaProvider({ children }) {
     const createRutas =useCallback(async (values) => {
         const { nombre, act_1, act_2, act_3, act_4, act_5, act_6, act_7, act_8, act_9, descripcion } = values;
         const dep = "Cundinamarca";
-        const mun = "San_Juan";
+        const mun = "Facatativá";
         const fot = "https://piazhwrekcgxbvsyqiwi.supabase.co/storage/v1/object/public/actividades/sanjuan.png?t=2024-08-15T15%3A32%3A05.313Z";
         const inicio = "05:00:00";
         const fin = "19:00:00";
