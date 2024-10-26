@@ -173,7 +173,7 @@ function DashboardAdmin() {
                         </div>
                         <h1>{typeof conds === 'number' ? conds : 'Cargando...'}</h1>
                     </div>
-                    <div className='card' onClick={() => navigate('/Vehiculos')}>
+                    <div className='card' onClick={() => navigate('/Conductores')}>
                         <div className='card-inner'>
                             <h3>Vehiculos</h3>
                             <BsRocketFill className='card_icon' />
