@@ -31,6 +31,7 @@ function ActCard({ act, style }) {
                     setValue('coordenadasY', acti.coordenadasY);
                     setValue('hr_inicio', acti.hr_inicio);
                     setValue('hr_fin', acti.hr_fin);
+                    setValue('costo', acti.costo);
                 } else {
                     console.error('No se encontró la actividad.');
                 }
@@ -68,6 +69,7 @@ function ActCard({ act, style }) {
                     formData.append('coordenadasY', data.coordenadasY);
                     formData.append('hr_inicio', data.hr_inicio);
                     formData.append('hr_fin', data.hr_fin);
+                    formData.append('costo', data.costo);
                     formData.append('photo', file);
 
                     await updateAct(selectedId, formData);
@@ -145,6 +147,11 @@ function ActCard({ act, style }) {
                                                     </option>
                                                 ))}
                                             </select>
+                                        </div>
+
+                                        <div className="form-group">
+                                            <label htmlFor="costo">Precio</label>
+                                            <input type="number" className='formulario' {...register("costo", { required: true })} />
                                         </div>
 
                                         <div className="form-group-image">

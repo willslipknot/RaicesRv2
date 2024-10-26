@@ -19,7 +19,7 @@ function Actividades({ rutasAll }) {
     const { createActs, createRutas, getActs, acts, getRutas, getConduc, getAct } = useActs();
     const { getVehiculo } = useVehiculo();
     const { getRutasAll, updateRuta, getRuta } = useRutas();
-    const [ tip, setTip] = useState('');
+    const [tip, setTip] = useState('');
     const [file, setFile] = useState(null);
     const [nombreArchivo, setNombreArchivo] = useState('');
     const [mensaje, setMensaje] = useState('');
@@ -31,7 +31,7 @@ function Actividades({ rutasAll }) {
     const [alimentacion, setAlimentacion] = useState('');
     const [comida, setComida] = useState(null);
     const [comSel, setComSel] = useState('');
-    const [actividades,setActividades] = useState('');
+    const [actividades, setActividades] = useState('');
     const [activity, setActivity] = useState(null);
     const [actSel, setActSel] = useState('');
     const [hospedaje, setHospedaje] = useState('');
@@ -224,10 +224,11 @@ function Actividades({ rutasAll }) {
         formData.append('nombre', data.nombre);
         formData.append('coordenadasX', data.coordenadasX);
         formData.append('coordenadasY', data.coordenadasY);
-        formData.append('hora_inicio', data.hr_inicio);
-        formData.append('hora_fin', data.hr_fin);
+        formData.append('hora_inicio', data.hora_inicio);
+        formData.append('hora_fin', data.hora_fin);
         formData.append('descripcion', data.descripcion);
         formData.append('tipo', data.tipo);
+        formData.append('costo', data.costo);
         formData.append('photo', file);
 
         createActs(formData);
@@ -332,7 +333,7 @@ function Actividades({ rutasAll }) {
             <div className="actividad-content">
                 {mostrarActividades && (
                     <div className='cards'>
-                        {acts && acts.length > 0 ? (
+                        {acts && Array.isArray(acts) ? (
                             acts.map((act, index) => (
                                 <ActCard key={act.uid_actividades} act={act} style={{ backgroundColor: colors[index % colors.length] }}/>
                             ))
@@ -427,6 +428,11 @@ function Actividades({ rutasAll }) {
                                             </option>
                                         ))}
                                     </select>
+                                </div>
+
+                                <div className="form-group">
+                                    <label htmlFor="costo">Precio</label>
+                                    <input type="number" className='formulario' {...register("costo", { required: true })} />
                                 </div>
 
                                 <div className="form-group-image">

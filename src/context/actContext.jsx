@@ -1,4 +1,4 @@
-import { createContext, useContext, useState,useCallback } from "react"
+import { createContext, useContext, useState, useCallback } from "react"
 import supabase from '../db1.js';
 import { uploadImageAndGetURL } from '../middlewares/imagen.js';
 
@@ -33,7 +33,7 @@ export function ActProvider({ children }) {
         }
     }, []);
 
-    const getContActs = useCallback( async () => {
+    const getContActs = useCallback(async () => {
         try {
             const { data: actividades, error } = await supabase
                 .from('actividades_t')
@@ -50,7 +50,7 @@ export function ActProvider({ children }) {
     }, []);
 
 
-    const createActs = useCallback( async (formData) => {
+    const createActs = useCallback(async (formData) => {
         const file = formData.get('photo');
         if (!file) {
             console.error('No file found in formData');
@@ -62,35 +62,37 @@ export function ActProvider({ children }) {
         const tipo = formData.get('tipo').toLowerCase();
         const coordenadasX = formData.get('coordenadasX');
         const coordenadasY = formData.get('coordenadasY');
-        const hr_inicio = formData.get('hr_inicio');
-        const hr_fin = formData.get('hr_fin');
-    
+        const hr_inicio = formData.get('hora_inicio');
+        const hr_fin = formData.get('hora_fin');
+        const costo = formData.get('costo');
+
         try {
             const { data: newActividad, error } = await supabase
                 .from('actividades_t')
-                .insert([
-                    {
-                        nombre,
-                        direccion: `${coordenadasX}, ${coordenadasY}`,
-                        descripcion,
-                        tipo,
-                        photo: url,
-                        hr_inicio,
-                        hr_fin,
-                        departamento: 'Cundinamarca',
-                        municipio: 'San_Juan',
-                    },
-                ]);
+                .insert([{
+                    nombre,
+                    direccion: `${coordenadasX}, ${coordenadasY}`,
+                    descripcion,
+                    tipo,
+                    photo: url,
+                    hr_inicio,
+                    hr_fin,
+                    costo,
+                    departamento: 'Cundinamarca',
+                    municipio: 'San_Juan',
+                }]);
+
             if (error) {
                 throw new Error(error.message);
             }
-            setActs(newActividad);
+            await getActs();
         } catch (error) {
             console.error('Error:', error.message);
         }
-    }, []);
-    
-    const deleteAct =useCallback( async (uid_actividades) => {
+    }, [getActs]);
+
+
+    const deleteAct = useCallback(async (uid_actividades) => {
         try {
             const { data, error } = await supabase
                 .from('actividades_t')
@@ -105,7 +107,7 @@ export function ActProvider({ children }) {
 
     }, []);
 
-    const getAct = useCallback( async (uid_actividades) => {
+    const getAct = useCallback(async (uid_actividades) => {
         try {
             const { data, error } = await supabase
                 .from('actividades_t')
@@ -128,7 +130,7 @@ export function ActProvider({ children }) {
         try {
             let updatedAct = {};
             let isFormData = typeof formData.get === 'function';
-    
+
             if (isFormData) {
                 updatedAct = {
                     nombre: formData.get('nombre').toLowerCase(),
@@ -137,17 +139,18 @@ export function ActProvider({ children }) {
                     tipo: formData.get('tipo').toLowerCase(),
                     hr_inicio: formData.get('hr_inicio'),
                     hr_fin: formData.get('hr_fin'),
+                    costo: formData.get('costo'),
                     departamento: 'Cundinamarca',
                     municipio: 'San_Juan',
                 };
-    
+
                 const file = formData.get('photo');
                 if (file) {
                     const url = await uploadImageAndGetURL(file);
                     updatedAct.photo = url;
                 }
             } else {
-                const { nombre, descripcion, tipo, coordenadasX, coordenadasY, hr_inicio, hr_fin, photo } = formData;
+                const { nombre, descripcion, tipo, coordenadasX, coordenadasY, hr_inicio, hr_fin, costo, photo } = formData;
                 updatedAct = {
                     nombre,
                     direccion: `${coordenadasX}, ${coordenadasY}`,
@@ -155,35 +158,36 @@ export function ActProvider({ children }) {
                     tipo,
                     hr_inicio,
                     hr_fin,
+                    costo,
                     departamento: 'Cundinamarca',
                     municipio: 'San_Juan',
-                    photo 
+                    photo
                 };
             }
-    
+
             if (!updatedAct.photo) {
                 const { data: existingAct, error: fetchError } = await supabase
                     .from('actividades_t')
                     .select('photo')
                     .eq('uid_actividades', uid_actividades)
                     .single();
-    
+
                 if (fetchError) {
                     throw new Error(fetchError.message);
                 }
-    
+
                 updatedAct.photo = existingAct.photo;
             }
-    
+
             const { data, error } = await supabase
                 .from('actividades_t')
                 .update(updatedAct)
                 .eq('uid_actividades', uid_actividades);
-    
+
             if (error) {
                 throw new Error(error.message);
             }
-    
+
             setActs(prevActs =>
                 prevActs.map(prevAct =>
                     prevAct.uid_actividades === uid_actividades
@@ -195,8 +199,8 @@ export function ActProvider({ children }) {
             console.error('Error al actualizar la actividad:', error);
         }
     }, []);
-    
-    const getRutas =useCallback( async (tipo) => {
+
+    const getRutas = useCallback(async (tipo) => {
         try {
             const { data, error } = await supabase
                 .from('actividades_t')
@@ -218,7 +222,7 @@ export function ActProvider({ children }) {
         }
     }, []);
 
-    const getConduc =useCallback( async () => {
+    const getConduc = useCallback(async () => {
         try {
             const { data, error } = await supabase
                 .from('inf_conductor_t')
@@ -241,7 +245,7 @@ export function ActProvider({ children }) {
         const fot = "https://piazhwrekcgxbvsyqiwi.supabase.co/storage/v1/object/public/actividades/sanjuan.png?t=2024-08-15T15%3A32%3A05.313Z";
         const inicio = "05:00:00";
         const fin = "19:00:00";
-        
+
         try {
             const { data: newRuta, error } = await supabase
                 .from('ruta_t')
