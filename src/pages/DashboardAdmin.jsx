@@ -161,7 +161,7 @@ function DashboardAdmin() {
 
                 <div className='main-cards'>
                     <div className='card'>
-                        <a href="Actividades">
+                        <a href="/Actividades">
                             <div className='card-inner'>
                                 <h3>Actividades</h3>
                                 <BsGeoAltFill className='card_icon' />
@@ -170,7 +170,7 @@ function DashboardAdmin() {
                         <h1>{typeof acts === 'number' ? acts : 'Cargando...'}</h1>
                     </div>
                     <div className='card'>
-                        <a href="Conductores">
+                        <a href="/Conductores">
                             <div className='card-inner'>
                                 <h3>Conductores</h3>
                                 <BsFilePersonFill className='card_icon' />
@@ -179,7 +179,7 @@ function DashboardAdmin() {
                         <h1>{typeof conds === 'number' ? conds : 'Cargando...'}</h1>
                     </div>
                     <div className='card'>
-                        <a href="Vehiculos">
+                        <a href="/Vehiculos">
                             <div className='card-inner'>
                                 <h3>Vehiculos</h3>
                                 <BsRocketFill className='card_icon' />
@@ -188,7 +188,7 @@ function DashboardAdmin() {
                         <h1>{typeof vehiculos === 'number' ? vehiculos : 'Cargando...'}</h1>
                     </div>
                     <div className='card'>
-                        <a href="Reservas">
+                        <a href="/Reservas">
                             <div className='card-inner'>
                                 <h3>Reservas</h3>
                                 <BsFillBellFill className='card_icon' />
