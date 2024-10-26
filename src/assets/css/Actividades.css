@@ -272,17 +272,22 @@
     font-family: 'Brothers-Bold.otf', sans-serif;
   }
 
-  th {
+  .editar-button{
+    background-color: #0f9ed5;
+    border: 1px solid #60caf3;
+  }
+
+  .cabecera{
     background-color: #0f9ed5;
     border: 1px solid #60caf3;
     padding: 8px;
     text-align: left;
   }
-  
 
-  td {
+  .filas_datos{
     border: 1px solid #60caf3;
     padding: 8px;
+    text-align: left;
   }
 
   tbody tr:nth-child(odd) {

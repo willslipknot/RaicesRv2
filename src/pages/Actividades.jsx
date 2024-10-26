@@ -366,35 +366,35 @@ function Actividades({ rutasAll }) {
                         <table className='tablaRutas'>
                             <thead>
                                 <tr className='trTabla'>
-                                    <th>Nombre</th>
-                                    <th>Actividad 1</th>
-                                    <th>Actividad 2</th>
-                                    <th>Actividad 3</th>
-                                    <th>Actividad 4</th>
-                                    <th>Actividad 5</th>
-                                    <th>Actividad 6</th>
-                                    <th>Actividad 7</th>
-                                    <th>Actividad 8</th>
-                                    <th>Actividad 9</th>
-                                    <th>Descripcion</th>
+                                    <th className="cabecera">Nombre</th>
+                                    <th className="cabecera">Actividad 1</th>
+                                    <th className="cabecera">Actividad 2</th>
+                                    <th className="cabecera">Actividad 3</th>
+                                    <th className="cabecera">Actividad 4</th>
+                                    <th className="cabecera">Actividad 5</th>
+                                    <th className="cabecera">Actividad 6</th>
+                                    <th className="cabecera">Actividad 7</th>
+                                    <th className="cabecera">Actividad 8</th>
+                                    <th className="cabecera">Actividad 9</th>
+                                    <th className="cabecera">Descripcion</th>
 
                                 </tr>
                             </thead>
                             <tbody>
                                 {rutas.map((rut) => (
                                     <tr key={rut.uid_ruta}>
-                                        <td>{rut.nombre || 'N/A'}</td>
-                                        <td>{rut.act_1 || 'N/A'}</td>
-                                        <td>{rut.act_2 || 'N/A'}</td>
-                                        <td>{rut.act_3 || 'N/A'}</td>
-                                        <td>{rut.act_4 || 'N/A'}</td>
-                                        <td>{rut.act_5 || 'N/A'}</td>
-                                        <td>{rut.act_6 || 'N/A'}</td>
-                                        <td>{rut.act_7 || 'N/A'}</td>
-                                        <td>{rut.act_8 || 'N/A'}</td>
-                                        <td>{rut.act_9 || 'N/A'}</td>
-                                        <td>{rut.descripcion || 'N/A'}</td>
-                                        <td><button onClick={() => handleOpenModalEditar(rut.uid_ruta)}>Editar</button> </td>
+                                        <td className="filas_datos">{rut.nombre || 'N/A'}</td>
+                                        <td className="filas_datos">{rut.act_1 || 'N/A'}</td>
+                                        <td className="filas_datos">{rut.act_2 || 'N/A'}</td>
+                                        <td className="filas_datos">{rut.act_3 || 'N/A'}</td>
+                                        <td className="filas_datos">{rut.act_4 || 'N/A'}</td>
+                                        <td className="filas_datos">{rut.act_5 || 'N/A'}</td>
+                                        <td className="filas_datos">{rut.act_6 || 'N/A'}</td>
+                                        <td className="filas_datos">{rut.act_7 || 'N/A'}</td>
+                                        <td className="filas_datos">{rut.act_8 || 'N/A'}</td>
+                                        <td className="filas_datos">{rut.act_9 || 'N/A'}</td>
+                                        <td className="filas_datos">{rut.descripcion || 'N/A'}</td>
+                                        <td className="editar-button"><button onClick={() => handleOpenModalEditar(rut.uid_ruta)}>Editar</button> </td>
                                     </tr>
                                 ))}
                             </tbody>
