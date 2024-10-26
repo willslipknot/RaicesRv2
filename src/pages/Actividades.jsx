@@ -336,17 +336,17 @@ function Actividades({ rutasAll }) {
     return (
         <div className="actividad-container">
             <NavBar />
-            <div className="actividad-buttons">
+            <div className="actividad-buttons_a">
                 <button onClick={handleOpenModal}>Crear Actividad</button>
             </div>
-            <div className="rutas-buttons">
+            <div className="rutas-buttons_1">
                 <button onClick={handleOpenModal1}>Crear Ruta</button>
             </div>
-            <div className="conductor-buttons1">
+            <div className="actividad-buttons_b">
                 <button onClick={handleMostrarActividades}>Ver Actividades</button>
             </div>
 
-            <div className="vehiculo-buttons1">
+            <div className="rutas-buttons_2">
                 <button onClick={handleMostrarRutas}>Ver Rutas</button>
             </div>
             <div className="actividad-content">
