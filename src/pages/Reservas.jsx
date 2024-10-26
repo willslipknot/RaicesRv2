@@ -27,80 +27,83 @@ function Reservas() {
         setMostrarReservas(false);
     };
 
+    const obtenerReservasDesdeBD = async () => {
+        try {
+            const reservasData = await getReservas();
+            const reservasConDetalles = await Promise.all(reservasData.map(async (reserv) => {
+                const conductorData = await getCond(reserv.uid_conductor);
+                const uid_vehiculo = conductorData?.data?.uid_vehiculo;
+                let vehiculoData;
+                
+                if (uid_vehiculo) {
+                    vehiculoData = await getVehiculo(uid_vehiculo);
+                } else {
+                    vehiculoData = { data: { placa: 'Placa no disponible' } };
+                }
+
+                const clienteData = await getCliente(reserv.uid_cliente);
+                console.log('da', clienteData);
+
+                return {
+                    ...reserv,
+                    conductor: `${conductorData?.data?.first_name || 'Nombre no disponible'} ${conductorData?.data?.first_last_name || ''}`,
+                    vehiculo: `${vehiculoData?.placa || 'Placa no disponible'}`,
+                    cliente: `${clienteData?.data?.first_name || 'Nombre no disponible'} ${clienteData?.data?.first_last_name || ''}`,
+                    telefono: clienteData?.data?.phone_number || 'Teléfono no disponible'
+                };
+            }));
+            setReservas(reservasConDetalles);
+        } catch (error) {
+            console.error('Error al obtener reservas:', error);
+        }
+    };
+
+    const obtenerReservasFechaDesdeBD = async () => {
+        try {
+            const reservasFechaData = await getFechaReservas();
+            const reservasFechaConDetalles = await Promise.all(reservasFechaData.map(async (reservF) => {
+                const conductorData = await getCond(reservF.uid_conductor);
+                const uid_vehiculo = conductorData?.data?.uid_vehiculo;
+                let vehiculoData;
+
+                if (uid_vehiculo) {
+                    vehiculoData = await getVehiculo(uid_vehiculo);
+                } else {
+                    vehiculoData = { data: { placa: 'Placa no disponible' } };
+                }
+
+                const clienteData = await getCliente(reservF.uid_cliente);
+                return {
+                    ...reservF,
+                    conductor: `${conductorData?.data?.first_name || 'Nombre no disponible'} ${conductorData?.data?.first_last_name || ''}`,
+                    vehiculo: `${vehiculoData?.placa || 'Placa no disponible'}`,
+                    cliente: `${clienteData?.data?.first_name || 'Nombre no disponible'} ${clienteData?.data?.first_last_name || ''}`,
+                    telefono: `${clienteData?.data?.phone_number || 'Teléfono no disponible'}`
+                };
+            }));
+
+            setReservasFecha(reservasFechaConDetalles);
+        } catch (error) {
+            console.error('Error al obtener reservas:', error);
+        }
+    };
+
     const handleAprobarPago = async (uid_compra) => {
         try {
             await updateReservaStatus(uid_compra, 'cancelado');
+            // Actualiza la tabla de reservas después de cancelar
+            await obtenerReservasDesdeBD();
+            await obtenerReservasFechaDesdeBD();
         } catch (error) {
             console.error('Error al cancelar reserva:', error);
         }
     };
 
     useEffect(() => {
-        const obtenerReservasDesdeBD = async () => {
-            try {
-                const reservasData = await getReservas();
-                const reservasConDetalles = await Promise.all(reservasData.map(async (reserv) => {
-                    const conductorData = await getCond(reserv.uid_conductor);
-                    const uid_vehiculo = conductorData?.data?.uid_vehiculo;
-                    let vehiculoData;
-                    
-                    if (uid_vehiculo) {
-                        vehiculoData = await getVehiculo(uid_vehiculo);
-                    } else {
-                        vehiculoData = { data: { placa: 'Placa no disponible' } };
-                    }
-    
-                    const clienteData = await getCliente(reserv.uid_cliente);
-    
-                    return {
-                        ...reserv,
-                        conductor: `${conductorData?.data?.first_name || 'Nombre no disponible'} ${conductorData?.data?.first_last_name || ''}`,
-                        vehiculo: vehiculoData?.placa || 'Placa no disponible',
-                        cliente: `${clienteData?.data?.first_name || 'Nombre no disponible'} ${clienteData?.data?.first_last_name || ''}`,
-                        telefono: clienteData?.data?.phone_number || 'Teléfono no disponible'
-                    };
-                }));
-                setReservas(reservasConDetalles);
-            } catch (error) {
-                console.error('Error al obtener reservas:', error);
-            }
-        };
-
-        const obtenerReservasFechaDesdeBD = async () => {
-            try {
-                const reservasFechaData = await getFechaReservas();
-                const reservasFechaConDetalles = await Promise.all(reservasFechaData.map(async (reservF) => {
-                    const conductorData = await getCond(reservF.uid_conductor);
-                    const uid_vehiculo = conductorData?.data?.uid_vehiculo;
-                    let vehiculoData;
-    
-                    if (uid_vehiculo) {
-                        vehiculoData = await getVehiculo(uid_vehiculo);
-                    } else {
-                        vehiculoData = { data: { placa: 'Placa no disponible' } };
-                    }
-    
-                    const clienteData = await getCliente(reservF.uid_cliente);
-    
-                    return {
-                        ...reservF,
-                        conductor: `${conductorData?.data?.first_name || 'Nombre no disponible'} ${conductorData?.data?.first_last_name || ''}`,
-                        vehiculo: vehiculoData?.data?.placa || 'Placa no disponible',
-                        cliente: `${clienteData?.data?.first_name || 'Nombre no disponible'} ${clienteData?.data?.first_last_name || ''}`,
-                        telefono: clienteData?.data?.phone_number || 'Teléfono no disponible'
-                    };
-                }));
-    
-                setReservasFecha(reservasFechaConDetalles);
-            } catch (error) {
-                console.error('Error al obtener reservas:', error);
-            }
-        };
-    
         obtenerReservasDesdeBD();
         obtenerReservasFechaDesdeBD();
     }, [getReservas, getFechaReservas, getCond, getVehiculo, getCliente]);
-    
+
     const exportToExcel = (data, filename, conductores, actividades) => {
         const wsReservas = XLSX.utils.json_to_sheet(data.reservas);
         const wsConductores = XLSX.utils.json_to_sheet(conductores);
@@ -110,7 +113,7 @@ function Reservas() {
         XLSX.utils.book_append_sheet(wb, wsReservas, "Reservas");
         XLSX.utils.book_append_sheet(wb, wsConductores, "Conductores");
         XLSX.utils.book_append_sheet(wb, wsActividades, "Actividades");
-    
+
         const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
         saveAs(new Blob([wbout], { type: "application/octet-stream" }), filename);
     };
@@ -118,7 +121,7 @@ function Reservas() {
     const handleDownloadReport = async () => {
         const data = mostrarReservas ? reservas : reservasFecha;
         const filename = mostrarReservas ? "reservas_historico.xlsx" : "reservas_dia.xlsx";
-    
+
         if (mostrarReservas) {
             try {
                 const actividades = await getAllActsOrdenadas();
@@ -128,17 +131,17 @@ function Reservas() {
                     acc[act.uid_actividades] = act.nombre;
                     return acc;
                 }, {});
-    
+
                 const reservasTransformadas = data.map(reserv => {
                     const transformedReserv = { ...reserv };
-    
+
                     for (let i = 1; i <= 9; i++) {
                         const key = `act_${i}`;
                         if (transformedReserv[key] && actividadMap[transformedReserv[key]]) {
                             transformedReserv[key] = actividadMap[transformedReserv[key]];
                         }
                     }
-    
+
                     return {
                         uid_compra: reserv.uid_compra,
                         nombreRuta: reserv.nombreRuta || 'Nombre no disponible',
@@ -159,7 +162,7 @@ function Reservas() {
                         hora: reserv.hora,
                     };
                 });
-    
+
                 exportToExcel({ reservas: reservasTransformadas }, filename, conductores, actividades);
             } catch (error) {
                 console.error('Error al generar el reporte:', error);
@@ -168,7 +171,7 @@ function Reservas() {
             exportToExcel({ reservas: data }, filename, [], []);
         }
     };
-    
+
     return (
         <div className='tablaRes'>
             <div className="buttons3">
@@ -208,8 +211,11 @@ function Reservas() {
                                 <td>{reserv.status || 'Estado no disponible'}</td>
                                 <td className='status'>
                                     {reserv.status === 'Pago Realizado' && (
-                                        <button onClick={() =>{if (window.confirm('¿Estás seguro de que deseas cancelar esta reserva?')) {
-                                            handleAprobarPago(reserv.uid_compra)}}} className='BotonStatus'>
+                                        <button onClick={() => {
+                                            if (window.confirm('¿Estás seguro de que deseas cancelar esta reserva?')) {
+                                                handleAprobarPago(reserv.uid_compra);
+                                            }
+                                        }} className='BotonStatus'>
                                             Cancelar
                                         </button>
                                     )}
@@ -247,7 +253,7 @@ function Reservas() {
                                 <td>{reservF.status || 'Estado no disponible'}</td>
                                 <td className='status'>
                                     {reservF.status === 'pago en proceso' && (
-                                        <button onClick={() => handleAprobarPago(reserv.uid_compra)} className='BotonStatus'>
+                                        <button onClick={() => handleAprobarPago(reservF.uid_compra)} className='BotonStatus'>
                                             Aprobar
                                         </button>
                                     )}

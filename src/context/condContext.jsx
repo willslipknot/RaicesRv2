@@ -85,7 +85,9 @@ export function CondProvider({ children }) {
                         uid_vehiculo,
                         tipo_licencia,
                         phone_number,
-                        correo
+                        correo,
+                        status:'Disponible'
+
                     },
                 ]);
 

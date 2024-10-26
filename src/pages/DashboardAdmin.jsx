@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Importar useNavigate
 import NavBar from '../components/Home/NavBar.jsx';
 import '../assets/css/Home.css';
 import { useActs } from '../context/actContext.jsx';
@@ -13,7 +14,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 function DashboardAdmin() {
-
+    const navigate = useNavigate(); // Crear el hook para navegar
     const { getContActs, acts } = useActs();
     const { getContConds, conds, getCond } = useCond();
     const { getContVehiculos, vehiculos } = useVehiculo();
@@ -78,7 +79,6 @@ function DashboardAdmin() {
         }
     };
 
-
     const contarConductores = async () => {
         try {
             const registros = await getTopActivities();
@@ -131,7 +131,6 @@ function DashboardAdmin() {
         const mesSeleccionado = (newDate.getMonth() + 1);
         setMes(mesSeleccionado);
     };
-    
 
     useEffect(() => {
         const miniMapContainer = document.getElementById('miniMap');
@@ -160,40 +159,32 @@ function DashboardAdmin() {
             <main className='main-container'>
 
                 <div className='main-cards'>
-                    <div className='card'>
-                        <a href="/Actividades">
-                            <div className='card-inner'>
-                                <h3>Actividades</h3>
-                                <BsGeoAltFill className='card_icon' />
-                            </div>
-                        </a>
+                    <div className='card' onClick={() => navigate('/Actividades')}>
+                        <div className='card-inner'>
+                            <h3>Actividades</h3>
+                            <BsGeoAltFill className='card_icon' />
+                        </div>
                         <h1>{typeof acts === 'number' ? acts : 'Cargando...'}</h1>
                     </div>
-                    <div className='card'>
-                        <a href="/Conductores">
-                            <div className='card-inner'>
-                                <h3>Conductores</h3>
-                                <BsFilePersonFill className='card_icon' />
-                            </div>
-                        </a>
+                    <div className='card' onClick={() => navigate('/Conductores')}>
+                        <div className='card-inner'>
+                            <h3>Conductores</h3>
+                            <BsFilePersonFill className='card_icon' />
+                        </div>
                         <h1>{typeof conds === 'number' ? conds : 'Cargando...'}</h1>
                     </div>
-                    <div className='card'>
-                        <a href="/Vehiculos">
-                            <div className='card-inner'>
-                                <h3>Vehiculos</h3>
-                                <BsRocketFill className='card_icon' />
-                            </div>
-                        </a>
+                    <div className='card' onClick={() => navigate('/Vehiculos')}>
+                        <div className='card-inner'>
+                            <h3>Vehiculos</h3>
+                            <BsRocketFill className='card_icon' />
+                        </div>
                         <h1>{typeof vehiculos === 'number' ? vehiculos : 'Cargando...'}</h1>
                     </div>
-                    <div className='card'>
-                        <a href="/Reservas">
-                            <div className='card-inner'>
-                                <h3>Reservas</h3>
-                                <BsFillBellFill className='card_icon' />
-                            </div>
-                        </a>
+                    <div className='card' onClick={() => navigate('/Reservas')}>
+                        <div className='card-inner'>
+                            <h3>Reservas</h3>
+                            <BsFillBellFill className='card_icon' />
+                        </div>
                         <h1>{typeof numReservas === 'number' ? numReservas : 'Cargando...'}</h1>
                     </div>
                 </div>
@@ -205,17 +196,17 @@ function DashboardAdmin() {
                         onClickMonth={onMonthClick}
                         value={date}
                     />
-                     <BsInfoCircle 
-                            className="info-icon" 
-                            onClick={() => setShowTooltip(!showTooltip)} 
-                            style={{ position: 'absolute', top: 260, right: 940, cursor: 'pointer' }}
-                        />
-                        {showTooltip && (
-                            <div className="tooltip" 
-                                style={{position: 'absolute', top: 285,  right: 740, zIndex: 1000 }}>
-                                Filtra por mes las graficas top
-                            </div>
-                        )}
+                    <BsInfoCircle 
+                        className="info-icon" 
+                        onClick={() => setShowTooltip(!showTooltip)} 
+                        style={{ position: 'absolute', top: 260, right: 940, cursor: 'pointer' }}
+                    />
+                    {showTooltip && (
+                        <div className="tooltip" 
+                            style={{ position: 'absolute', top: 285, right: 740, zIndex: 1000 }}>
+                            Filtra por mes las graficas top
+                        </div>
+                    )}
 
                     <div id="miniMap" className='minimapa'></div>
                 </div>
