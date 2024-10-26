@@ -29,9 +29,9 @@ function Reservas() {
 
     const handleAprobarPago = async (uid_compra) => {
         try {
-            await updateReservaStatus(uid_compra, 'pagado');
+            await updateReservaStatus(uid_compra, 'cancelado');
         } catch (error) {
-            console.error('Error al aprobar pago:', error);
+            console.error('Error al cancelar reserva:', error);
         }
     };
 
@@ -207,9 +207,10 @@ function Reservas() {
                                 <td>{reserv.telefono || 'Teléfono no disponible'}</td>
                                 <td>{reserv.status || 'Estado no disponible'}</td>
                                 <td className='status'>
-                                    {reserv.status === 'Pago en Proceso' && (
-                                        <button onClick={() => handleAprobarPago(reserv.uid_compra)} className='BotonStatus'>
-                                            Aprobar
+                                    {reserv.status === 'Pago Realizado' && (
+                                        <button onClick={() =>{if (window.confirm('¿Estás seguro de que deseas cancelar esta reserva?')) {
+                                            handleAprobarPago(reserv.uid_compra)}}} className='BotonStatus'>
+                                            Cancelar
                                         </button>
                                     )}
                                 </td>

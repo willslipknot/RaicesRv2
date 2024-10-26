@@ -135,13 +135,12 @@ export function ReservaProvider({ children }) {
                 .eq('uid_compra', uid_compra);
 
             if (error) throw new Error(error.message);
-
             setReservas(prevReservas =>
                 prevReservas.map(reserva =>
                     reserva.uid_compra === uid_compra ? { ...reserva, status: newStatus } : reserva
                 )
             );
-
+            await getReservas();
             return data;
         } catch (error) {
             console.error("Error al actualizar el estado de la reserva:", error);
