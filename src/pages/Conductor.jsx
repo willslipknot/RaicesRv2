@@ -229,7 +229,7 @@ function Conductor() {
 
             <div className="conductor-content">
                 {mostrarConductores && (
-                    <div className='cards'>
+                    <div className="cards" style={{ paddingBottom: '4rem' }}>
                         {conds && Array.isArray(conds) ? (
                             conds.map((cond, index) => (
                                 <CondCard key={cond.uid_conductor} cond={cond} style={{ backgroundColor: colors[index % colors.length] }}/>
@@ -237,11 +237,12 @@ function Conductor() {
                         ) : (
                             <p>Actualizando conductores</p>
                         )}
+                        <br></br><br></br><br></br>  
                     </div>
                 )}
 
                 {mostrarVehiculos && (
-                    <div className='cards'>
+                    <div className="cards" style={{ paddingBottom: '4rem' }}>
                         {allVehiculo && Array.isArray(allVehiculo) ? (
                             allVehiculo.map((veh, index) => (
                                 <VehCard key={veh.uid_vehiculo} veh={veh} style={{ backgroundColor: colors[index % colors.length] }}  />

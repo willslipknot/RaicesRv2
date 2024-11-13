@@ -18,7 +18,7 @@ function Actividades({ rutasAll }) {
     const { register, handleSubmit, reset, setValue } = useForm();
     const { createActs, getActs, acts, getRutas, getConduc, getAct } = useActs();
     const { getVehiculo } = useVehiculo();
-    const { getRutasAll, updateRuta, getRuta,createRutas } = useRutas();
+    const { getRutasAll, updateRuta, getRuta, createRutas } = useRutas();
     const [tip, setTip] = useState('');
     const [file, setFile] = useState(null);
     const [nombreArchivo, setNombreArchivo] = useState('');
@@ -207,7 +207,7 @@ function Actividades({ rutasAll }) {
             setMensaje('Error al crear la ruta');
         }
     };
-    
+
     const handleEditarRutaSubmit = async (values) => {
         if (selectedId !== null) {
             try {
@@ -223,7 +223,7 @@ function Actividades({ rutasAll }) {
             }
         }
     };
-    
+
     const handleMostrarActividades = () => {
         setMostrarActividades(true);
         setMostrarRutas(false);
@@ -351,10 +351,10 @@ function Actividades({ rutasAll }) {
             </div>
             <div className="actividad-content">
                 {mostrarActividades && (
-                    <div className='cards'>
+                    <div className="cards" style={{ paddingBottom: '4rem' }}>
                         {acts && Array.isArray(acts) ? (
                             acts.map((act, index) => (
-                                <ActCard key={act.uid_actividades} act={act} style={{ backgroundColor: colors[index % colors.length] }}/>
+                                <ActCard key={act.uid_actividades} act={act} style={{ backgroundColor: colors[index % colors.length] }} />
                             ))
                         ) : (
                             <p>No hay actividades disponibles.</p>
@@ -399,7 +399,9 @@ function Actividades({ rutasAll }) {
                                 ))}
                             </tbody>
                         </table>
+                        <br></br><br></br><br></br>
                     </div>
+
                 )}
 
                 {modalOpen && (
@@ -743,10 +745,10 @@ function Actividades({ rutasAll }) {
                                 {mensaje && <div className="mensaje">{mensaje}</div>}
                             </form>
                         </div>
-
                     </div>
                 )}
             </div>
+
         </div>
     );
 }
